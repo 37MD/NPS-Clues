@@ -1,6 +1,6 @@
 const CACHE = 'ld-nps-v1';
 const SHELL = [
-  './Clues1A.html',
+  './index.html',
   './manifest.json',
   './icon.svg',
   './icon-192.png',

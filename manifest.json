@@ -2,7 +2,7 @@
   "name": "Lie Detector — NPS NAV Chart",
   "short_name": "LD NPS",
   "description": "NPS-only NAV chart with RSI Lie Detector, Asset Allocator and Live Cockpit.",
-  "start_url": "./Clues1A.html",
+  "start_url": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#0d0d0d",
