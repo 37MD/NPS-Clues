@@ -13140,6 +13140,29 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                         const today = new Date().toISOString().slice(0, 10);
                         _SJ.upsert(currentAmc, {
                             code       : bridgeFund.code,
+                            name       : bridgeFund.name || snap1?.name     switchPromptEl.style.display = 'none';
+                        } catch(e) { }
+                    };
+                    switchPromptEl.style.display = 'block';
+                } else if (switchPromptEl) {
+                    switchPromptEl.style.display = 'none';
+                }
+                try {
+                    const _rawAmc    = (localStorage.getItem('ld_v3_amc') || 'HDFC').toUpperCase();
+                    const _allocType = document.getElementById('assetAllocType')?.value || 'NPS_T1';
+                    const currentAmc = _allocType === 'NPS_T1' ? 'NPS_T1'
+                                     : _allocType === 'NPS_T2' ? 'NPS_T2'
+                                     : _rawAmc;
+                    const bridgeFund  = c3aTrigger ? bestUnowned
+                                     : c3bTrigger  ? secondUnowned
+                                     : lastAlloc.top2[0];
+                    if (bridgeFund) {
+                        const snap1 = snapshot.find(f => f.code === bridgeFund.code);
+                        const prevEntry = _SJ.get().switches[currentAmc];
+                        const isNewSwitch = !prevEntry || prevEntry.code !== bridgeFund.code;
+                        const today = new Date().toISOString().slice(0, 10);
+                        _SJ.upsert(currentAmc, {
+                            code       : bridgeFund.code,
                             name       : bridgeFund.name || snap1?.name || bridgeFund.code,
                             r1m        : snap1?.r1m  ?? bridgeFund.r1m  ?? null,
                             wrsi       : snap1?.wrsi ?? bridgeFund.wrsi ?? null,
@@ -21179,20 +21202,4 @@ window.LDScannerComponent = LDScanner;
         if (sim && sim.style.display === 'flex') {
             if (typeof updateDisplay === 'function') updateDisplay();
         }
-        var lcv = document.getElementById('landscapeChartView');
-        if (lcv && lcv.classList.contains('active')) {
-            if (typeof _lcvSyncFromModal === 'function') {
-                _lcvSyncFromModal(window._lcvMode === 'live' ? 'liveChartModal' : 'gameUI', window._lcvMode || 'live');
-            }
-        }
-    }
-    </script>
-    <!-- NPC1B: PWA Install Banner (shown when Brave fires beforeinstallprompt) -->
-    <div id="ld-pwa-install-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#0d0d0d;border-top:1px solid #00c896;padding:10px 16px;align-items:center;justify-content:space-between;font-family:'Space Mono',monospace;font-size:0.65rem;color:#00c896;">
-        <span>📡 Install <strong>LDNPS</strong> as an app for offline access</span>
-        <div style="display:flex;gap:8px;">
-            <button onclick="window.ldTriggerPWAInstall()" style="background:#00c896;color:#0d0d0d;border:none;padding:5px 12px;font-family:inherit;font-size:0.65rem;font-weight:700;cursor:pointer;border-radius:3px;">INSTALL</button>
-            <button onclick="document.getElementById('ld-pwa-install-banner').style.display='none'" style="background:transparent;color:#888;border:1px solid #444;padding:5px 10px;font-family:inherit;font-size:0.65rem;cursor:pointer;border-radius:3px;">✕</button>
-        </div>
-    </div>
-    <!-- ═══════════════ END NPC1B PWA BLOCK ═══════════════ -->
+        var lcv = document.getElementById('landscapeChar
