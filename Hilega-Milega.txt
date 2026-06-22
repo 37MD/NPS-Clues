@@ -1,0 +1,41 @@
+//@version=6
+
+
+//  RSI WMA EMA with adjustable middle line
+
+indicator(title="Hilega-Milega by Milind", overlay=false)
+src = input(close, title="Source")
+
+len = input.int(9, minval=1, title="RSI Length")
+up = ta.rma(math.max(ta.change(src), 0), len)
+down = ta.rma(-math.min(ta.change(src), 0), len)
+rsi = down == 0 ? 100 : up == 0 ? 0 : 100 - (100 / (1 + up / down))
+
+wmaLength = input.int(21, title="WMA Length")
+emaLength = input.int(3, title="EMA Length")
+
+// Middle line adjustment
+adjustable_middle_line = input.int(50, title="Adjustable Middle Line")
+
+wma = ta.wma(rsi, wmaLength)
+ema = ta.ema(rsi, emaLength)
+
+// Plot RSI, WMA, and EMA
+plot(rsi, color=color.new(color.black, 0), linewidth=1, title="RSI")
+plot(wma, color=color.new(color.red, 0), linewidth=2, title="WMA")
+plot(ema, color=color.new(color.green, 0), linewidth=1, title="EMA")
+
+// Plot middle lines
+hline(adjustable_middle_line, color=color.rgb(0, 0, 0), linestyle=hline.style_solid, title="Adjustable Middle Line")
+hline(50, color=#00040f, linestyle=hline.style_solid, title="Default Middle Line")
+hline(20, color=color.rgb(245, 14, 14), linestyle=hline.style_dashed, title="Default Buy Line")
+hline(88, color=color.rgb(2, 165, 16), linestyle=hline.style_dashed, title="Default Sell Line")
+
+// Overbought/Oversold Fill
+ref = plot(adjustable_middle_line, editable=true, title="Middle Line Reference")
+obsd = plot(rsi > adjustable_middle_line ? rsi : adjustable_middle_line, color=color.new(color.red, 90), editable=false, title="Oversold", display=display.none)
+obbt = plot(rsi > adjustable_middle_line ? adjustable_middle_line : rsi, color=color.new(color.blue, 90), editable=false, title="Overbought", display=display.none)
+fill(obsd, ref, color=color.rgb(47, 231, 63, 50), title="Oversold")
+fill(obbt, ref, color=color.rgb(241, 24, 24, 50), title="Overbought")
+
+// Version 9
