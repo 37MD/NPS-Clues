@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <title>Lie Detector — NPS Only NAV Chart · LD254N</title>
+        <title>NPS Clues_1B — NPS Only NAV Chart · NPC1B</title>
         <link rel="manifest" href="manifest.json">
         <link rel="icon" type="image/svg+xml" href="icon.svg" sizes="any">
         <link rel="icon" type="image/png" href="icon-192.png" sizes="192x192">
@@ -13,8 +13,8 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <meta name="apple-mobile-web-app-title" content="LD NPS">
-        <meta name="application-name" content="Lie Detector NPS">
-        <meta name="description" content="NPS-only NAV chart with RSI Lie Detector, Asset Allocator and Live Cockpit.">
+        <meta name="application-name" content="NPS Clues_1B">
+        <meta name="description" content="NPS-only NAV chart with RSI Regime System, Asset Allocator and Live Cockpit.">
         <meta name="msapplication-TileColor" content="#00c896">
         <meta name="msapplication-TileImage" content="icons/icon-144.png">
         <link rel="apple-touch-icon" href="icons/icon-152.png">
@@ -316,6 +316,175 @@
             .setup-btn-allocator:hover {
                 background: rgba(255, 196, 0, 0.07);
                 outline-color: var(--gold);
+            }
+            .setup-btn-hilega {
+                border-color: #e11d48;
+                border-width: 2px;
+                color: #e11d48;
+                font-weight: 700;
+                font-size: 0.68rem !important;
+                outline: 1px solid rgba(225, 29, 72, 0.30);
+                outline-offset: 3px;
+                letter-spacing: 0.02em;
+            }
+            .setup-btn-hilega:hover {
+                background: rgba(225, 29, 72, 0.07);
+                outline-color: #e11d48;
+            }
+            #hilegaMilegaModal .hm-canvas-wrap {
+                width: 100%;
+                height: 320px;
+                position: relative;
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                overflow: hidden;
+                background: #fff;
+            }
+            #hilegaMilegaModal .hm-canvas-wrap canvas {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+            }
+            .hm-input-row {
+                display: flex;
+                gap: 6px;
+                flex-wrap: wrap;
+                margin-bottom: 8px;
+            }
+            .hm-input-group {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                min-width: 70px;
+            }
+            .hm-input-group label {
+                font-size: 0.52rem;
+                color: var(--muted);
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+            }
+            .hm-input-group input {
+                background: var(--surface2);
+                border: 1px solid var(--border);
+                border-radius: var(--radius-sm);
+                padding: 4px 6px;
+                font-family: var(--mono);
+                font-size: 0.65rem;
+                font-weight: 700;
+                color: var(--text);
+                outline: none;
+                text-align: center;
+            }
+            .hm-input-group input:focus {
+                border-color: #e11d48;
+            }
+            .hm-legend {
+                display: flex;
+                gap: 12px;
+                font-size: 0.52rem;
+                margin-top: 6px;
+                flex-wrap: wrap;
+            }
+            .hm-legend span {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            }
+            .hm-legend-dot {
+                width: 10px;
+                height: 3px;
+                border-radius: 1px;
+                flex-shrink: 0;
+            }
+            .hm-line-label {
+                font-size: 0.48rem;
+                color: var(--muted);
+                letter-spacing: 0.06em;
+            }
+            #hmTfRow {
+                display: flex;
+                justify-content: center;
+                gap: 0;
+                background: var(--surface2);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                padding: 3px 4px;
+                flex-shrink: 0;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            #hmTfRow .hm-tf-btn {
+                background: transparent;
+                border: none;
+                color: var(--muted);
+                font-family: var(--mono);
+                font-size: 0.58rem;
+                padding: 4px 8px;
+                cursor: pointer;
+                transition: all 0.15s;
+                letter-spacing: 0.04em;
+                border-radius: var(--radius-sm);
+                font-weight: 400;
+                white-space: nowrap;
+            }
+            #hmTfRow .hm-tf-btn:hover {
+                color: var(--text);
+                background: rgba(0,0,0,0.04);
+            }
+            #hmTfRow .hm-tf-btn.active {
+                color: #e11d48;
+                background: rgba(225,29,72,0.10);
+                font-weight: 700;
+            }
+            #hmPeriodRow {
+                display: flex;
+                justify-content: center;
+                gap: 0;
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                padding: 3px 4px;
+                flex-shrink: 0;
+            }
+            #hmPeriodRow .hm-tf-btn {
+                background: transparent;
+                border: none;
+                color: var(--muted);
+                font-family: var(--mono);
+                font-size: 0.58rem;
+                padding: 4px 10px;
+                cursor: pointer;
+                transition: all 0.15s;
+                letter-spacing: 0.04em;
+                border-radius: var(--radius-sm);
+                font-weight: 400;
+                white-space: nowrap;
+            }
+            #hmPeriodRow .hm-tf-btn:hover {
+                color: var(--text);
+                background: rgba(0,0,0,0.04);
+            }
+            #hmPeriodRow .hm-tf-btn.active {
+                color: #e11d48;
+                background: rgba(225,29,72,0.10);
+                font-weight: 700;
+            }
+            #hmPfmSelect, #hmSchemeSelect {
+                width: 100%;
+                background: var(--surface2);
+                border: 1.5px solid var(--border);
+                color: var(--text);
+                padding: 8px 10px;
+                border-radius: var(--radius);
+                font-size: 0.65rem;
+                font-family: var(--mono);
+                transition: border-color 0.15s;
+                flex-shrink: 0;
+            }
+            #hmPfmSelect:focus, #hmSchemeSelect:focus {
+                outline: none;
+                border-color: #e11d48;
             }
             .app-header {
                 display: flex;
@@ -1248,6 +1417,29 @@
                     line-height: 1.5;
                     color: var(--text);
                 }
+            }
+            @media (max-width: 480px) {
+                #hilegaMilegaModal .hm-canvas-wrap { height: 220px; }
+                #hmDateRange { flex-direction: column; align-items: stretch; gap: 4px; }
+                #hmDateRange > div { width: 100%; }
+                #hmDateRange input[type="date"] { width: 100%; font-size: 0.85rem !important; padding: 6px 8px !important; }
+                #hmDateRange > div > span { font-size: 0.7rem !important; }
+                #hmRangeResult > div { justify-content: flex-start !important; gap: 6px !important; }
+                #hmRangeResult > div > span { font-size: 0.8rem !important; }
+                #hmRangeReturn { font-size: 0.95rem !important; }
+                #hmInfoRow { grid-template-columns: repeat(2, 1fr) !important; }
+                .hm-input-row { gap: 4px; }
+                .hm-input-group { min-width: 60px; flex: 1 1 45%; }
+                .hm-input-group label { font-size: 0.46rem; }
+                .hm-input-group input { font-size: 0.58rem; padding: 5px 4px; }
+                #hmTfRow .hm-tf-btn { font-size: 0.50rem; padding: 5px 6px; }
+                #hmPeriodRow .hm-tf-btn { font-size: 0.50rem; padding: 5px 6px; }
+                .hm-legend { font-size: 0.44rem; gap: 8px; }
+                .hm-line-label { font-size: 0.42rem; }
+                #hmFundLabel { font-size: 0.44rem !important; }
+                #hmPfmSelect, #hmSchemeSelect { font-size: 0.52rem; padding: 6px 8px; }
+                .modal-close { padding: 8px 10px; }
+                .modal-title { font-size: 0.68rem; }
             }
             #sopModal {
                 display: none;
@@ -2443,8 +2635,8 @@
         <div id="sopModal">
             <div class="sop-header">
                 <div class="sop-header-left">
-                    <span class="sop-logo">Sacred RSI Regime System · LD254N</span>
-                    <span class="sop-title">Lie Detector NPS SOP</span>
+                    <span class="sop-logo">Sacred RSI Regime System · NPC1B</span>
+                    <span class="sop-title">NPS Clues_1B SOP</span>
                     <span class="sop-subtitle">Standard Operating Procedure — Buy · Sell · Monitor · Review</span>
                 </div>
                 <span class="sop-close-btn" onclick="closeSOP()">[ X ] BACK</span>
@@ -2860,7 +3052,7 @@
                     Let the STCG clock run.&nbsp; Everything else is noise."
                 </div>
                 <div class="sop-note" style="text-align:center;margin-top:8px;">
-                    Sacred RSI Regime System · LD254N &nbsp;|&nbsp; Data: npsnav.in &nbsp;|&nbsp;
+                    Sacred RSI Regime System · NPC1B &nbsp;|&nbsp; Data: npsnav.in &nbsp;|&nbsp;
                     STCG: 20% on gains held &lt; 365 days &nbsp;|&nbsp; For simulation and discipline training only.
                 </div>
             </div>
@@ -2872,7 +3064,7 @@
         <div id="setupScreen">
             <div class="setup-logo">Sacred RSI Regime System</div>
             <div class="streak-badge" id="streakBadge"></div>
-            <h1 class="setup-title">Lie Detector <span onclick="openSOP()" class="version-badge-link" title="Open SOP / Operating Procedure" style="color:var(--muted);font-size:0.68rem;font-weight:400;cursor:pointer;">LD254E 📋</span></h1>
+            <h1 class="setup-title">NPS Clues_1B <span onclick="openSOP()" class="version-badge-link" title="Open SOP / Operating Procedure" style="color:var(--muted);font-size:0.68rem;font-weight:400;cursor:pointer;">NPC1B 📋</span></h1>
 
             <div id="firstRunBanner" style="display:none;background:rgba(245,158,11,0.12);border:1.5px solid #f59e0b;border-radius:6px;padding:4px 8px;margin-bottom:3px;text-align:center;">
                 <div class="firstRunTitle" style="font-size:0.68rem;font-weight:700;color:#c97a00;margin-bottom:3px;">⚠ Storage cleared — open your backup HTML to restore</div>
@@ -2923,8 +3115,8 @@
                 @keyframes baPulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.35;transform:scale(0.8)}}
             </style>
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:10px;padding:6px 6px 3px;width:100%;max-width:350px;box-sizing:border-box;border:2px solid var(--accent);border-radius:var(--radius);background:var(--surface);">
-                <!-- SCAN -->
-                <button onclick="openLDScanner()" class="setup-btn" style="
+                <!-- NPS SCAN -->
+                <button onclick="openNpsScan()" class="setup-btn" style="
                     background:linear-gradient(145deg,rgba(244,162,97,0.13),rgba(244,162,97,0.05));
                     border:2px solid #f4a261;
                     border-radius:var(--radius);
@@ -2936,7 +3128,7 @@
                     min-height:50px;
                 " onmouseenter="this.style.background='rgba(244,162,97,0.18)'" onmouseleave="this.style.background='linear-gradient(145deg,rgba(244,162,97,0.13),rgba(244,162,97,0.05))'">
                     <span style="font-size:0.95rem;line-height:1;">📡</span>
-                    <span style="font-family:var(--mono);font-size:0.68rem;font-weight:700;color:#c9622a;letter-spacing:0.04em;">SCAN</span>
+                    <span style="font-family:var(--mono);font-size:0.62rem;font-weight:700;color:#c9622a;letter-spacing:0.04em;">NPS SCAN</span>
                 </button>
                 <!-- ALERTS -->
                 <button onclick="openAlertSummary()" style="
@@ -3010,6 +3202,19 @@
                     <span style="font-size:0.95rem;line-height:1;">📊</span>
                     <span style="font-size:0.68rem;font-weight:700;letter-spacing:0.04em;">ALLOCATOR</span>
                     <span id="assetAllocC3Badge" style="display:none;font-size:0.68rem;font-weight:700;color:#009e70;"></span>
+                </button>
+                <!-- HILEGA-MILEGA -->
+                <button onclick="openHilegaMilega()" class="setup-btn-hilega" style="
+                    background:linear-gradient(145deg,rgba(225,29,72,0.13),rgba(225,29,72,0.05));
+                    border-radius:var(--radius);
+                    padding:6px 4px;
+                    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+                    cursor:pointer;
+                    min-height:50px;
+                    font-family:var(--mono);
+                " onmouseenter="this.style.background='rgba(225,29,72,0.17)'" onmouseleave="this.style.background='linear-gradient(145deg,rgba(225,29,72,0.13),rgba(225,29,72,0.05))'">
+                    <span style="font-size:0.95rem;line-height:1;">📈</span>
+                    <span style="font-size:0.68rem;font-weight:700;letter-spacing:0.04em;">HILEGA</span>
                 </button>
                 <!-- LOCAL DATA -->
                 <button onclick="openLocalDataModal()" style="
@@ -3218,6 +3423,153 @@
                 </div>
             </div>
         </div>
+        <div id="hilegaMilegaModal" class="modal-overlay" style="z-index:625;">
+            <div class="modal-close">
+                <div style="display:flex;flex-direction:column;">
+                    <span class="modal-title" style="color:#e11d48;">📈 HILEGA-MILEGA</span>
+                    <span style="font-size:0.52rem;color:var(--text);margin-top:2px;">RSI · WMA · EMA</span>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <span class="modal-close-btn" onclick="document.getElementById('hilegaMilegaModal').style.display='none';document.getElementById('setupScreen').style.display='flex';">[ X ] CLOSE</span>
+                </div>
+            </div>
+            <div style="flex-grow:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px;">
+                <div style="display:flex;gap:6px;align-items:center;">
+                    <select id="hmPfmSelect" onchange="hmOnPfmChange()" style="flex:1;padding:6px 8px;font-size:0.58rem;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;"></select>
+                    <select id="hmSchemeSelect" onchange="hmOnSchemeChange()" style="flex:1.4;padding:6px 8px;font-size:0.58rem;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;"></select>
+                </div>
+                <div id="hmDateRange" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+                    <div style="display:flex;align-items:center;gap:4px;">
+                        <span style="font-size:0.96rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;">From</span>
+                        <input type="date" id="hmDateFrom" onchange="hmCalcDateRange()" style="padding:4px 6px;font-size:1.0rem;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);font-family:var(--mono);">
+                    </div>
+                    <div style="display:flex;align-items:center;gap:4px;">
+                        <span style="font-size:0.96rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;">To</span>
+                        <input type="date" id="hmDateTo" onchange="hmCalcDateRange()" style="padding:4px 6px;font-size:1.0rem;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);font-family:var(--mono);">
+                    </div>
+                    <div id="hmRangeResult" style="display:none;flex:1;min-width:0;">
+                        <div style="display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap;">
+                            <span style="font-size:1.04rem;color:var(--muted);">NAV: <strong id="hmRangeNavA" style="color:#000;">—</strong> → <strong id="hmRangeNavB" style="color:#000;">—</strong></span>
+                            <span style="font-size:1.04rem;color:var(--muted);">Days: <strong id="hmRangeDays" style="color:#1d4ed8;">—</strong></span>
+                            <span style="font-size:1.24rem;font-weight:700;">Return: <strong id="hmRangeReturn">—</strong></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hm-input-row">
+                    <div class="hm-input-group">
+                        <label>RSI Length</label>
+                        <input type="number" id="hmRsiLen" value="9" min="2" max="50" onchange="drawHilegaMilega()">
+                    </div>
+                    <div class="hm-input-group">
+                        <label>WMA Length</label>
+                        <input type="number" id="hmWmaLen" value="21" min="2" max="100" onchange="drawHilegaMilega()">
+                    </div>
+                    <div class="hm-input-group">
+                        <label>EMA Length</label>
+                        <input type="number" id="hmEmaLen" value="3" min="2" max="50" onchange="drawHilegaMilega()">
+                    </div>
+                    <div class="hm-input-group">
+                        <label>Middle Line</label>
+                        <input type="number" id="hmMidLine" value="50" min="0" max="100" onchange="drawHilegaMilega()">
+                    </div>
+                    <div class="hm-input-group" style="justify-content:flex-end;">
+                        <button onclick="drawHilegaMilega()" style="background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);padding:4px 10px;font-family:var(--mono);font-size:0.58rem;font-weight:700;cursor:pointer;letter-spacing:0.06em;">GO</button>
+                    </div>
+                </div>
+                <div id="hmPeriodRow">
+                    <button class="hm-tf-btn active" onclick="setHmPeriod(this,'daily')">DAILY</button>
+                    <button class="hm-tf-btn" onclick="setHmPeriod(this,'weekly')">WEEKLY</button>
+                    <button class="hm-tf-btn" onclick="setHmPeriod(this,'monthly')">MONTHLY</button>
+                </div>
+                <div id="hmTfRow">
+                    <button class="hm-tf-btn" onclick="setHmTf(this,7)">1W</button>
+                    <button class="hm-tf-btn" onclick="setHmTf(this,14)">2W</button>
+                    <button class="hm-tf-btn" onclick="setHmTf(this,30)">1M</button>
+                    <button class="hm-tf-btn" onclick="setHmTf(this,90)">3M</button>
+                    <button class="hm-tf-btn" onclick="setHmTf(this,180)">6M</button>
+                    <button class="hm-tf-btn" onclick="setHmTf(this,365)">1Y</button>
+                    <button class="hm-tf-btn" onclick="setHmTf(this,730)">2Y</button>
+                    <button class="hm-tf-btn" onclick="setHmTf(this,1095)">3Y</button>
+                    <button class="hm-tf-btn" onclick="setHmTf(this,1825)">5Y</button>
+                    <button class="hm-tf-btn" onclick="setHmTf(this,3650)">10Y</button>
+                    <button class="hm-tf-btn active" onclick="setHmTf(this,99999)">ALL</button>
+                </div>
+                <div class="hm-canvas-wrap">
+                    <canvas id="hmCanvas"></canvas>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;">
+                    <div class="hm-legend">
+                        <span><span class="hm-legend-dot" style="background:#000;width:14px;"></span><span class="hm-line-label">RSI</span></span>
+                        <span><span class="hm-legend-dot" style="background:#e11d48;width:14px;"></span><span class="hm-line-label">WMA</span></span>
+                        <span><span class="hm-legend-dot" style="background:#16a34a;width:14px;"></span><span class="hm-line-label">EMA</span></span>
+                    </div>
+                    <div style="font-size:0.5rem;color:var(--muted);letter-spacing:0.06em;" id="hmFundLabel">—</div>
+                </div>
+                <div id="hmInfoRow" style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;">
+                    <div class="hm-stat-box" id="hmStatRsi" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:6px 8px;text-align:center;">
+                        <div style="font-size:0.46rem;color:var(--muted);letter-spacing:0.04em;text-transform:uppercase;">RSI</div>
+                        <div style="font-size:0.72rem;font-weight:700;color:#000;margin-top:2px;" id="hmStatRsiVal">—</div>
+                    </div>
+                    <div class="hm-stat-box" id="hmStatWma" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:6px 8px;text-align:center;">
+                        <div style="font-size:0.46rem;color:var(--muted);letter-spacing:0.04em;text-transform:uppercase;">WMA</div>
+                        <div style="font-size:0.72rem;font-weight:700;color:#e11d48;margin-top:2px;" id="hmStatWmaVal">—</div>
+                    </div>
+                    <div class="hm-stat-box" id="hmStatEma" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:6px 8px;text-align:center;">
+                        <div style="font-size:0.46rem;color:var(--muted);letter-spacing:0.04em;text-transform:uppercase;">EMA</div>
+                        <div style="font-size:0.72rem;font-weight:700;color:#16a34a;margin-top:2px;" id="hmStatEmaVal">—</div>
+                    </div>
+                    <div class="hm-stat-box" id="hmStatDelta" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:6px 8px;text-align:center;">
+                        <div style="font-size:0.46rem;color:var(--muted);letter-spacing:0.04em;text-transform:uppercase;">DELTA</div>
+                        <div style="font-size:0.72rem;font-weight:700;color:#000;margin-top:2px;" id="hmStatDeltaVal">—</div>
+                    </div>
+                    <div class="hm-stat-box" id="hmStatNav" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:6px 8px;text-align:center;">
+                        <div style="font-size:0.46rem;color:var(--muted);letter-spacing:0.04em;text-transform:uppercase;">NAV</div>
+                        <div style="font-size:0.72rem;font-weight:700;color:#1d4ed8;margin-top:2px;" id="hmStatNavVal">—</div>
+                    </div>
+                    <div class="hm-stat-box" id="hmStatSignal" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:6px 8px;text-align:center;">
+                        <div style="font-size:0.46rem;color:var(--muted);letter-spacing:0.04em;text-transform:uppercase;">SIGNAL</div>
+                        <div style="font-size:0.58rem;font-weight:600;margin-top:2px;" id="hmStatSignalVal">—</div>
+                    </div>
+                    <div class="hm-stat-box" id="hmStatAction" style="border:1px solid var(--border);border-radius:var(--radius);padding:6px 8px;text-align:center;">
+                        <div style="font-size:0.46rem;color:var(--muted);letter-spacing:0.04em;text-transform:uppercase;">BUY / SELL ACTION</div>
+                        <div style="font-size:0.62rem;font-weight:700;margin-top:3px;" id="hmStatActionVal">—</div>
+                    </div>
+                    <div class="hm-stat-box" id="hmStatSwitch" style="border:1px solid var(--border);border-radius:var(--radius);padding:6px 8px;text-align:center;">
+                        <div style="font-size:0.46rem;color:var(--muted);letter-spacing:0.04em;text-transform:uppercase;">SWITCH</div>
+                        <div style="font-size:0.58rem;font-weight:700;margin-top:3px;" id="hmStatSwitchVal">—</div>
+                    </div>
+                </div>
+                </div>
+        </div>
+        <div id="npsScanModal" class="modal-overlay" style="z-index:620;">
+            <div class="modal-close">
+                <div style="display:flex;flex-direction:column;">
+                    <span class="modal-title" style="color:#f4a261;">📡 NPS SCAN</span>
+                    <span style="font-size:0.52rem;color:var(--text);margin-top:2px;">All 32 Direct NPS Schemes · Weekly RSI</span>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <span id="npsScanCount" style="font-size:0.48rem;color:var(--muted);font-family:var(--mono);">0/32</span>
+                    <span class="modal-close-btn" onclick="document.getElementById('npsScanModal').style.display='none';document.getElementById('setupScreen').style.display='flex';">[ X ] CLOSE</span>
+                </div>
+            </div>
+            <div style="flex:1;overflow-y:auto;padding:6px;">
+                <table id="npsScanTable" style="width:100%;border-collapse:collapse;font-size:0.56rem;font-family:var(--mono);">
+                    <thead>
+                        <tr style="border-bottom:1.5px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:2;">
+                            <th style="text-align:left;padding:6px 4px;color:var(--muted);font-weight:600;letter-spacing:0.04em;">PFM · SCHEME</th>
+                            <th style="text-align:center;padding:6px 3px;color:var(--muted);font-weight:600;">TIER</th>
+                            <th style="text-align:right;padding:6px 4px;color:var(--muted);font-weight:600;">NAV</th>
+                            <th style="text-align:center;padding:6px 4px;color:var(--muted);font-weight:600;">RSI</th>
+                            <th style="text-align:center;padding:6px 4px;color:var(--muted);font-weight:600;">ACTION</th>
+                            <th style="text-align:center;padding:6px 4px;color:var(--muted);font-weight:600;">SWITCH</th>
+                        </tr>
+                    </thead>
+                    <tbody id="npsScanBody">
+                        <tr><td colspan="6" style="text-align:center;padding:20px;color:var(--muted);">Tap NPS SCAN to begin…</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div id="watchlistModal" class="modal-overlay" style="z-index:610;">
             <div class="modal-close" style="flex-wrap:nowrap;align-items:center;">
                 <div style="display:flex;flex-direction:column;flex-shrink:0;min-width:0;">
@@ -3263,7 +3615,7 @@
                 </div>
                 <div id="switchBridgeNpsGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;"></div>
             </div>
-            <!-- ── LD254C: Watchlist Backup / Restore ─────────────────── -->
+            <!-- ── NPC1B: Watchlist Backup / Restore ─────────────────── -->
             <div id="wlBackupBar" style="flex-shrink:0;padding:8px 8px 10px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px;">
                 <div style="display:flex;gap:6px;">
                     <button onclick="_wlBackup()" style="flex:1;padding:9px 4px;font-size:0.58rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;font-family:var(--mono);background:rgba(168,85,247,0.1);border:1.5px solid #a855f7;border-radius:6px;color:#a855f7;cursor:pointer;">
@@ -4087,14 +4439,14 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                 </div>
             </div>
         </div>
-        <!-- LD254C: Self-restoring config store — base64 encoded, written by BACKUP, read on startup -->
-        <script type="application/json" id="LD254C_EMBED">null</script>
+        <!-- NPC1B: Self-restoring config store — base64 encoded, written by BACKUP, read on startup -->
+        <script type="application/json" id="NPC1B_EMBED">null</script>
         <script>
             'use strict';
             // Auto-restore from embed on startup (fires before main script)
             (function _autoRestoreFromEmbed() {
                 try {
-                    const embedEl = document.getElementById('LD254C_EMBED');
+                    const embedEl = document.getElementById('NPC1B_EMBED');
                     if (!embedEl) return;
                     const raw = (embedEl.textContent || embedEl.innerText || '').trim();
                     if (!raw || raw === 'null') return;
@@ -4108,7 +4460,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                 } catch(e) { /* silent */ }
             })();
         </script>
-        <!-- LD254C: IndexedDB permanent watchlist + fund-box storage — survives Chrome background clearing -->
+        <!-- NPC1B: IndexedDB permanent watchlist + fund-box storage — survives Chrome background clearing -->
         <script>
             // ════════════════════════════════════════════════════════════════════════
             // BOX 2 — DATA DOWNLOAD & FORMATTING  (IndexedDB, fetch, cache, sync)
@@ -4122,7 +4474,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
             //      window.PStorage.getAll() → Promise<{key:value,...}>
             // Falls back gracefully to localStorage if IDB unavailable.
             window.PStorage = (() => {
-                const DB_NAME = 'LD254C_PStore';
+                const DB_NAME = 'NPC1B_PStore';
                 const DB_VER  = 1;
                 const STORE   = 'kv';
                 let _db = null;
@@ -4229,7 +4581,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         // Hide the "storage cleared" banner if it was shown
                         const banner = document.getElementById('firstRunBanner');
                         if (banner) banner.style.display = 'none';
-                        console.log('[LD254C] IDB→LS sync: restored', restored, 'keys');
+                        console.log('[NPC1B] IDB→LS sync: restored', restored, 'keys');
                     }
                 }).catch(() => {});
             })();
@@ -4871,7 +5223,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         _sbEl.textContent = `Updated: ${_ist.toISOString().replace('T',' ').slice(0,16)} IST`;
                     }
                 } catch(_) {}
-                // LD254C: banner stays visible — never auto-hide
+                // NPC1B: banner stays visible — never auto-hide
             }
             function _getPfmRecommendation() {
                 try {
@@ -4904,7 +5256,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         const j = raw ? JSON.parse(raw) : null;
                         if (j && j.switches) return j;
                     } catch(_) {}
-                    return { version: 'LD254C', switches: {}, lastUpdated: 0 };
+                    return { version: 'NPC1B', switches: {}, lastUpdated: 0 };
                 },
                 save(j) {
                     try {
@@ -4982,7 +5334,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
             };
             window._SJ = _SJ;
 
-            // ── LD254C: FULL CONFIG BACKUP / RESTORE ─────────────────────────────
+            // ── NPC1B: FULL CONFIG BACKUP / RESTORE ─────────────────────────────
             const CONFIG_KEYS = [
                 'ld_gemini_api_key', 'ld_gemini_api_key2', 'ld_gemini_model',
                 'ld_api_gap_sec', 'ld_active_key_slot',
@@ -5005,16 +5357,16 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         const v = localStorage.getItem(prefix + _todayKey);
                         if (v !== null) blob[prefix + _todayKey] = v;
                     });
-                    blob['ld_last_version'] = 'LD254C';
+                    blob['ld_last_version'] = 'NPC1B';
                     const configB64 = btoa(unescape(encodeURIComponent(JSON.stringify(blob))));
                     const currentHtml = document.documentElement.outerHTML;
                     const newHtml = currentHtml.replace(
-                        /(<script[^>]*id="LD254C_EMBED"[^>]*>)[\s\S]*?(<\/script>)/,
+                        /(<script[^>]*id="NPC1B_EMBED"[^>]*>)[\s\S]*?(<\/script>)/,
                         (_, open, close) => open + configB64 + close
                     );
                     const wl = JSON.parse(blob['ld_watchlist'] || '[]');
                     const date = new Date(Date.now()+5.5*3600000).toISOString().slice(0,10);
-                    const fname = `LD254C_${date}_${wl.length}funds.html`;
+                    const fname = `NPC1B_${date}_${wl.length}funds.html`;
                     const a = document.createElement('a');
                     a.href = 'data:text/html;charset=utf-8,' + encodeURIComponent(newHtml);
                     a.download = fname;
@@ -5036,7 +5388,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         let fileType = 'unknown';
                         if (raw.trim().startsWith('<!DOCTYPE') || raw.trim().startsWith('<html')) {
                             fileType = 'html';
-                            const match = raw.match(/<script[^>]*id="LD254C_EMBED"[^>]*>([\s\S]*?)<\/script>/) ||
+                            const match = raw.match(/<script[^>]*id="NPC1B_EMBED"[^>]*>([\s\S]*?)<\/script>/) ||
                                          raw.match(/<script[^>]*id="LD251_EMBED"[^>]*>([\s\S]*?)<\/script>/) ||
                                          raw.match(/<script[^>]*id="LD250_EMBED"[^>]*>([\s\S]*?)<\/script>/) ||
                                          raw.match(/<script[^>]*id="LD249A_EMBED"[^>]*>([\s\S]*?)<\/script>/) ||
@@ -5073,7 +5425,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         ['bgbreadth_ran_','ld_alert_ran_'].forEach(prefix => {
                             if (blob[prefix + _todayKey] !== undefined) localStorage.setItem(prefix + _todayKey, blob[prefix + _todayKey]);
                         });
-                        localStorage.setItem('ld_last_version', 'LD254C');
+                        localStorage.setItem('ld_last_version', 'NPC1B');
                         try { _watchlist = JSON.parse(localStorage.getItem('ld_watchlist') || '[]'); } catch(_) {}
                         const wl = _watchlist.length;
                         const hasKey = !!localStorage.getItem('ld_gemini_api_key');
@@ -5088,7 +5440,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                 };
                 reader.readAsText(file);
             }
-            // ── LD254C: Watchlist-level Backup / Restore (2 buttons in WL modal) ──
+            // ── NPC1B: Watchlist-level Backup / Restore (2 buttons in WL modal) ──
             function _wlBackup() {
                 try {
                     // Collect all config from LS + IDB mirror
@@ -5102,16 +5454,16 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         const v = localStorage.getItem(prefix + _todayKey);
                         if (v !== null) blob[prefix + _todayKey] = v;
                     });
-                    blob['ld_last_version'] = 'LD254C';
+                    blob['ld_last_version'] = 'NPC1B';
                     const configB64 = btoa(unescape(encodeURIComponent(JSON.stringify(blob))));
                     const currentHtml = document.documentElement.outerHTML;
                     const newHtml = currentHtml.replace(
-                        /(<script[^>]*id="LD254C_EMBED"[^>]*>)[\s\S]*?(<\/script>)/,
+                        /(<script[^>]*id="NPC1B_EMBED"[^>]*>)[\s\S]*?(<\/script>)/,
                         (_, open, close) => open + configB64 + close
                     );
                     const wl = JSON.parse(blob['ld_watchlist'] || '[]');
                     const date = new Date(Date.now()+5.5*3600000).toISOString().slice(0,10);
-                    const fname = `LD254C_${date}_${wl.length}funds.html`;
+                    const fname = `NPC1B_${date}_${wl.length}funds.html`;
                     const a = document.createElement('a');
                     a.href = 'data:text/html;charset=utf-8,' + encodeURIComponent(newHtml);
                     a.download = fname;
@@ -5135,8 +5487,8 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         let blob;
                         const raw = ev.target.result;
                         if (raw.trim().startsWith('<!DOCTYPE') || raw.trim().startsWith('<html')) {
-                            const match = raw.match(/<script[^>]*id="LD254C_EMBED"[^>]*>([\s\S]*?)<\/script>/) ||
-                                         raw.match(/<script[^>]*id="LD254C_EMBED"[^>]*>([\s\S]*?)<\/script>/) ||
+                            const match = raw.match(/<script[^>]*id="NPC1B_EMBED"[^>]*>([\s\S]*?)<\/script>/) ||
+                                         raw.match(/<script[^>]*id="NPC1B_EMBED"[^>]*>([\s\S]*?)<\/script>/) ||
                                          raw.match(/<script[^>]*id="LD251_EMBED"[^>]*>([\s\S]*?)<\/script>/) ||
                                          raw.match(/<script[^>]*id="LD250_EMBED"[^>]*>([\s\S]*?)<\/script>/) ||
                                          raw.match(/<script[^>]*id="LD247_EMBED"[^>]*>([\s\S]*?)<\/script>/);
@@ -5174,7 +5526,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                                 window.PStorage.set(fk, blob[fk]).catch(()=>{});
                             }
                         });
-                        localStorage.setItem('ld_last_version', 'LD254C');
+                        localStorage.setItem('ld_last_version', 'NPC1B');
                         try { _watchlist = JSON.parse(localStorage.getItem('ld_watchlist') || '[]'); } catch(_) {}
                         const wl = _watchlist.length;
                         const hasKey = !!localStorage.getItem('ld_gemini_api_key');
@@ -5193,7 +5545,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
             window._configBackupImport = _configBackupImport;
             // First-run check: show banner if storage cleared
             (function _checkFirstRun() {
-                localStorage.setItem('ld_last_version', 'LD254C');
+                localStorage.setItem('ld_last_version', 'NPC1B');
                 const hasKey = !!localStorage.getItem('ld_gemini_api_key');
                 const hasWl  = (JSON.parse(localStorage.getItem('ld_watchlist')||'[]')).length > 0;
                 if (!hasKey && !hasWl) {
@@ -5203,7 +5555,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         const idbHasWl  = (() => { try { return (JSON.parse(all['ld_watchlist']||'[]')).length > 0; } catch(_) { return false; } })();
                         if (idbHasKey || idbHasWl) {
                             // IDB intact — restore silently, no banner needed
-                            console.log('[LD254C] Storage cleared but IDB intact — auto-restoring');
+                            console.log('[NPC1B] Storage cleared but IDB intact — auto-restoring');
                         } else {
                             setTimeout(() => {
                                 const banner = document.getElementById('firstRunBanner');
@@ -8989,7 +9341,7 @@ This is exactly how the system is meant to be played.
                 document.getElementById('liveAnalyticsModal').style.display = 'none';
                 initGame('custom', startDate, endDate);
             }
-            // LD254C: Auto-add Investment Switch Bridge recommended funds to Watchlist
+            // NPC1B: Auto-add Investment Switch Bridge recommended funds to Watchlist
             function _autoAddSwitchBridgeToWatchlist() {
                 let bridge = {};
                 try {
@@ -9019,7 +9371,7 @@ This is exactly how the system is meant to be played.
 
             function openWatchlist() {
                 if (_watchlistRefreshTimer) { clearInterval(_watchlistRefreshTimer); _watchlistRefreshTimer = null; }
-                _autoAddSwitchBridgeToWatchlist(); // LD254C: auto-add Switch Bridge funds
+                _autoAddSwitchBridgeToWatchlist(); // NPC1B: auto-add Switch Bridge funds
                 document.getElementById('setupScreen').style.display = 'none';
                 document.getElementById('watchlistModal').style.display = 'flex';
                 renderWatchlistStubs();
@@ -11629,6 +11981,770 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                     STORE_META
                 };
             })();
+            // ── Hilega-Milega RSI·WMA·EMA Indicator ──
+            window._hmHist = null;
+            window._hmHistCode = null;
+            window._hmTfDays = 99999;
+            window._hmPeriod = 'daily';
+            const hmSchemes = [
+                { group: 'HDFC',   items: [
+                    { name: 'HDFC E  · Tier I',   code: 'SM008001' },
+                    { name: 'HDFC C  · Tier I',   code: 'SM008002' },
+                    { name: 'HDFC E  · Tier II',  code: 'SM008004' },
+                    { name: 'HDFC C  · Tier II',  code: 'SM008005' },
+                ]},
+                { group: 'ICICI',  items: [
+                    { name: 'ICICI E  · Tier I',   code: 'SM007001' },
+                    { name: 'ICICI C  · Tier I',   code: 'SM007002' },
+                    { name: 'ICICI E  · Tier II',  code: 'SM007004' },
+                    { name: 'ICICI C  · Tier II',  code: 'SM007005' },
+                ]},
+                { group: 'KOTAK',  items: [
+                    { name: 'KOTAK E  · Tier I',   code: 'SM005001' },
+                    { name: 'KOTAK C  · Tier I',   code: 'SM005002' },
+                    { name: 'KOTAK E  · Tier II',  code: 'SM005004' },
+                    { name: 'KOTAK C  · Tier II',  code: 'SM005005' },
+                ]},
+                { group: 'ABSL',   items: [
+                    { name: 'ABSL E  · Tier I',    code: 'SM010001' },
+                    { name: 'ABSL C  · Tier I',    code: 'SM010002' },
+                    { name: 'ABSL E  · Tier II',   code: 'SM010005' },
+                    { name: 'ABSL C  · Tier II',   code: 'SM010006' },
+                ]},
+                { group: 'SBI',    items: [
+                    { name: 'SBI E  · Tier I',     code: 'SM001001' },
+                    { name: 'SBI C  · Tier I',     code: 'SM001002' },
+                    { name: 'SBI E  · Tier II',    code: 'SM001004' },
+                    { name: 'SBI C  · Tier II',    code: 'SM001005' },
+                ]},
+                { group: 'TATA',   items: [
+                    { name: 'TATA E  · Tier I',    code: 'SM009001' },
+                    { name: 'TATA C  · Tier I',    code: 'SM009002' },
+                    { name: 'TATA E  · Tier II',   code: 'SM009004' },
+                    { name: 'TATA C  · Tier II',   code: 'SM009005' },
+                ]},
+                { group: 'AXIS',   items: [
+                    { name: 'AXIS E  · Tier I',    code: 'SM011001' },
+                    { name: 'AXIS C  · Tier I',    code: 'SM011002' },
+                    { name: 'AXIS E  · Tier II',   code: 'SM011004' },
+                    { name: 'AXIS C  · Tier II',   code: 'SM011005' },
+                ]},
+                { group: 'DSP',    items: [
+                    { name: 'DSP E  · Tier I',     code: 'SM012001' },
+                    { name: 'DSP C  · Tier I',     code: 'SM012002' },
+                    { name: 'DSP E  · Tier II',    code: 'SM012004' },
+                    { name: 'DSP C  · Tier II',    code: 'SM012005' },
+                ]},
+            ];
+            function hmPopulateSchemeDropdown() {
+                const pfmSel = document.getElementById('hmPfmSelect');
+                const schSel = document.getElementById('hmSchemeSelect');
+                if (!pfmSel || pfmSel.options.length > 0) return;
+                hmSchemes.forEach(g => {
+                    const opt = document.createElement('option');
+                    opt.value = g.group;
+                    opt.textContent = g.group;
+                    pfmSel.appendChild(opt);
+                });
+                const savedPfm = localStorage.getItem('hm_pfm');
+                if (savedPfm && pfmSel.querySelector(`option[value="${savedPfm}"]`)) {
+                    pfmSel.value = savedPfm;
+                }
+                hmPopulateTypeDropdown(pfmSel.value);
+                const savedSch = localStorage.getItem('hm_scheme');
+                if (savedSch && schSel.querySelector(`option[value="${savedSch}"]`)) {
+                    schSel.value = savedSch;
+                }
+            }
+            function hmPopulateTypeDropdown(pfm) {
+                const schSel = document.getElementById('hmSchemeSelect');
+                if (!schSel) return;
+                schSel.innerHTML = '';
+                const group = hmSchemes.find(g => g.group === pfm);
+                if (!group) return;
+                group.items.forEach(it => {
+                    const opt = document.createElement('option');
+                    opt.value = it.code;
+                    opt.textContent = it.name;
+                    schSel.appendChild(opt);
+                });
+            }
+            function hmOnPfmChange() {
+                const pfm = document.getElementById('hmPfmSelect').value;
+                localStorage.setItem('hm_pfm', pfm);
+                hmPopulateTypeDropdown(pfm);
+                localStorage.setItem('hm_scheme', document.getElementById('hmSchemeSelect').value);
+                drawHilegaMilega();
+            }
+            function hmOnSchemeChange() {
+                localStorage.setItem('hm_scheme', document.getElementById('hmSchemeSelect').value);
+                drawHilegaMilega();
+            }
+            function hmCalcDateRange() {
+                const fromStr = document.getElementById('hmDateFrom').value;
+                const toStr = document.getElementById('hmDateTo').value;
+                const res = document.getElementById('hmRangeResult');
+                if (!fromStr || !toStr || !window._hmHist) { res.style.display = 'none'; return; }
+                const hist = window._hmHist;
+                const toDateStr = (ds) => {
+                    const p = ds.split('-');
+                    return p[0] + '-' + p[1] + '-' + p[2];
+                };
+                const fromISO = fromStr;
+                const toISO = toStr;
+                const findNav = (target) => {
+                    let best = null, bestDiff = Infinity;
+                    for (const d of hist) {
+                        const dt = hmParseDate(d.date);
+                        if (isNaN(dt.getTime())) continue;
+                        const iso = dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + String(dt.getDate()).padStart(2,'0');
+                        const diff = Math.abs(new Date(iso).getTime() - new Date(target).getTime());
+                        if (diff < bestDiff) { bestDiff = diff; best = d; }
+                    }
+                    return best;
+                };
+                const navA = findNav(fromISO);
+                const navB = findNav(toISO);
+                if (!navA || !navB) { res.style.display = 'none'; return; }
+                const a = parseFloat(navA.nav), b = parseFloat(navB.nav);
+                const retPct = ((b - a) / a * 100);
+                const dA = hmParseDate(navA.date), dB = hmParseDate(navB.date);
+                const days = Math.round(Math.abs(dB.getTime() - dA.getTime()) / 86400000);
+                const fmtDate = (ds) => {
+                    const dt = hmParseDate(ds);
+                    return isNaN(dt.getTime()) ? ds : String(dt.getDate()).padStart(2,'0') + '/' + String(dt.getMonth()+1).padStart(2,'0') + '/' + dt.getFullYear();
+                };
+                document.getElementById('hmRangeNavA').textContent = a.toFixed(4);
+                document.getElementById('hmRangeNavB').textContent = b.toFixed(4);
+                document.getElementById('hmRangeDays').textContent = days;
+                const retEl = document.getElementById('hmRangeReturn');
+                retEl.textContent = (retPct >= 0 ? '+' : '') + retPct.toFixed(2) + '%';
+                retEl.style.color = retPct >= 0 ? '#16a34a' : '#ef4444';
+                res.style.display = 'block';
+            }
+            function setHmTf(btn, days) {
+                const period = window._hmPeriod || 'daily';
+                if (period === 'weekly' && days < 90) days = 90;
+                if (period === 'monthly' && days < 365) days = 365;
+                window._hmTfDays = days;
+                document.querySelectorAll('#hmTfRow .hm-tf-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                drawHilegaMilega();
+            }
+            function setHmPeriod(btn, period) {
+                window._hmPeriod = period;
+                document.querySelectorAll('#hmPeriodRow .hm-tf-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const curTf = window._hmTfDays || 99999;
+                if (period === 'weekly' && curTf < 90) {
+                    window._hmTfDays = 90;
+                    document.querySelectorAll('#hmTfRow .hm-tf-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelector('#hmTfRow .hm-tf-btn:nth-child(4)').classList.add('active');
+                } else if (period === 'monthly' && curTf < 365) {
+                    window._hmTfDays = 365;
+                    document.querySelectorAll('#hmTfRow .hm-tf-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelector('#hmTfRow .hm-tf-btn:nth-child(6)').classList.add('active');
+                }
+                drawHilegaMilega();
+            }
+            function hmParseDate(dateStr) {
+                let sep = dateStr.includes('/') ? '/' : '-';
+                let p = dateStr.split(sep);
+                if (p.length === 3 && p[0].length === 2 && p[2].length === 4) {
+                    return new Date(p[2] + '-' + p[1] + '-' + p[0]);
+                }
+                return new Date(dateStr);
+            }
+            function hmAggregateWeeks(hist) {
+                const weeks = [];
+                let cur = null;
+                for (const d of hist) {
+                    const dt = hmParseDate(d.date);
+                    if (isNaN(dt.getTime())) continue;
+                    const day = (dt.getDay() + 6) % 7;
+                    const refMonday = new Date(dt);
+                    refMonday.setDate(dt.getDate() - day);
+                    const wid = refMonday.toISOString().slice(0, 10);
+                    if (!cur || cur.wid !== wid) {
+                        if (cur) weeks.push(cur);
+                        cur = { wid: wid, nav: d.nav, date: d.date };
+                    } else {
+                        cur.nav = d.nav;
+                    }
+                }
+                if (cur) weeks.push(cur);
+                return weeks;
+            }
+            function hmAggregateMonths(hist) {
+                const months = [];
+                let cur = null;
+                for (const d of hist) {
+                    const dt = hmParseDate(d.date);
+                    if (isNaN(dt.getTime())) continue;
+                    const mid = dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0');
+                    if (!cur || cur.mid !== mid) {
+                        if (cur) months.push(cur);
+                        cur = { mid: mid, nav: d.nav, date: d.date };
+                    } else {
+                        cur.nav = d.nav;
+                    }
+                }
+                if (cur) months.push(cur);
+                return months;
+            }
+            function openHilegaMilega() {
+                document.getElementById('setupScreen').style.display = 'none';
+                document.getElementById('hilegaMilegaModal').style.display = 'flex';
+                hmPopulateSchemeDropdown();
+                window._hmHist = null;
+                window._hmHistCode = null;
+                window._hmTfDays = 99999;
+                window._hmPeriod = 'daily';
+                document.querySelectorAll('#hmTfRow .hm-tf-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('#hmPeriodRow .hm-tf-btn').forEach(b => b.classList.remove('active'));
+                var tfAll = document.querySelector('#hmTfRow .hm-tf-btn:last-child');
+                if (tfAll) tfAll.classList.add('active');
+                var pdDaily = document.querySelector('#hmPeriodRow .hm-tf-btn[onclick*="\'daily\'"]');
+                if (pdDaily) pdDaily.classList.add('active');
+                const now = new Date();
+                const y1 = new Date(now); y1.setFullYear(y1.getFullYear() - 1);
+                document.getElementById('hmDateFrom').value = y1.getFullYear() + '-' + String(y1.getMonth()+1).padStart(2,'0') + '-' + String(y1.getDate()).padStart(2,'0');
+                document.getElementById('hmDateTo').value = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+                document.getElementById('hmRangeResult').style.display = 'none';
+                drawHilegaMilega();
+            }
+            let _npsScanToken = 0;
+            async function openNpsScan() {
+                document.getElementById('setupScreen').style.display = 'none';
+                document.getElementById('npsScanModal').style.display = 'flex';
+                const tbody = document.getElementById('npsScanBody');
+                const countEl = document.getElementById('npsScanCount');
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:16px;color:#f4a261;font-weight:600;">⏳ Scanning 32 schemes…</td></tr>';
+                countEl.textContent = '0/32';
+                const token = ++_npsScanToken;
+                const allItems = [];
+                hmSchemes.forEach(g => g.items.forEach(it => allItems.push({ pfm: g.group, ...it })));
+                const results = [];
+                const BATCH = 6;
+                for (let i = 0; i < allItems.length; i += BATCH) {
+                    if (token !== _npsScanToken) return;
+                    const batch = allItems.slice(i, i + BATCH);
+                    const promises = batch.map(async (item) => {
+                        try {
+                            const url = `https://npsnav.in/api/historical/${item.code}`;
+                            const res = await fetch(url);
+                            const raw = await res.json();
+                            const hist = (raw.data || []).map(d => ({ nav: parseFloat(d.nav), date: d.date })).filter(d => Number.isFinite(d.nav) && d.nav > 0).reverse();
+                            if (hist.length < 15) return { ...item, nav: hist.length ? hist[hist.length-1].nav : null, rsi: 50, wma: 50, ema: 50, err: 'insufficient data' };
+                            const weekly = hmAggregateWeeks(hist);
+                            const navs = weekly.map(d => d.nav);
+                            const rsiArr = hmCalcRSI(navs, 9);
+                            const wmaArr = hmCalcWMA(rsiArr, 21);
+                            const emaArr = hmCalcEMA(rsiArr, 3);
+                            const lastRsi = rsiArr[rsiArr.length - 1];
+                            const lastWma = wmaArr[wmaArr.length - 1] || 50;
+                            const lastEma = emaArr[emaArr.length - 1] || 50;
+                            const lastNav = navs[navs.length - 1];
+                            const tier = item.name.includes('Tier II') ? 'II' : 'I';
+                            const aboveWma = lastRsi > lastWma;
+                            const aboveEma = lastRsi > lastEma;
+                            let action, actionColor;
+                            if (aboveWma && aboveEma) { action = 'BUY'; actionColor = '#009e70'; }
+                            else if (!aboveWma && !aboveEma) { action = 'SELL'; actionColor = '#c8102e'; }
+                            else { action = 'WATCH'; actionColor = '#f59e0b'; }
+                            let switchTxt, switchColor;
+                            if (lastRsi > 50) { switchTxt = 'Add Equity'; switchColor = '#009e70'; }
+                            else if (lastRsi < 30) { switchTxt = '↑ Debt'; switchColor = '#c8102e'; }
+                            else { switchTxt = 'Hold'; switchColor = '#f59e0b'; }
+                            return { ...item, nav: lastNav, rsi: lastRsi, wma: lastWma, ema: lastEma, tier, action, actionColor, switchTxt, switchColor };
+                        } catch(e) {
+                            return { ...item, nav: null, rsi: 50, wma: 50, ema: 50, tier: item.name.includes('Tier II') ? 'II' : 'I', action: 'ERR', actionColor: '#999', switchTxt: '—', switchColor: '#999', err: e.message };
+                        }
+                    });
+                    const batchResults = await Promise.all(promises);
+                    results.push(...batchResults);
+                    countEl.textContent = `${results.length}/32`;
+                    _npsScanRenderTable(tbody, results);
+                }
+            }
+            function _npsScanRenderTable(tbody, results) {
+                let html = '';
+                const sorted = results.slice().sort((a, b) => {
+                    const pf = a.pfm.localeCompare(b.pfm);
+                    if (pf !== 0) return pf;
+                    const ta = a.tier === 'II' ? 1 : 0, tb = b.tier === 'II' ? 1 : 0;
+                    return ta - tb;
+                });
+                for (const r of sorted) {
+                    const rsiColor = r.rsi > 50 ? '#009e70' : r.rsi < 50 ? '#c8102e' : '#f59e0b';
+                    const rsiBg = r.rsi > 50 ? 'rgba(0,158,112,0.12)' : r.rsi < 50 ? 'rgba(200,16,46,0.12)' : 'rgba(245,158,11,0.12)';
+                    const navStr = r.nav != null ? r.nav.toFixed(4) : '—';
+                    const rsiStr = r.rsi != null ? r.rsi.toFixed(1) : '—';
+                    const schemeShort = r.name.replace(/Tier [IC]/, '').trim();
+                    html += `<tr style="border-bottom:1px solid var(--border);">
+                        <td style="padding:5px 4px;color:var(--text);"><span style="color:#f4a261;font-weight:700;">${r.pfm}</span> <span style="color:var(--muted);font-size:0.5rem;">${schemeShort}</span></td>
+                        <td style="text-align:center;padding:5px 3px;color:var(--muted);">${r.tier}</td>
+                        <td style="text-align:right;padding:5px 4px;font-weight:600;color:#1d4ed8;">${navStr}</td>
+                        <td style="text-align:center;padding:5px 4px;"><span style="background:${rsiBg};color:${rsiColor};padding:2px 6px;border-radius:4px;font-weight:700;">${rsiStr}</span></td>
+                        <td style="text-align:center;padding:5px 4px;"><span style="color:${r.actionColor};font-weight:700;">${r.action}</span></td>
+                        <td style="text-align:center;padding:5px 4px;"><span style="color:${r.switchColor};font-weight:600;font-size:0.5rem;">${r.switchTxt}</span></td>
+                    </tr>`;
+                }
+                tbody.innerHTML = html || '<tr><td colspan="6" style="text-align:center;padding:16px;color:var(--muted);">No results</td></tr>';
+            }
+            function hmCalcRSI(prices, period) {
+                const rsi = new Array(prices.length).fill(50);
+                if (prices.length < period + 1) return rsi;
+                let ag = 0, al = 0;
+                for (let i = 1; i <= period; i++) {
+                    const d = prices[i] - prices[i - 1];
+                    ag += d > 0 ? d : 0;
+                    al += d < 0 ? -d : 0;
+                }
+                ag /= period; al /= period;
+                rsi[period] = al === 0 ? 100 : ag === 0 ? 0 : 100 - (100 / (1 + ag / al));
+                for (let i = period + 1; i < prices.length; i++) {
+                    const d = prices[i] - prices[i - 1];
+                    ag = (ag * (period - 1) + (d > 0 ? d : 0)) / period;
+                    al = (al * (period - 1) + (d < 0 ? -d : 0)) / period;
+                    rsi[i] = ag === 0 && al === 0 ? 50 : al === 0 ? 100 : ag === 0 ? 0 : 100 - (100 / (1 + ag / al));
+                }
+                return rsi;
+            }
+            function hmCalcWMA(data, period) {
+                const out = new Array(data.length).fill(null);
+                let denom = period * (period + 1) / 2;
+                for (let i = period - 1; i < data.length; i++) {
+                    let num = 0;
+                    for (let j = 0; j < period; j++) num += data[i - j] * (period - j);
+                    out[i] = num / denom;
+                }
+                return out;
+            }
+            function hmCalcEMA(data, period) {
+                const out = new Array(data.length).fill(null);
+                const k = 2 / (period + 1);
+                let sum = 0;
+                for (let i = 0; i < period; i++) sum += data[i];
+                out[period - 1] = sum / period;
+                for (let i = period; i < data.length; i++) out[i] = data[i] * k + out[i - 1] * (1 - k);
+                return out;
+            }
+            async function drawHilegaMilega() {
+                const code = document.getElementById('hmSchemeSelect')?.value;
+                if (!code) { alert('Select a scheme first'); return; }
+                localStorage.setItem('hm_scheme', code);
+                const ov = document.getElementById('ov');
+                const ovTxt = document.getElementById('ovTxt');
+                if (ov) { ov.style.display = 'flex'; }
+                if (ovTxt) { ovTxt.textContent = 'LOADING…'; ovTxt.style.color = ''; }
+                try {
+                    let hist;
+                    if (window._hmHist && window._hmHistCode === code) {
+                        hist = window._hmHist;
+                    } else {
+                        const url = code.startsWith('SM')
+                            ? `https://npsnav.in/api/historical/${code}`
+                            : `https://api.mfapi.in/mf/${code}`;
+                        const res = await fetch(url);
+                        const raw = await res.json();
+                        hist = (raw.data || [])
+                            .map(d => ({ nav: parseFloat(d.nav), date: d.date }))
+                            .filter(d => Number.isFinite(d.nav) && d.nav > 0)
+                            .reverse();
+                        window._hmHist = hist;
+                        window._hmHistCode = code;
+                    }
+                    let viewData = hist;
+                    if (window._hmPeriod === 'weekly') viewData = hmAggregateWeeks(hist);
+                    else if (window._hmPeriod === 'monthly') viewData = hmAggregateMonths(hist);
+                    const rsiLen = parseInt(document.getElementById('hmRsiLen').value) || 9;
+                    const wmaLen = parseInt(document.getElementById('hmWmaLen').value) || 21;
+                    const emaLen = parseInt(document.getElementById('hmEmaLen').value) || 3;
+                    const midLine = parseFloat(document.getElementById('hmMidLine').value) || 50;
+                    const tfDays = window._hmTfDays || 1825;
+                    const rsi = hmCalcRSI(viewData.map(d => d.nav), rsiLen);
+                    const wma = hmCalcWMA(rsi, wmaLen);
+                    const ema = hmCalcEMA(rsi, emaLen);
+                    const now = new Date();
+                    const cutoffDate = new Date(now.getTime() - tfDays * 86400000);
+                    let slicedIdx = 0;
+                    for (let i = 0; i < viewData.length; i++) {
+                        const dt = hmParseDate(viewData[i].date);
+                        if (!isNaN(dt.getTime()) && dt >= cutoffDate) { slicedIdx = i; break; }
+                    }
+                    const slicedLen = viewData.length - slicedIdx;
+                    if (slicedLen < 2) {
+                        if (ov) ov.style.display = 'none';
+                        alert('Insufficient data for this timeframe');
+                        return;
+                    }
+                    const navs = viewData.slice(slicedIdx).map(d => d.nav);
+                    const dates = viewData.slice(slicedIdx).map(d => d.date);
+                    const n = slicedLen;
+                    const rSpliced = rsi.slice(slicedIdx);
+                    const wSpliced = wma.slice(slicedIdx);
+                    const eSpliced = ema.slice(slicedIdx);
+                    rsi.length = 0; rsi.push(...rSpliced);
+                    wma.length = 0; wma.push(...wSpliced);
+                    ema.length = 0; ema.push(...eSpliced);
+                    const canvas = document.getElementById('hmCanvas');
+                    const wrap = canvas.parentElement;
+                    const rect = wrap.getBoundingClientRect();
+                    const dpr = window.devicePixelRatio || 1;
+                    canvas.width = rect.width * dpr;
+                    canvas.height = rect.height * dpr;
+                    canvas.style.width = rect.width + 'px';
+                    canvas.style.height = rect.height + 'px';
+                    const ctx = canvas.getContext('2d');
+                    ctx.scale(dpr, dpr);
+                    const W = rect.width, H = rect.height;
+                    ctx.clearRect(0, 0, W, H);
+                    const pad = { t: 24, b: 20, l: 36, r: 8 };
+                    const cW = W - pad.l - pad.r, cH = H - pad.t - pad.b;
+                    const minY = 0, maxY = 100;
+                    const xStep = cW / Math.max(n - 1, 1);
+                    const toX = i => pad.l + i * xStep;
+                    const toY = v => pad.t + cH - ((v - minY) / (maxY - minY)) * cH;
+                    // Grid lines
+                    ctx.strokeStyle = '#e5e7eb';
+                    ctx.lineWidth = 0.5;
+                    for (let v = 0; v <= 100; v += 10) {
+                        ctx.beginPath();
+                        ctx.moveTo(pad.l, toY(v));
+                        ctx.lineTo(W - pad.r, toY(v));
+                        ctx.stroke();
+                        ctx.fillStyle = '#9ca3af';
+                        ctx.font = '9px monospace';
+                        ctx.textAlign = 'right';
+                        ctx.fillText(v, pad.l - 4, toY(v) + 3);
+                    }
+                    // Horizontal reference lines (REVERSED: green=20 buy, red=88 sell)
+                    const drawHLine = (val, color, dash) => {
+                        ctx.save();
+                        ctx.strokeStyle = color;
+                        ctx.lineWidth = 1;
+                        if (dash) ctx.setLineDash(dash);
+                        ctx.beginPath();
+                        ctx.moveTo(pad.l, toY(val));
+                        ctx.lineTo(W - pad.r, toY(val));
+                        ctx.stroke();
+                        ctx.restore();
+                    };
+                    drawHLine(20, '#16a34a', [4, 3]);
+                    drawHLine(88, '#ef4444', [4, 3]);
+                    drawHLine(50, '#000004', []);
+                    drawHLine(midLine, '#000', []);
+                    // Date labels on x-axis
+                    ctx.fillStyle = '#9ca3af';
+                    ctx.font = '8px monospace';
+                    ctx.textAlign = 'center';
+                    const fmtDate = (ds) => {
+                        if (!ds) return '';
+                        const dt = hmParseDate(ds);
+                        if (isNaN(dt.getTime())) return ds;
+                        const m = String(dt.getMonth() + 1).padStart(2, '0');
+                        const y = String(dt.getFullYear()).slice(2);
+                        return m + '/' + y;
+                    };
+                    const dateStep = Math.max(1, Math.floor(n / 6));
+                    for (let i = 0; i < n; i += dateStep) {
+                        const label = fmtDate(dates[i]);
+                        if (label) ctx.fillText(label, toX(i), H - 4);
+                    }
+                    if (n > 1) {
+                        const label = fmtDate(dates[n - 1]);
+                        if (label) ctx.fillText(label, toX(n - 1), H - 4);
+                    }
+                    // Fill areas between RSI and midLine (REVERSED colors)
+                    const fillSeries = (seriesA, seriesB, color) => {
+                        ctx.fillStyle = color;
+                        for (let i = 1; i < n; i++) {
+                            const a1 = seriesA[i - 1] ?? 50, a2 = seriesA[i] ?? 50;
+                            const b1 = seriesB[i - 1] ?? midLine, b2 = seriesB[i] ?? midLine;
+                            const yA1 = toY(a1), yA2 = toY(a2);
+                            const yB1 = toY(b1), yB2 = toY(b2);
+                            const x1 = toX(i - 1), x2 = toX(i);
+                            ctx.beginPath();
+                            ctx.moveTo(x1, yA1);
+                            ctx.lineTo(x2, yA2);
+                            ctx.lineTo(x2, yB2);
+                            ctx.lineTo(x1, yB1);
+                            ctx.closePath();
+                            ctx.fill();
+                        }
+                    };
+                    const midArr = new Array(n).fill(midLine);
+                    const rsiClampedHi = rsi.map(v => v > midLine ? midLine : v);
+                    fillSeries(rsiClampedHi, midArr, 'rgba(241,24,24,0.35)');
+                    const rsiClampedLo = rsi.map(v => v < midLine ? midLine : v);
+                    fillSeries(rsiClampedLo, midArr, 'rgba(47,231,63,0.35)');
+                    // Plot helper
+                    const plotLine = (data, color, width) => {
+                        ctx.strokeStyle = color;
+                        ctx.lineWidth = width;
+                        ctx.lineJoin = 'round';
+                        ctx.beginPath();
+                        let started = false;
+                        for (let i = 0; i < n; i++) {
+                            if (data[i] == null) continue;
+                            const x = toX(i), y = toY(data[i]);
+                            if (!started) { ctx.moveTo(x, y); started = true; }
+                            else ctx.lineTo(x, y);
+                        }
+                        ctx.stroke();
+                    };
+                    plotLine(rsi, '#000000', 1);
+                    plotLine(wma, '#e11d48', 2);
+                    plotLine(ema, '#16a34a', 1);
+                    // Date range vertical lines
+                    const fromVal = document.getElementById('hmDateFrom')?.value;
+                    const toVal = document.getElementById('hmDateTo')?.value;
+                    if (fromVal && toVal) {
+                        const findIdx = (target) => {
+                            let best = -1, bestDiff = Infinity;
+                            for (let i = 0; i < n; i++) {
+                                const dt = hmParseDate(dates[i]);
+                                if (isNaN(dt.getTime())) continue;
+                                const iso = dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + String(dt.getDate()).padStart(2,'0');
+                                const diff = Math.abs(new Date(iso).getTime() - new Date(target).getTime());
+                                if (diff < bestDiff) { bestDiff = diff; best = i; }
+                            }
+                            return best;
+                        };
+                        const idxA = findIdx(fromVal);
+                        const idxB = findIdx(toVal);
+                        ctx.save();
+                        ctx.lineWidth = 1.5;
+                        ctx.setLineDash([5, 3]);
+                        if (idxA >= 0) {
+                            ctx.strokeStyle = '#3b82f6';
+                            ctx.beginPath();
+                            ctx.moveTo(toX(idxA), pad.t);
+                            ctx.lineTo(toX(idxA), H - pad.b);
+                            ctx.stroke();
+                        }
+                        if (idxB >= 0) {
+                            ctx.strokeStyle = '#8b5cf6';
+                            ctx.beginPath();
+                            ctx.moveTo(toX(idxB), pad.t);
+                            ctx.lineTo(toX(idxB), H - pad.b);
+                            ctx.stroke();
+                        }
+                        if (idxA >= 0 && idxB >= 0) {
+                            const left = Math.min(idxA, idxB), right = Math.max(idxA, idxB);
+                            ctx.fillStyle = 'rgba(99,102,241,0.08)';
+                            ctx.fillRect(toX(left), pad.t, toX(right) - toX(left), cH);
+                        }
+                        ctx.restore();
+                    }
+                    // Signal markers: RSI cross below 20 (green) / above 88 (red)
+                    for (let i = 1; i < n; i++) {
+                        const prev = rsi[i - 1], cur = rsi[i];
+                        if (prev == null || cur == null) continue;
+                        // Crossed below 20 — oversold
+                        if (prev >= 20 && cur < 20) {
+                            let lowest = cur, lowestIdx = i;
+                            for (let j = i; j < Math.min(i + 5, n); j++) {
+                                if (rsi[j] != null && rsi[j] < lowest) { lowest = rsi[j]; lowestIdx = j; }
+                            }
+                            const cx = toX(lowestIdx), cy = toY(lowest);
+                            ctx.save();
+                            ctx.beginPath();
+                            ctx.arc(cx, cy, 7, 0, Math.PI * 2);
+                            ctx.fillStyle = 'rgba(34,197,94,0.25)';
+                            ctx.fill();
+                            ctx.beginPath();
+                            ctx.arc(cx, cy, 4.5, 0, Math.PI * 2);
+                            ctx.fillStyle = '#16a34a';
+                            ctx.fill();
+                            ctx.restore();
+                        }
+                        // Crossed above 88 — overbought
+                        if (prev <= 88 && cur > 88) {
+                            let highest = cur, highestIdx = i;
+                            for (let j = i; j < Math.min(i + 5, n); j++) {
+                                if (rsi[j] != null && rsi[j] > highest) { highest = rsi[j]; highestIdx = j; }
+                            }
+                            const cx = toX(highestIdx), cy = toY(highest);
+                            ctx.save();
+                            ctx.beginPath();
+                            ctx.arc(cx, cy, 7, 0, Math.PI * 2);
+                            ctx.fillStyle = 'rgba(239,68,68,0.25)';
+                            ctx.fill();
+                            ctx.beginPath();
+                            ctx.arc(cx, cy, 4.5, 0, Math.PI * 2);
+                            ctx.fillStyle = '#ef4444';
+                            ctx.fill();
+                            ctx.restore();
+                        }
+                    }
+                    window._hmChart = { rsi, wma, ema, dates, pad, cW, cH, n, W, H, midLine, xStep, toX, toY, navs, rsiLen, wmaLen, emaLen };
+                    window._hmCleanCanvas = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    // Current values HUD
+                    const lastI = n - 1;
+                    const lastR = rsi[lastI] ?? 50;
+                    const lastW = wma[lastI] != null ? wma[lastI].toFixed(1) : '—';
+                    const lastE = ema[lastI] != null ? ema[lastI].toFixed(1) : '—';
+                    ctx.fillStyle = 'rgba(255,255,255,0.92)';
+                    ctx.fillRect(pad.l, 2, 180, 18);
+                    ctx.font = 'bold 10px monospace';
+                    ctx.fillStyle = '#000';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(`RSI: ${lastR.toFixed(1)}  WMA: ${lastW}  EMA: ${lastE}`, pad.l + 4, 14);
+                    // Fund label
+                    const fundSel = document.getElementById('hmSchemeSelect');
+                    const fundName = fundSel?.options?.[fundSel.selectedIndex]?.textContent || code;
+                    const periodLabel = window._hmPeriod.charAt(0).toUpperCase() + window._hmPeriod.slice(1);
+                    document.getElementById('hmFundLabel').textContent = fundName + '  ·  ' + periodLabel;
+                    // Info panel (REVERSED signals)
+                    const delta = lastR - midLine;
+                    const signal = lastR >= 88 ? '🔴 OVERBOUGHT'
+                        : lastR <= 20 ? '🟢 OVERSOLD'
+                        : delta > 15 ? '📈 Extended ↑'
+                        : delta < -15 ? '📉 Extended ↓'
+                        : lastR >= midLine ? 'Bullish'
+                        : 'Bearish';
+                    const signalColor = lastR >= 88 ? '#ef4444' : lastR <= 20 ? '#16a34a' : delta > 15 ? '#f59e0b' : delta < -15 ? '#f59e0b' : lastR >= midLine ? '#16a34a' : '#ef4444';
+                    document.getElementById('hmStatRsiVal').textContent = lastR.toFixed(1);
+                    document.getElementById('hmStatWmaVal').textContent = lastW;
+                    document.getElementById('hmStatEmaVal').textContent = lastE;
+                    document.getElementById('hmStatDeltaVal').textContent = delta >= 0 ? '+' + delta.toFixed(1) : delta.toFixed(1);
+                    document.getElementById('hmStatDeltaVal').style.color = delta >= 0 ? '#16a34a' : '#ef4444';
+                    const lastNav = navs[navs.length - 1];
+                    document.getElementById('hmStatNavVal').textContent = lastNav != null ? lastNav.toFixed(4) : '—';
+                    document.getElementById('hmStatSignalVal').textContent = signal;
+                    document.getElementById('hmStatSignalVal').style.color = signalColor;
+                    // Buy/Sell Action box
+                    const rsiN = lastR;
+                    const wmaN = parseFloat(lastW);
+                    const emaN = parseFloat(lastE);
+                    const aboveWma = !isNaN(wmaN) && rsiN > wmaN;
+                    const aboveEma = !isNaN(emaN) && rsiN > emaN;
+                    const belowWma = !isNaN(wmaN) && rsiN < wmaN;
+                    const belowEma = !isNaN(emaN) && rsiN < emaN;
+                    const actionBox = document.getElementById('hmStatAction');
+                    const actionVal = document.getElementById('hmStatActionVal');
+                    const switchBox = document.getElementById('hmStatSwitch');
+                    const switchVal = document.getElementById('hmStatSwitchVal');
+                    if (aboveWma && aboveEma) {
+                        actionBox.style.background = 'rgba(34,197,94,0.18)';
+                        actionBox.style.borderColor = '#16a34a';
+                        actionVal.textContent = '🟢 BUY';
+                        actionVal.style.color = '#16a34a';
+                        switchBox.style.background = 'rgba(34,197,94,0.18)';
+                        switchBox.style.borderColor = '#16a34a';
+                        switchVal.textContent = 'Add Equity';
+                        switchVal.style.color = '#16a34a';
+                    } else if (belowWma && belowEma) {
+                        actionBox.style.background = 'rgba(239,68,68,0.18)';
+                        actionBox.style.borderColor = '#ef4444';
+                        actionVal.textContent = '🔴 SELL';
+                        actionVal.style.color = '#ef4444';
+                        switchBox.style.background = 'rgba(239,68,68,0.18)';
+                        switchBox.style.borderColor = '#ef4444';
+                        switchVal.textContent = 'Reduce Equity · Increase Debt';
+                        switchVal.style.color = '#ef4444';
+                    } else {
+                        actionBox.style.background = 'rgba(245,158,11,0.18)';
+                        actionBox.style.borderColor = '#f59e0b';
+                        actionVal.textContent = '🟠 WATCH';
+                        actionVal.style.color = '#f59e0b';
+                        switchBox.style.background = 'rgba(245,158,11,0.18)';
+                        switchBox.style.borderColor = '#f59e0b';
+                        switchVal.textContent = 'Watch Daily for Signals';
+                        switchVal.style.color = '#f59e0b';
+                    }
+                    if (ov) ov.style.display = 'none';
+                    hmCalcDateRange();
+                    const _hmHover = (e) => {
+                        e.preventDefault();
+                        const c = window._hmChart;
+                        if (!c) return;
+                        const cv = document.getElementById('hmCanvas');
+                        const r = cv.getBoundingClientRect();
+                        let cx, cy;
+                        if (e.touches) {
+                            cx = e.touches[0].clientX - r.left;
+                            cy = e.touches[0].clientY - r.top;
+                        } else {
+                            cx = e.clientX - r.left;
+                            cy = e.clientY - r.top;
+                        }
+                        const ctx2 = cv.getContext('2d');
+                        if (window._hmCleanCanvas) ctx2.putImageData(window._hmCleanCanvas, 0, 0);
+                        if (cx < c.pad.l || cx > c.W - c.pad.r || cy < c.pad.t || cy > c.H - c.pad.b) return;
+                        const idx = Math.round((cx - c.pad.l) / c.xStep);
+                        if (idx < 0 || idx >= c.n) return;
+                        const snapX = c.toX(idx);
+                        ctx2.save();
+                        ctx2.strokeStyle = 'rgba(0,0,0,0.25)';
+                        ctx2.lineWidth = 1;
+                        ctx2.setLineDash([3, 3]);
+                        ctx2.beginPath();
+                        ctx2.moveTo(snapX, c.pad.t);
+                        ctx2.lineTo(snapX, c.H - c.pad.b);
+                        ctx2.stroke();
+                        const rVal = c.rsi[idx], wVal = c.wma[idx], eVal = c.ema[idx];
+                        [rVal, wVal, eVal].forEach(v => {
+                            if (v != null) {
+                                ctx2.beginPath();
+                                ctx2.arc(snapX, c.toY(v), 3, 0, Math.PI * 2);
+                                ctx2.fillStyle = v === rVal ? '#000' : v === wVal ? '#e11d48' : '#16a34a';
+                                ctx2.fill();
+                            }
+                        });
+                        const dt = hmParseDate(c.dates[idx]);
+                        const dateStr = isNaN(dt.getTime()) ? c.dates[idx] :
+                            String(dt.getDate()).padStart(2,'0') + '-' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][dt.getMonth()] + '-' + dt.getFullYear();
+                        const rStr = rVal != null ? rVal.toFixed(1) : '—';
+                        const wStr = wVal != null ? wVal.toFixed(1) : '—';
+                        const eStr = eVal != null ? eVal.toFixed(1) : '—';
+                        const navVal = c.navs[idx];
+                        const navStr = navVal != null ? navVal.toFixed(4) : '—';
+                        const lines = [
+                            { t: dateStr, c: '#666' },
+                            { t: 'NAV  ' + navStr, c: '#1d4ed8' },
+                            { t: 'RSI  ' + rStr, c: '#000' },
+                            { t: 'WMA  ' + wStr, c: '#e11d48' },
+                            { t: 'EMA  ' + eStr, c: '#16a34a' }
+                        ];
+                        const boxW = 120, lineH = 13, boxH = lines.length * lineH + 8;
+                        let bx = snapX + 8, by = cy - boxH / 2;
+                        if (bx + boxW > c.W - c.pad.r) bx = snapX - boxW - 8;
+                        if (by < c.pad.t) by = c.pad.t;
+                        if (by + boxH > c.H - c.pad.b) by = c.H - c.pad.b - boxH;
+                        ctx2.fillStyle = 'rgba(255,255,255,0.94)';
+                        ctx2.strokeStyle = 'rgba(0,0,0,0.15)';
+                        ctx2.lineWidth = 1;
+                        ctx2.setLineDash([]);
+                        ctx2.beginPath();
+                        ctx2.roundRect(bx, by, boxW, boxH, 4);
+                        ctx2.fill();
+                        ctx2.stroke();
+                        ctx2.font = 'bold 9px monospace';
+                        ctx2.textAlign = 'left';
+                        lines.forEach((l, li) => {
+                            ctx2.fillStyle = l.c;
+                            ctx2.fillText(l.t, bx + 5, by + 10 + li * lineH);
+                        });
+                        ctx2.restore();
+                    };
+                    const _hmLeave = () => {
+                        const cv = document.getElementById('hmCanvas');
+                        const ctx2 = cv.getContext('2d');
+                        if (window._hmCleanCanvas) ctx2.putImageData(window._hmCleanCanvas, 0, 0);
+                    };
+                    const _hmCanvas = document.getElementById('hmCanvas');
+                    _hmCanvas.onmousemove = _hmHover;
+                    _hmCanvas.onmouseleave = _hmLeave;
+                    _hmCanvas.ontouchmove = _hmHover;
+                    _hmCanvas.ontouchend = _hmLeave;
+                } catch (e) {
+                    if (ov) ov.style.display = 'none';
+                    alert('Error: ' + e.message);
+                }
+            }
             function openAssetAllocator() {
                 let amc = 'HDFC';
                 const activeAmcBox = document.querySelector('#fundGrid .fund-box.active');
@@ -13683,7 +14799,7 @@ categories.forEach(cat => {
 
                 window.openAIBreadthModal = function(fund) {
             _abpFund = fund;
-            window._abpFund = fund;   // LD254C: expose for _abpAddToWatchlist
+            window._abpFund = fund;   // NPC1B: expose for _abpAddToWatchlist
             _resetPanel();
             _populateFundMeta(fund);
             document.getElementById('abpFundTag').textContent = fund.name || fund.code;
@@ -14176,7 +15292,7 @@ categories.forEach(cat => {
         
         
         
-        loadingEl.innerHTML = `<div style="text-align:center;font-size:0.62rem;color:var(--accent);padding:6px 0;">🧠 Sacred RSI Lie Detector running…</div>`;
+        loadingEl.innerHTML = `<div style="text-align:center;font-size:0.62rem;color:var(--accent);padding:6px 0;">🧠 Sacred RSI Regime running…</div>`;
 
         const stockListStr = idxInfo.stocks.map(([, name, weight]) => `${name} (${weight})`).join(', ');
         const dataLines = stocks.map(s =>
@@ -14193,7 +15309,7 @@ categories.forEach(cat => {
             ? _portfolioHoldings.map(h => `${h.ticker} (${h.weight.toFixed(1)}%)`).join(', ')
             : 'Not available';
 
-        const promptText2 = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the "Lie Detector Auditor" for Indian NPS/MF funds.
+        const promptText2 = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the "NPS Clues_1B Auditor" for Indian NPS/MF funds.
 
 ════════════════════════════════════════════════════════
 AUDIT GUIDELINES — THE LIE DETECTOR RULES
@@ -15281,7 +16397,7 @@ Return a JSON object with this exact structure:
             return { fundName, fundCode };
         }
         function gatherLeanContext() {
-            let ctx = "=== LD254C LEAN TARGET FUND DUMP ===\n";
+            let ctx = "=== NPC1B LEAN TARGET FUND DUMP ===\n";
             ctx += `Timestamp: ${new Date().toISOString()}\n`;
             const { fundName, fundCode } = getFundInfo();
             const regime = document.getElementById('liveRegimeBlock')?.textContent || document.getElementById('regimeBlock')?.textContent || 'N/A';
@@ -15406,7 +16522,7 @@ Return a JSON object with this exact structure:
             return ctx;
         }
         function gatherContext() {
-            let ctx = "=== LD254C SIGNAL DEEP DUMP ===\n";
+            let ctx = "=== NPC1B SIGNAL DEEP DUMP ===\n";
             ctx += `Timestamp: ${new Date().toISOString()}\n`;
             const activeModal = document.querySelector('.modal[style*="display: flex"]');
             ctx += `\n[UI SURFACE]\nVisible Screen: ${activeModal ? activeModal.id : 'Main Dashboard'}\n`;
@@ -15931,7 +17047,7 @@ Return a JSON object with this exact structure:
             try { ctx = gatherLeanContext(); } catch(e) { ctx = '(Fund context unavailable — open Live Cockpit first)'; }
 
             const systemPrompt =
-                'You are the LD254C System Brain — an expert NPS/MF fund analyst embedded in the Lie Detector app.\n' +
+                'You are the NPC1B System Brain — an expert NPS/MF fund analyst embedded in the NPS Clues_1B app.\n' +
                 'You analyse Indian NPS NAV data using RSI, W-RSI, regime classification (A/B/C), TSL floors, WMA20, and momentum signals.\n' +
                 'Rules: Regime A (W-RSI≥50)=Bull, B (40-50)=Transition, C (<40)=Bear. D-RSI<40=oversold BUY zone. TSL breach=SELL ALL.\n' +
                 'Answer concisely. Use ₹ for prices. Highlight BUY/SELL signals clearly. Below is the current fund data:\n\n' +
@@ -16246,7 +17362,7 @@ Return a JSON object with this exact structure:
     <input type="file" id="ld-pdf-file-input" accept="application/pdf" style="display:none;">
 
         <!-- ═══════════════════════════════════════════════════════════════════
-         LD254C — BACKGROUND BA ENGINE v2
+         NPC1B — BACKGROUND BA ENGINE v2
          ─────────────────────────────────────────────────────────────────
          Priority Order:
            1. Watchlist funds (in order) — check Regime A, run BA, store.
@@ -16263,7 +17379,7 @@ Return a JSON object with this exact structure:
     
     const GAP_MS        = (() => { try { const v=parseInt(localStorage.getItem('ld_api_gap_sec')||'5');  return (v>=5&&v<=50?v:5)*1000;  } catch(e){ return 5_000;  } })();
     const BOOT_DELAY_MS = 6_000;
-    const ADDON_VER     = 'LD254E';
+    const ADDON_VER     = 'NPC1B';
     const RUN_FLAG_KEY  = 'bgbreadth_ran_';
 
     
@@ -16373,7 +17489,7 @@ Return a JSON object with this exact structure:
         const batchLines = items.map((item, i) =>
             `[${i+1}] ${item.name}: W-RSI=${item.wrsi}, Regime=${item.wrsi>=50?'A (Hope)':item.wrsi>=40?'B (Watch)':'C (Fear)'}`
         ).join('\n');
-        const prompt = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the Lie Detector Auditor.
+        const prompt = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the NPS Clues_1B Auditor.
 
 TASK: For EACH of the ${items.length} funds below, perform Constituent X-Ray on the fund's benchmark index.
 For each fund determine: bull_count, confirmation (CONFIRMED/MARGINAL/WEAK), sop_action, divergence_alert, psychology_audit, and reasoning.
@@ -16468,7 +17584,7 @@ ${batchLines}`;
         ];
         for (const [k, v] of MAP) { if (n.includes(k)) { idxName = v; break; } }
         const regime  = wrsi >= 50 ? 'A (Hope)' : wrsi >= 40 ? 'B (Watch)' : 'C (Fear)';
-        const prompt  = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the Lie Detector Auditor.\n\nFUND: ${fund.name} | Benchmark: ${idxName}\nFund W-RSI: ${Math.round(wrsi)} (${regime})\n\nSACRED RULE: True compounders never stay below W-RSI 40.\nDIVERGENCE: Price RISING + W-RSI falling/below 50 = Cosmetic Growth. Flag it.\nPSYCHOLOGY: Price moves first; earnings explanations come later.\n\nTASK: Perform Constituent X-Ray on top 5 stocks of ${idxName} by index weight.\nFor each stock return current W-RSI(14), 2-week trend (RISING/FALLING), regime (A/B/C), action.\nCount BULL stocks (regime A + RISING). Sum weights.\nReturn ONLY valid JSON:\n{\n  "stocks":[{"ticker":"Name","weight":"X%","price":"₹XXXX","daily_rsi":"XX","weekly_rsi":"XX","wma20":"₹XXXX","price_vs_wma20":"ABOVE or BELOW","trend_14d":"RISING or FALLING","regime":"A or B or C","verdict":"BULL or HOLD or BEAR","action":"Buy or Hold or Reduce","recommendation":"One sentence."}],\n  "bull_count":0,"bull_weight_sum":"X%",\n  "confirmation":"CONFIRMED or MARGINAL or WEAK",\n  "sop_action":"max 12 words",\n  "divergence_alert":"text or No divergence detected.",\n  "psychology_audit":"Lookout for… text",\n  "broad_market_regime_a":[{"index":"Name","wrsi":"XX","trend":"RISING or FALLING","signal":"BUY or WATCH"}],\n  "reasoning":"2-3 sentences on ${idxName} breadth."\n}`;
+        const prompt  = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the NPS Clues_1B Auditor.\n\nFUND: ${fund.name} | Benchmark: ${idxName}\nFund W-RSI: ${Math.round(wrsi)} (${regime})\n\nSACRED RULE: True compounders never stay below W-RSI 40.\nDIVERGENCE: Price RISING + W-RSI falling/below 50 = Cosmetic Growth. Flag it.\nPSYCHOLOGY: Price moves first; earnings explanations come later.\n\nTASK: Perform Constituent X-Ray on top 5 stocks of ${idxName} by index weight.\nFor each stock return current W-RSI(14), 2-week trend (RISING/FALLING), regime (A/B/C), action.\nCount BULL stocks (regime A + RISING). Sum weights.\nReturn ONLY valid JSON:\n{\n  "stocks":[{"ticker":"Name","weight":"X%","price":"₹XXXX","daily_rsi":"XX","weekly_rsi":"XX","wma20":"₹XXXX","price_vs_wma20":"ABOVE or BELOW","trend_14d":"RISING or FALLING","regime":"A or B or C","verdict":"BULL or HOLD or BEAR","action":"Buy or Hold or Reduce","recommendation":"One sentence."}],\n  "bull_count":0,"bull_weight_sum":"X%",\n  "confirmation":"CONFIRMED or MARGINAL or WEAK",\n  "sop_action":"max 12 words",\n  "divergence_alert":"text or No divergence detected.",\n  "psychology_audit":"Lookout for… text",\n  "broad_market_regime_a":[{"index":"Name","wrsi":"XX","trend":"RISING or FALLING","signal":"BUY or WATCH"}],\n  "reasoning":"2-3 sentences on ${idxName} breadth."\n}`;
         const payload = { contents: [{ parts: [{ text: prompt }] }] };
 
         
@@ -16812,7 +17928,7 @@ ${batchLines}`;
         } else {
         }
 
-        // ── LD254C: WATCHLIST BA — BATCH PROCESSING (BATCH_SIZE=10) ──
+        // ── NPC1B: WATCHLIST BA — BATCH PROCESSING (BATCH_SIZE=10) ──
         // Processes up to BA_BATCH_SIZE funds per Gemini call.
         // Uses responseMimeType: "application/json" for forced JSON output.
         // 4200ms gap between batches (Free Tier: 15 RPM = 1 req per 4s).
@@ -17115,7 +18231,7 @@ ${batchLines}`;
         try { localStorage.removeItem(`bg_amc_scan_done_${d}`); } catch(e) {}
         try { localStorage.removeItem(`ba_completed_funds_${d}`); } catch(e) {}
 
-        // LD254C FIX: Clear breadth_v1_ cache for all watchlist funds today.
+        // NPC1B FIX: Clear breadth_v1_ cache for all watchlist funds today.
         // Without this, _cacheExists() returns true → every fund is marked done
         // instantly → Gemini is never called → no BA download happens on restart.
         try {
@@ -18133,7 +19249,7 @@ function calcTSI(closes, period = 21) {
   return out;
 }
 
-// ── LD254C: STOOQ FALLBACK FOR SCANNER ─────────────────────────────────────
+// ── NPC1B: STOOQ FALLBACK FOR SCANNER ─────────────────────────────────────
 // Stooq uses different tickers for NSE/BSE indices. This map covers the major ones.
 // Pattern for NSE indices on Stooq: lowercase, no ^ prefix, .in suffix
 const STOOQ_SYMBOL_MAP = {
@@ -18219,7 +19335,7 @@ async function fetchIdx(symbol) {
       qtD = qtR?.ok ? await qtR.json() : null;
     let wC = wkD?.chart?.result?.[0]?.indicators?.quote?.[0]?.close || [];
     const dC = dD?.chart?.result?.[0]?.indicators?.quote?.[0]?.close || [];
-    // LD254C: Stooq fallback — if Yahoo returned no weekly closes, try Stooq
+    // NPC1B: Stooq fallback — if Yahoo returned no weekly closes, try Stooq
     if (wC.filter(x => x != null && !isNaN(x)).length < 10) {
       try {
         const stooqCloses = await _fetchStooqWeekly(symbol);
@@ -18401,7 +19517,7 @@ function LDScanner() {
     dir: "asc"
   });
   const [baRes, setBaRes] = useState({});
-  const [retrying, setRetrying] = useState(false); // LD254C: retry failed fetches
+  const [retrying, setRetrying] = useState(false); // NPC1B: retry failed fetches
   const [gemKey, setGemKey] = useState(() => {
     try {
       return localStorage.getItem("ld_scn_gem_key") || localStorage.getItem("ld_gemini_api_key") || "";
@@ -18573,7 +19689,7 @@ function LDScanner() {
       });
     }
   }
-  // LD254C: Retry only failed / empty rows — no full re-scan needed
+  // NPC1B: Retry only failed / empty rows — no full re-scan needed
   async function doRetry() {
     const failedSymbols = ALL_INDICES.filter(i => {
       if (!i.symbol) return false;
@@ -18665,7 +19781,7 @@ function LDScanner() {
   }, [results, regF, phaseF, vix, sortCfg, baRes]);
   const pct = progress.total > 0 ? Math.round(progress.done / progress.total * 100) : 0;
   const hasData = rows.length > 0 && Object.keys(results).length > 0;
-  // LD254C fix: count only rows that actually render (have wRsi data or error)
+  // NPC1B fix: count only rows that actually render (have wRsi data or error)
   const displayedRows = rows.filter(r => r.wRsi || r.error);
   const thS = {
     position: "sticky",
@@ -19607,7 +20723,7 @@ window.LDScannerComponent = LDScanner;
         loadFaKeys();
     })();
     </script>
-    <!-- ═══════════════ LD254C: SERVICE WORKER + PWA INSTALL HANDLER ═══════════════ -->
+    <!-- ═══════════════ NPC1B: SERVICE WORKER + PWA INSTALL HANDLER ═══════════════ -->
     <script>
     (function() {
         // ── Service Worker ──
@@ -19724,7 +20840,7 @@ window.LDScannerComponent = LDScanner;
             </div>
         </div>
     </div>
-    <!-- ── LD254N: LOCAL DATA MODAL ───────────────────────────────── -->
+    <!-- ── NPC1B: LOCAL DATA MODAL ───────────────────────────────── -->
     <div id="localDataModal" class="modal-overlay" style="z-index:700;align-items:center;padding-top:3vh;">
         <div class="ldm-wrap">
             <div class="ldm-head">
@@ -19737,7 +20853,7 @@ window.LDScannerComponent = LDScanner;
         </div>
     </div>
     <script>
-    // ── LD254N: Landscape Chart View ──────────────────────────
+    // ── NPC1B: Landscape Chart View ──────────────────────────
     let _lcvActive = false;
     let _lcvMode = null;
     function enterLandscapeChart(mode) {
@@ -19846,7 +20962,7 @@ window.LDScannerComponent = LDScanner;
     document.addEventListener('webkitfullscreenchange', function() {
         if (!document.webkitFullscreenElement && _lcvActive) exitLandscapeChart();
     });
-    // ── LD254N: LOCAL DATA VIEW / ANALYSIS ────────────────────────
+    // ── NPC1B: LOCAL DATA VIEW / ANALYSIS ────────────────────────
     window._localDataEntries = null;
     function openLocalDataModal() {
         var modal = document.getElementById('localDataModal');
@@ -20229,7 +21345,7 @@ window.LDScannerComponent = LDScanner;
         }
     }
     </script>
-    <!-- LD254C: PWA Install Banner (shown when Brave fires beforeinstallprompt) -->
+    <!-- NPC1B: PWA Install Banner (shown when Brave fires beforeinstallprompt) -->
     <div id="ld-pwa-install-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#0d0d0d;border-top:1px solid #00c896;padding:10px 16px;align-items:center;justify-content:space-between;font-family:'Space Mono',monospace;font-size:0.65rem;color:#00c896;">
         <span>📡 Install <strong>LDNPS</strong> as an app for offline access</span>
         <div style="display:flex;gap:8px;">
@@ -20237,4 +21353,4 @@ window.LDScannerComponent = LDScanner;
             <button onclick="document.getElementById('ld-pwa-install-banner').style.display='none'" style="background:transparent;color:#888;border:1px solid #444;padding:5px 10px;font-family:inherit;font-size:0.65rem;cursor:pointer;border-radius:3px;">✕</button>
         </div>
     </div>
-    <!-- ═══════════════ END LD254C PWA BLOCK ═══════════════ -->
+    <!-- ═══════════════ END NPC1B PWA BLOCK ═══════════════ -->
