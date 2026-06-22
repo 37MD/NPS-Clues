@@ -3627,6 +3627,7 @@
                     </label>
                 </div>
                 <div id="wlBackupStatus" style="font-size:0.48rem;color:var(--muted);font-family:var(--mono);min-height:1em;text-align:center;padding:0 4px;"></div>
+                <span id="configBackupStatus" style="font-size:0.48rem;font-family:var(--mono);text-align:center;min-height:1em;"></span>
             </div>
             </div><!-- end watchlistScrollArea -->
 
@@ -4017,7 +4018,7 @@ border-radius:var(--radius);padding:6px 9px;">
         <div id="gameUI" style="display:none;height:100vh;flex-direction:column;">
             <header class="app-header">
                 <div class="logo">
-                    LIE DETECTOR
+                    NPS Clues_1B
                     <span id="simModeTag" style="color:var(--muted2);font-size:0.7em;margin-left:4px;font-weight:400;">V3</span>
                     <span id="simFundName" class="fund-name-tag"></span>
                 </div>
@@ -4146,10 +4147,10 @@ border-radius:var(--radius);padding:6px 9px;">
                     <span class="rationale-chip" onclick="submitRationaleCode('Slingshot signal')">SLING</span>
                     <span class="rationale-chip" onclick="submitRationaleCode('Regime change')">REG↑</span>
                     <span class="rationale-chip" onclick="submitRationaleCode('Oversold RSI < 40')">RSI &lt; 40</span>
-                            <span class="rationale-chip" onclick="submitRationaleCode('PC Breakout')">PC BOX</span>
-                            <span class="rationale-chip" onclick="submitRationaleCode('Regime Fear exit')">REG C</span>
-                            <span class="rationale-chip" onclick="submitRationaleCode('Profit booking')">PROFIT</span>
-                            <span class="rationale-chip rationale-chip-custom" onclick="showCustomRationale()">CUSTOM…</span>
+                    <span class="rationale-chip" onclick="submitRationaleCode('PC Breakout')">PC BOX</span>
+                    <span class="rationale-chip" onclick="submitRationaleCode('Regime Fear exit')">REG C</span>
+                    <span class="rationale-chip" onclick="submitRationaleCode('Profit booking')">PROFIT</span>
+                    <span class="rationale-chip rationale-chip-custom" onclick="showCustomRationale()">CUSTOM…</span>
                 </div>
                 <div id="rationaleCustomRow" style="display:none;flex:1;gap:6px;align-items:center;">
                     <input id="rationaleInput" type="text" maxlength="40" placeholder="type reason…" style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:5px 8px;font-family:var(--mono);font-size:0.6rem;outline:none;color:var(--text);">
@@ -7776,7 +7777,7 @@ ${Math.abs(diff) < 0.05 ? 'Tied' : (aWins ? nameA : nameB) + ' outperforms by ' 
                 ctx.fillRect(0, 0, W, 44);
                 ctx.fillStyle = '#009e70';
                 ctx.font = 'bold 10px monospace';
-                ctx.fillText('LIE DETECTOR LD242 · SIMULATION RESULT', 12, 16);
+                ctx.fillText('NPS Clues_1B NPC1B · SIMULATION RESULT', 12, 16);
                 ctx.fillStyle = '#304058';
                 ctx.font = '8px monospace';
                 ctx.fillText(`${getBriefFundName() || 'Fund Simulator'}`, 12, 30);
@@ -7837,11 +7838,11 @@ ${Math.abs(diff) < 0.05 ? 'Tied' : (aWins ? nameA : nameB) + ' outperforms by ' 
                 ctx.fillRect(0, 186, W, 1);
                 ctx.fillStyle = '#b0bece';
                 ctx.font = '7px monospace';
-                ctx.fillText('Sacred RSI Regime System · LD242', 12, 200);
+                ctx.fillText('Sacred RSI Regime System · NPC1B', 12, 200);
                 const streak = _streak.count;
                 if (streak > 0) ctx.fillText(`🔥 ${streak}-session streak`, W - 110, 200);
                 const link = document.createElement('a');
-                link.download = `LD242-${getBriefFundName().replace(/\s+/g, '_') || 'result'}.png`;
+                link.download = `NPC1B-${getBriefFundName().replace(/\s+/g, '_') || 'result'}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
             }
@@ -7936,27 +7937,6 @@ ${Math.abs(diff) < 0.05 ? 'Tied' : (aWins ? nameA : nameB) + ' outperforms by ' 
                     }
                     initGame('custom', start, end);
                 }
-            }
-            function runStressTest() {
-                const scenario = document.getElementById('stressSelect').value;
-                if (scenario.startsWith('auto_')) {
-                    const parts = scenario.split('_');
-                    initGame('stress', parts[1], parts[2]);
-                    return;
-                }
-                let start = '',
-                    end = '';
-                if (scenario === 'covid') {
-                    start = '2020-01-15';
-                    end = '2020-07-31';
-                } else if (scenario === 'ukraine') {
-                    start = '2021-12-01';
-                    end = '2022-07-31';
-                } else if (scenario === 'demo') {
-                    start = '2016-10-15';
-                    end = '2017-03-31';
-                }
-                initGame('stress', start, end);
             }
             async function initGame(mode, startDate = null, endDate = null) {
                 saveFundSelection();
@@ -8746,7 +8726,8 @@ This is exactly how the system is meant to be played.
                     const isSell = action.includes('SELL');
                     document.getElementById('ptActionLabel').textContent = action.toUpperCase() + ' — CHECKLIST';
                     document.getElementById('ptDayLabel').textContent = `Day ${snap.dayNum}`;
-                    document.getElementById('ptNote').value = '';
+                    document.getElementById('ptNote').value = window._lastTradeRationale || '';
+                    window._lastTradeRationale = '';
                     const checks = [];
                     if (isBuy) {
                         checks.push({
@@ -8840,6 +8821,27 @@ This is exactly how the system is meant to be played.
                         });
                     };
                 });
+            }
+            window._lastTradeRationale = '';
+            function submitRationaleCode(code) {
+                window._lastTradeRationale = code;
+                document.getElementById('rationaleBar').style.display = 'none';
+            }
+            function showCustomRationale() {
+                document.getElementById('rationaleChips').style.display = 'none';
+                const row = document.getElementById('rationaleCustomRow');
+                row.style.display = 'flex';
+                document.getElementById('rationaleInput').focus();
+            }
+            function submitRationale() {
+                const val = document.getElementById('rationaleInput').value.trim();
+                window._lastTradeRationale = val || 'Custom';
+                document.getElementById('rationaleBar').style.display = 'none';
+            }
+            function hideRationaleBar() {
+                document.getElementById('rationaleBar').style.display = 'none';
+                document.getElementById('rationaleChips').style.display = 'flex';
+                document.getElementById('rationaleCustomRow').style.display = 'none';
             }
             async function trade(action) {
                 _pendingTradeAction = action; 
@@ -9698,12 +9700,6 @@ This is exactly how the system is meant to be played.
                 if (_ovEl) _ovEl.style.display = 'flex';
                 if (_ovTxt) { _ovTxt.textContent = '📌 ADDED TO WATCHLIST'; _ovTxt.style.color = 'var(--accent)'; }
                 setTimeout(() => { if (_ovEl) _ovEl.style.display = 'none'; }, 1800);
-            }
-            function clearWatchlist() {
-                if (!confirm('Clear all pinned funds?')) return;
-                _watchlist = [];
-                localStorage.setItem('ld_watchlist', JSON.stringify(_watchlist)); window.PStorage.set('ld_watchlist', JSON.stringify(_watchlist)).catch(()=>{});
-                document.getElementById('watchlistBody').innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:0.6rem;">No funds pinned. Select a fund and tap "+ PIN THIS FUND".</div>';
             }
             function renderWatchlistStubs() {
                 const body = document.getElementById('watchlistBody');
@@ -11946,33 +11942,6 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                     }
                     return originalFetch(resource, config);
                 };
-                async function syncAllData() {
-                    const ov = document.getElementById('ov');
-                    const ovTxt = document.getElementById('ovTxt');
-                    if (ov) ov.style.display = 'flex';
-                    try {
-                        const funds = window.amcFunds ? Object.values(window.amcFunds).flat() : [];
-                        const db = await openDB();
-                        let completed = 0;
-                        for (let i = 0; i < funds.length; i += 4) {
-                            const batch = funds.slice(i, i + 4);
-                            await Promise.all(batch.map(async (f) => {
-                                const url = f.code.startsWith('SM') ? `https://npsnav.in/api/historical/${f.code}` : `https://api.mfapi.in/mf/${f.code}`;
-                                const meta = await getCache(db, STORE_META, url);
-                                if (!meta || (Date.now() - meta.timestamp > CACHE_EXPIRY_MS)) await window.fetch(url);
-                                completed++;
-                                if (ovTxt) ovTxt.textContent = `SYNCING DATA: ${Math.round((completed / funds.length) * 100)}%`;
-                            }));
-                        }
-                    } catch (e) {
-                        if (ovTxt) {
-                            ovTxt.textContent = 'OFFLINE — CACHED DATA READY';
-                            ovTxt.style.color = 'var(--accent2)';
-                        }
-                    } finally {
-                        if (ov) ov.style.display = 'none';
-                    }
-                }
                 window._idbOpenDB = openDB;
                 window._idbSetCache = setCache;
                 window._idbGetCache = getCache;
@@ -15074,7 +15043,7 @@ categories.forEach(cat => {
         
 
         
-        function calcRSI(closes, period) {
+        function calcRSIScalar(closes, period) {
             const p = period || window.userRsiLength || 14;
             if (closes.length < p + 1) return null;
             let gains = 0, losses = 0;
@@ -15093,7 +15062,7 @@ categories.forEach(cat => {
         }
 
         function _buildStock(closes, name, weight) {
-            const rsi    = calcRSI(closes);
+            const rsi    = calcRSIScalar(closes);
             const last2  = closes.slice(-2);
             const trend  = last2[1] > last2[0] ? 'RISING' : 'FALLING';
             const regime = rsi >= 50 ? 'A' : rsi >= 40 ? 'B' : 'C';
@@ -15312,7 +15281,7 @@ categories.forEach(cat => {
         const promptText2 = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the "NPS Clues_1B Auditor" for Indian NPS/MF funds.
 
 ════════════════════════════════════════════════════════
-AUDIT GUIDELINES — THE LIE DETECTOR RULES
+AUDIT GUIDELINES — THE NPC1B RULES
 ════════════════════════════════════════════════════════
 SACRED RULE: True compounders do NOT stay below 40 Weekly RSI. If an index or fund breaks W-RSI 40 and cannot reclaim 45, the earnings trust is broken — expect guidance cuts or downgrades.
 
@@ -16268,15 +16237,6 @@ Return a JSON object with this exact structure:
         window.shiftToBackupKey  = shiftToBackupKey;
         window.resetToPrimaryKey = resetToPrimaryKey;
         window.openKeyBox        = openKeyBox;
-
-        async function fetchWithRetry(url, options = {}, retries = 2) {
-            const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
-            for (let i = 0; i <= retries; i++) {
-                const res = await fetch(url, { ...options, headers });
-                if (res.status === 429 && i < retries) { await new Promise(r => setTimeout(r, 2000 * (i + 1))); continue; }
-                return res;
-            }
-        }
 
         
         const scrollBtn = document.getElementById('ld-ai-scroll-btn');
@@ -17562,109 +17522,6 @@ ${batchLines}`;
         throw lastErr || new Error('All Gemini models and keys exhausted.');
     }
 
-    async function _callGeminiBreadth(fund, wrsi, resolvedApiKey) {
-        const getKey2  = () => localStorage.getItem('ld_gemini_api_key2');
-        const getModel = window.getGeminiModel || (() => 'gemini-2.5-flash-lite');
-        const n = (fund.name || '').toLowerCase();
-        let idxName = 'Nifty 50 (proxy)';
-        const MAP = [
-            ['nifty it','Nifty IT'],['private bank','Nifty Private Bank'],
-            ['nifty bank','Nifty Bank'],['nifty auto','Nifty Auto'],
-            ['nifty pharma','Nifty Pharma'],['nifty realty','Nifty Realty'],
-            ['bse housing','BSE Housing'],['ev','Nifty EV & New Age Auto'],
-            ['india digital','Nifty India Digital'],['india consumption','Nifty India Consumption'],
-            ['india defence','Nifty India Defence'],['india infra','BSE India Infrastructure'],
-            ['commodit','Nifty Commodities'],['quality 30','Nifty100 Quality 30'],
-            ['value 30','Nifty200 Value 30'],['200 momentum 30','Nifty200 Momentum 30'],
-            ['bse 500 momentum','BSE 500 Momentum 50'],['500 momentum','Nifty500 Momentum 50'],
-            ['midcap 150 mom','Nifty Midcap150 Mom50'],['midcap 150','Nifty Midcap 150'],
-            ['smallcap 250','Nifty SmallCap 250'],['fin serv ex','Nifty Fin Serv Ex-Bank'],
-            ['500 multicap','Nifty500 Multicap'],['nifty 500','Nifty 500'],
-            ['flexi','Nifty 500 (Flexi Cap)'],['bse 500','BSE 500'],['nifty 50','Nifty 50'],
-        ];
-        for (const [k, v] of MAP) { if (n.includes(k)) { idxName = v; break; } }
-        const regime  = wrsi >= 50 ? 'A (Hope)' : wrsi >= 40 ? 'B (Watch)' : 'C (Fear)';
-        const prompt  = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the NPS Clues_1B Auditor.\n\nFUND: ${fund.name} | Benchmark: ${idxName}\nFund W-RSI: ${Math.round(wrsi)} (${regime})\n\nSACRED RULE: True compounders never stay below W-RSI 40.\nDIVERGENCE: Price RISING + W-RSI falling/below 50 = Cosmetic Growth. Flag it.\nPSYCHOLOGY: Price moves first; earnings explanations come later.\n\nTASK: Perform Constituent X-Ray on top 5 stocks of ${idxName} by index weight.\nFor each stock return current W-RSI(14), 2-week trend (RISING/FALLING), regime (A/B/C), action.\nCount BULL stocks (regime A + RISING). Sum weights.\nReturn ONLY valid JSON:\n{\n  "stocks":[{"ticker":"Name","weight":"X%","price":"₹XXXX","daily_rsi":"XX","weekly_rsi":"XX","wma20":"₹XXXX","price_vs_wma20":"ABOVE or BELOW","trend_14d":"RISING or FALLING","regime":"A or B or C","verdict":"BULL or HOLD or BEAR","action":"Buy or Hold or Reduce","recommendation":"One sentence."}],\n  "bull_count":0,"bull_weight_sum":"X%",\n  "confirmation":"CONFIRMED or MARGINAL or WEAK",\n  "sop_action":"max 12 words",\n  "divergence_alert":"text or No divergence detected.",\n  "psychology_audit":"Lookout for… text",\n  "broad_market_regime_a":[{"index":"Name","wrsi":"XX","trend":"RISING or FALLING","signal":"BUY or WATCH"}],\n  "reasoning":"2-3 sentences on ${idxName} breadth."\n}`;
-        const payload = { contents: [{ parts: [{ text: prompt }] }] };
-
-        
-        
-        const userModel = getModel();
-        const MODEL_CASCADE = (() => {
-            const ALL = ['gemini-3.1-flash-lite','gemini-3-flash','gemini-3.1-pro','gemini-2.5-flash-lite','gemini-2.5-flash'];
-            const startIdx = ALL.indexOf(userModel);
-            return startIdx === -1 ? ALL : ALL.slice(startIdx);
-        })();
-        const API_KEYS = [resolvedApiKey, getKey2()].filter(Boolean);
-
-        let lastErr = null;
-
-        for (const model of MODEL_CASCADE) {
-            for (const k of API_KEYS) {
-                const ep = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${k.trim()}`;
-                try {
-                    const res = await fetch(ep, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (res.status === 429) {
-                        lastErr = new Error(`429 quota on ${model}`);
-                        continue; 
-                    }
-
-                    const data = await res.json();
-                    if (data.error) {
-                        lastErr = new Error(`Gemini ${data.error.code}: ${data.error.message}`);
-                        if (data.error.code === 429 || data.error.status === 'RESOURCE_EXHAUSTED') continue;
-                        throw lastErr; 
-                    }
-
-                    
-                    let raw = (data.candidates?.[0]?.content?.parts?.[0]?.text || '').trim();
-                    const fe = raw.indexOf('\n');
-                    if (raw.startsWith('```') && fe !== -1) raw = raw.substring(fe + 1);
-                    if (raw.trimEnd().endsWith('```')) raw = raw.trimEnd().slice(0, -3);
-                    raw = raw.trim();
-                    const js = raw.indexOf('{'), je = raw.lastIndexOf('}');
-                    if (js !== -1 && je > js) raw = raw.slice(js, je + 1);
-                    try { 
-                        const result = JSON.parse(raw);
-                        result._modelUsed = model; 
-                        return result;
-                    } catch(_) {}
-                    
-                    let rep = raw.trimEnd();
-                    const qc = (rep.match(/(?<!\\)"/g) || []).length;
-                    if (qc % 2 !== 0) rep += '"';
-                    const ao = (rep.match(/\[/g)||[]).length - (rep.match(/\]/g)||[]).length;
-                    const oo = (rep.match(/\{/g)||[]).length - (rep.match(/\}/g)||[]).length;
-                    for (let i = 0; i < ao; i++) rep += ']';
-                    for (let i = 0; i < oo; i++) rep += '}';
-                    try { 
-                        const result = JSON.parse(rep);
-                        result._modelUsed = model;
-                        return result;
-                    } catch(e2) {
-                        lastErr = new Error('JSON repair failed — response truncated.');
-                        continue; // try next key/model
-                    }
-                } catch(fetchErr) {
-                    lastErr = fetchErr;
-                    continue;
-                }
-            }
-            // All keys exhausted for this model — brief pause before escalating
-            if (MODEL_CASCADE.indexOf(model) < MODEL_CASCADE.length - 1) {
-                const nextModel = MODEL_CASCADE[MODEL_CASCADE.indexOf(model) + 1];
-                _setPillMsg(`⬆ Quota limit — escalating to ${nextModel.replace('gemini-2.5-','')}…`, '#f59e0b');
-                await _sleep(2000); // brief pause between model tiers
-            }
-        }
-        throw lastErr || new Error('All Gemini models and keys exhausted.');
-    }
-
     // ── UNIFIED BA STATUS BAR (Page 1 top row) ────────────────────────
     function _updateUnifiedBAStatus(msg, colour, nextLabel) {
         try {
@@ -18650,21 +18507,6 @@ c,!1,d,e);a[Ja]=b.current;sc(8===a.nodeType?a.parentNode:a);return new Xf(b)};Q.
 var d=null!=c&&c.hydratedSources||null,e=!1,f="",g=aj;null!==c&&void 0!==c&&(!0===c.unstable_strictMode&&(e=!0),void 0!==c.identifierPrefix&&(f=c.identifierPrefix),void 0!==c.onRecoverableError&&(g=c.onRecoverableError));b=Wi(b,null,a,1,null!=c?c:null,e,!1,f,g);a[Ja]=b.current;sc(a);if(d)for(a=0;a<d.length;a++)c=d[a],e=c._getVersion,e=e(c._source),null==b.mutableSourceEagerHydrationData?b.mutableSourceEagerHydrationData=[c,e]:b.mutableSourceEagerHydrationData.push(c,e);return new Ud(b)};Q.render=
 function(a,b,c){if(!Vd(b))throw Error(m(200));return Wd(null,a,b,!1,c)};Q.unmountComponentAtNode=function(a){if(!Vd(a))throw Error(m(40));return a._reactRootContainer?(yb(function(){Wd(null,null,a,!1,function(){a._reactRootContainer=null;a[Ja]=null})}),!0):!1};Q.unstable_batchedUpdates=Tf;Q.unstable_renderSubtreeIntoContainer=function(a,b,c,d){if(!Vd(c))throw Error(m(200));if(null==a||void 0===a._reactInternals)throw Error(m(38));return Wd(a,b,c,!1,d)};Q.version="18.3.1-next-f1338f8080-20240426"});
 })();
-</script>
-    <script>
-    window.openLDScanner = function() {
-      document.getElementById('ld-scn-overlay').style.display = 'block';
-      document.body.style.overflow = 'hidden';
-      if (!window._scnMounted && window.LDScannerComponent) {
-        window._scnMounted = true;
-        ReactDOM.createRoot(document.getElementById('ld-scn-root'))
-                .render(React.createElement(LDScannerComponent, null));
-      }
-    };
-    window.closeLDScanner = function() {
-      document.getElementById('ld-scn-overlay').style.display = 'none';
-      document.body.style.overflow = '';
-    };
     </script>
     <script>
 const {
@@ -20779,7 +20621,7 @@ window.LDScannerComponent = LDScanner;
     <!-- ═══════════════ LANDSCAPE CHART VIEW ═══════════════ -->
     <div id="landscapeChartView">
         <div class="lcv-header">
-            <span class="lcv-title" id="lcvTitle">LIE DETECTOR — LANDSCAPE CHART</span>
+            <span class="lcv-title" id="lcvTitle">NPS Clues_1B — LANDSCAPE CHART</span>
             <span class="lcv-close" onclick="exitLandscapeChart()">[ X ] PORTRAIT</span>
         </div>
         <div class="lcv-body" id="lcvBody">
