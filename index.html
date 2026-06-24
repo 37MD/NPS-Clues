@@ -3487,7 +3487,6 @@
                     <button class="hm-tf-btn hm-period-btn active" onclick="setHmPeriod(this,'daily')">DAILY</button>
                     <button class="hm-tf-btn hm-period-btn" onclick="setHmPeriod(this,'weekly')">WEEKLY</button>
                     <button class="hm-tf-btn hm-period-btn" onclick="setHmPeriod(this,'monthly')">MONTHLY</button>
-                    <button class="hm-tf-btn" onclick="setHmTf(this,7)">1W</button>
                     <button class="hm-tf-btn" onclick="setHmTf(this,14)">2W</button>
                     <button class="hm-tf-btn" onclick="setHmTf(this,30)">1M</button>
                     <button class="hm-tf-btn" onclick="setHmTf(this,90)">3M</button>
@@ -12210,8 +12209,8 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                     const dt = hmParseDate(ds);
                     return isNaN(dt.getTime()) ? ds : String(dt.getDate()).padStart(2,'0') + '/' + String(dt.getMonth()+1).padStart(2,'0') + '/' + dt.getFullYear();
                 };
-                document.getElementById('hmRangeNavA').textContent = a.toFixed(4);
-                document.getElementById('hmRangeNavB').textContent = b.toFixed(4);
+                document.getElementById('hmRangeNavA').textContent = a.toFixed(2);
+                document.getElementById('hmRangeNavB').textContent = b.toFixed(2);
                 document.getElementById('hmRangeDays').textContent = days;
                 const retEl = document.getElementById('hmRangeReturn');
                 retEl.textContent = (retPct >= 0 ? '+' : '') + retPct.toFixed(2) + '%';
@@ -12793,7 +12792,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                     document.getElementById('hmStatDeltaVal').textContent = delta >= 0 ? '+' + delta.toFixed(1) : delta.toFixed(1);
                     document.getElementById('hmStatDeltaVal').style.color = delta >= 0 ? '#16a34a' : '#ef4444';
                     const lastNav = navs[navs.length - 1];
-                    document.getElementById('hmStatNavVal').textContent = lastNav != null ? lastNav.toFixed(4) : '—';
+                    document.getElementById('hmStatNavVal').textContent = lastNav != null ? lastNav.toFixed(2) : '—';
                     document.getElementById('hmStatSignalVal').textContent = signal;
                     document.getElementById('hmStatSignalVal').style.color = signalColor;
                     // Buy/Sell Action box
@@ -12882,7 +12881,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                         const wStr = wVal != null ? wVal.toFixed(1) : '—';
                         const eStr = eVal != null ? eVal.toFixed(1) : '—';
                         const navVal = c.navs[idx];
-                        const navStr = navVal != null ? navVal.toFixed(4) : '—';
+                        const navStr = navVal != null ? navVal.toFixed(2) : '—';
                         const lines = [
                             { t: dateStr, c: '#666' },
                             { t: 'NAV  ' + navStr, c: '#1d4ed8' },
