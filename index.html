@@ -483,9 +483,6 @@
                 border-right: 1px solid var(--border);
                 padding: 4px 10px;
             }
-                background: rgba(225,29,72,0.10);
-                font-weight: 700;
-            }
             #hmPfmSelect, #hmSchemeSelect {
                 width: 100%;
                 background: var(--surface2);
@@ -8330,7 +8327,7 @@ ${Math.abs(diff) < 0.05 ? 'Tied' : (aWins ? nameA : nameB) + ' outperforms by ' 
                 tbody.innerHTML = '';
                 if (!tradeLog.length) {
                     tbody.innerHTML =
-                        `<tr><td colspan="5"
+                        `<tr><td colspan="6"
 style="text-align:center;padding:24px 8px;color:var(--muted);">
 No trades executed yet.
 </td></tr>`;
@@ -12563,8 +12560,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                     const rsiLen = parseInt(document.getElementById('hmRsiLen').value) || 9;
                     const wmaLen = parseInt(document.getElementById('hmWmaLen').value) || 21;
                     const emaLen = parseInt(document.getElementById('hmEmaLen').value) || 3;
-                    const midLineEl = document.getElementById('hmMidLine');
-                    const midLine = midLineEl ? parseFloat(midLineEl.value) || 50 : 50;
+                    const midLine = 50;
                     const tfDays = window._hmTfDays || 1825;
                     const rsi = hmCalcRSI(viewData.map(d => d.nav), rsiLen);
                     const wma = hmCalcWMA(rsi, wmaLen);
