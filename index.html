@@ -3,7 +3,7 @@
     <head>
         <!--
         ════════════════════════════════════════════════════════════════════════
-        NPS Clues_1F  (internal codename: NPC1E, formerly NPC1B)
+        NPS Clues_1E  (internal codename: NPC1E, formerly NPC1B)
         NPS-only NAV chart · RSI Regime System · Asset Allocator · Live Cockpit
 
         FILE MAP — this is one HTML file with 18 inline script blocks, in this
@@ -29,12 +29,10 @@
           16. Service Worker registration + PWA install handling
           17. Landscape Chart View (rotated full-screen chart mode)
 
-        File history: Clues_1D → NPS-Clues_1E → NPS-Clues_1F. The 1D→1E step
-        bumped the internal codename NPC1B → NPC1E to match (embed id, export
-        filename prefix, version stamp, AI prompt text, console-log tags).
-        The 1E→1F step (this one) is a label/filename bump only — internal
-        codename stays NPC1E. Two things were deliberately LEFT AS NPC1B back
-        in the 1D→1E step, and remain so:
+        Renamed from Clues_1D → NPS-Clues_1E; internal codename bumped from
+        NPC1B → NPC1E to match (embed id, export filename prefix, version
+        stamp, AI prompt text, console-log tags). Two things were deliberately
+        LEFT AS NPC1B:
           • The IndexedDB database name ("NPC1B_PStore") — renaming it would
             silently orphan any data a returning user already has stored
             there, for zero benefit (it's never shown to the user).
@@ -45,7 +43,7 @@
         -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <title>NPS Clues_1F — NPS Only NAV Chart · NPC1E</title>
+        <title>NPS Clues_1E — NPS Only NAV Chart · NPC1E</title>
         <link rel="manifest" href="manifest.json">
         <link rel="icon" type="image/svg+xml" href="icon.svg" sizes="any">
         <link rel="icon" type="image/png" href="icon-192.png" sizes="192x192">
@@ -55,7 +53,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <meta name="apple-mobile-web-app-title" content="NPC1E">
-        <meta name="application-name" content="NPS Clues_1F">
+        <meta name="application-name" content="NPS Clues_1E">
         <meta name="description" content="NPS-only NAV chart with RSI Regime System, Asset Allocator and Live Cockpit.">
         <meta name="msapplication-TileColor" content="#00c896">
         <meta name="msapplication-TileImage" content="icons/icon-144.png">
@@ -373,10 +371,13 @@
             }
             #hilegaMilegaModal .hm-canvas-wrap {
                 width: 100%;
-                height: 320px;
+                height: 50vh;
+                min-height: 220px;
+                flex-shrink: 0;
                 position: relative;
-                border: 1px solid var(--border);
-                border-radius: var(--radius);
+                border: none;
+                border-bottom: 1px solid var(--border);
+                border-radius: 0;
                 overflow: hidden;
                 background: #fff;
             }
@@ -1459,7 +1460,7 @@
                 }
             }
             @media (max-width: 480px) {
-                #hilegaMilegaModal .hm-canvas-wrap { height: 220px; }
+                #hilegaMilegaModal .hm-canvas-wrap { height: 50vh; min-height: 200px; }
                 #hmDateRange { flex-direction: column; align-items: stretch; gap: 4px; }
                 #hmDateRange > div { width: 100%; }
                 #hmDateRange input[type="date"] { width: 100%; font-size: 0.85rem !important; padding: 6px 8px !important; }
@@ -2676,7 +2677,7 @@
             <div class="sop-header">
                 <div class="sop-header-left">
                     <span class="sop-logo">Sacred RSI Regime System · NPC1E</span>
-                    <span class="sop-title">NPS Clues_1F SOP</span>
+                    <span class="sop-title">NPS Clues_1E SOP</span>
                     <span class="sop-subtitle">Standard Operating Procedure — Buy · Sell · Monitor · Review</span>
                 </div>
                 <span class="sop-close-btn" onclick="closeSOP()">[ X ] BACK</span>
@@ -3104,7 +3105,7 @@
         <div id="setupScreen">
             <div class="setup-logo">Sacred RSI Regime System</div>
             <div class="streak-badge" id="streakBadge"></div>
-            <h1 class="setup-title">NPS Clues_1F <span onclick="openSOP()" class="version-badge-link" title="Open SOP / Operating Procedure" style="color:var(--muted);font-size:0.68rem;font-weight:400;cursor:pointer;">NPC1E 📋</span></h1>
+            <h1 class="setup-title">NPS Clues_1E <span onclick="openSOP()" class="version-badge-link" title="Open SOP / Operating Procedure" style="color:var(--muted);font-size:0.68rem;font-weight:400;cursor:pointer;">NPC1E 📋</span></h1>
 
             <div id="firstRunBanner" style="display:none;background:rgba(245,158,11,0.12);border:1.5px solid #f59e0b;border-radius:6px;padding:4px 8px;margin-bottom:3px;text-align:center;">
                 <div class="firstRunTitle" style="font-size:0.68rem;font-weight:700;color:#c97a00;margin-bottom:3px;">⚠ Storage cleared — open your backup HTML to restore</div>
@@ -3473,6 +3474,9 @@
                     <span class="modal-close-btn" onclick="document.getElementById('hilegaMilegaModal').style.display='none';document.getElementById('setupScreen').style.display='flex';">[ X ] CLOSE</span>
                 </div>
             </div>
+            <div class="hm-canvas-wrap">
+                <canvas id="hmCanvas"></canvas>
+            </div>
             <div style="flex-grow:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px;">
                 <div style="display:flex;gap:6px;align-items:center;">
                     <select id="hmPfmSelect" onchange="hmOnPfmChange()" style="flex:1;padding:6px 8px;font-size:0.58rem;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;"></select>
@@ -3533,9 +3537,6 @@
                     <button class="hm-tf-btn" onclick="setHmTf(this,1825)">5Y</button>
                     <button class="hm-tf-btn" onclick="setHmTf(this,3650)">10Y</button>
                     <button class="hm-tf-btn active" onclick="setHmTf(this,99999)">ALL</button>
-                </div>
-                <div class="hm-canvas-wrap">
-                    <canvas id="hmCanvas"></canvas>
                 </div>
                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;">
                     <div class="hm-legend">
@@ -4064,7 +4065,7 @@ border-radius:var(--radius);padding:6px 9px;">
         <div id="gameUI" style="display:none;height:100vh;flex-direction:column;">
             <header class="app-header">
                 <div class="logo">
-                    NPS Clues_1F
+                    NPS Clues_1E
                     <span id="simModeTag" style="color:var(--muted2);font-size:0.7em;margin-left:4px;font-weight:400;">V3</span>
                     <span id="simFundName" class="fund-name-tag"></span>
                 </div>
@@ -7903,7 +7904,7 @@ ${Math.abs(diff) < 0.05 ? 'Tied' : (aWins ? nameA : nameB) + ' outperforms by ' 
                 ctx.fillRect(0, 0, W, 44);
                 ctx.fillStyle = '#009e70';
                 ctx.font = 'bold 10px monospace';
-                ctx.fillText('NPS Clues_1F NPC1E · SIMULATION RESULT', 12, 16);
+                ctx.fillText('NPS Clues_1E NPC1E · SIMULATION RESULT', 12, 16);
                 ctx.fillStyle = '#304058';
                 ctx.font = '8px monospace';
                 ctx.fillText(`${getBriefFundName() || 'Fund Simulator'}`, 12, 30);
@@ -12581,7 +12582,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                     const wmaLen = parseInt(document.getElementById('hmWmaLen').value) || 21;
                     const emaLen = parseInt(document.getElementById('hmEmaLen').value) || 3;
                     const midLine = parseFloat(document.getElementById('hmMidLine').value) || 50;
-                    const tfDays = window._hmTfDays || 99999;
+                    const tfDays = window._hmTfDays || 1825;
                     const rsi = hmCalcRSI(viewData.map(d => d.nav), rsiLen);
                     const wma = hmCalcWMA(rsi, wmaLen);
                     const ema = hmCalcEMA(rsi, emaLen);
@@ -15575,7 +15576,7 @@ categories.forEach(cat => {
             ? _portfolioHoldings.map(h => `${h.ticker} (${h.weight.toFixed(1)}%)`).join(', ')
             : 'Not available';
 
-        const promptText2 = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the "NPS Clues_1F Auditor" for Indian NPS/MF funds.
+        const promptText2 = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the "NPS Clues_1E Auditor" for Indian NPS/MF funds.
 
 ════════════════════════════════════════════════════════
 AUDIT GUIDELINES — THE NPC1E RULES
@@ -17305,7 +17306,7 @@ Return a JSON object with this exact structure:
             try { ctx = gatherLeanContext(); } catch(e) { ctx = '(Fund context unavailable — open Live Cockpit first)'; }
 
             const systemPrompt =
-                'You are the NPC1E System Brain — an expert NPS/MF fund analyst embedded in the NPS Clues_1F app.\n' +
+                'You are the NPC1E System Brain — an expert NPS/MF fund analyst embedded in the NPS Clues_1E app.\n' +
                 'You analyse Indian NPS NAV data using RSI, W-RSI, regime classification (A/B/C), TSL floors, WMA20, and momentum signals.\n' +
                 'Rules: Regime A (W-RSI≥50)=Bull, B (40-50)=Transition, C (<40)=Bear. D-RSI<40=oversold BUY zone. TSL breach=SELL ALL.\n' +
                 'Answer concisely. Use ₹ for prices. Highlight BUY/SELL signals clearly. Below is the current fund data:\n\n' +
@@ -17748,7 +17749,7 @@ Return a JSON object with this exact structure:
         const batchLines = items.map((item, i) =>
             `[${i+1}] ${item.name}: W-RSI=${item.wrsi}, Regime=${item.wrsi>=50?'A (Hope)':item.wrsi>=40?'B (Watch)':'C (Fear)'}`
         ).join('\n');
-        const prompt = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the NPS Clues_1F Auditor.
+        const prompt = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the NPS Clues_1E Auditor.
 
 TASK: For EACH of the ${items.length} funds below, perform Constituent X-Ray on the fund's benchmark index.
 For each fund determine: bull_count, confirmation (CONFIRMED/MARGINAL/WEAK), sop_action, divergence_alert, psychology_audit, and reasoning.
@@ -20935,7 +20936,7 @@ window.LDScannerComponent = LDScanner;
     <!-- L. UI — Landscape chart for landscape phone orientation -->
     <div id="landscapeChartView">
         <div class="lcv-header">
-            <span class="lcv-title" id="lcvTitle">NPS Clues_1F — LANDSCAPE CHART</span>
+            <span class="lcv-title" id="lcvTitle">NPS Clues_1E — LANDSCAPE CHART</span>
             <span class="lcv-close" onclick="exitLandscapeChart()">[ X ] PORTRAIT</span>
         </div>
         <div class="lcv-body" id="lcvBody">
