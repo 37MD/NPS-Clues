@@ -2865,6 +2865,11 @@
                     </thead>
                     <tbody>
                         <tr>
+                            <td style="font-weight:700;color:#f4a261;">📡 NPS SCAN</td>
+                            <td>All 32 Direct NPS schemes scanned with Weekly + Monthly RSI(9). Columns: PFM·Scheme, Tier, NAV, <strong>Regime (A/B/C badge)</strong>, RSI, Action, Switch, W·Hilega, <strong>W·Trigger</strong> (clickable sort — Crossover bubbles to top), M·Hilega, <strong>M·Trigger</strong> (clickable sort). Sort by trigger type to instantly surface actionable Crossover/Crossunder events across all funds.</td>
+                            <td>Before any trade decision</td>
+                        </tr>
+                        <tr>
                             <td style="font-weight:700;color:var(--accent);">Regime Change Scanner</td>
                             <td>All 16 NPS schemes that crossed a regime boundary (Hope↔Watch or Watch↔Fear) in the last 5 days — W-RSI crossing 50 or 40</td>
                             <td>Daily + Sunday deep scan</td>
@@ -2907,6 +2912,10 @@
                         <tr><th>TOOL</th><th>WHAT IT DOES</th></tr>
                     </thead>
                     <tbody>
+                        <tr>
+                            <td style="font-weight:700;color:#e11d48;">📈 HILEGA-MILEGA</td>
+                            <td>RSI·WMA·EMA indicator chart for any NPS fund. Single-row controls: DAILY/WEEKLY/MONTHLY period selector merged with timeframe buttons (2W → ALL). Compact From/To date range with inline NAV, Days, and Return display. Stat boxes: RSI, WMA, EMA, Delta, NAV (row 1) + Signal, Buy/Sell Action, Switch (row 2). NAV values displayed to 2 decimal places. Use for deep-dive RSI regime analysis on individual funds.</td>
+                        </tr>
                         <tr>
                             <td style="font-weight:700;color:var(--accent);">Live Cockpit</td>
                             <td>Real-time 2-pane canvas chart for any fund — Price pane (WMA20, LOWESS TSL floor, ChoCh swing markers, PC/NC pattern overlays, anchor-EMA) + Sacred Momentum RSI pane below. Shows regime badge (A/B/C), Delta Heatmap strip (F7), Live Benchmark Estimate (intraday Yahoo Finance proxy — shows today's estimated NAV change), alpha strip vs Nifty 50, timeframe buttons (3D → ALL), pinch-zoom, and HUD crosshair tooltip. Data Freshness Badge shows ● LIVE (fresh fetch) or CACHED · Xm ago (IDB hit). Works offline via IndexedDB cache (12 h TTL). Entry point for all daily checks.</td>
