@@ -443,7 +443,7 @@
                 color: var(--muted);
                 letter-spacing: 0.06em;
             }
-            #hmTfRow {
+            #hmBtnRow {
                 display: flex;
                 justify-content: center;
                 gap: 0;
@@ -455,7 +455,7 @@
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
             }
-            #hmTfRow .hm-tf-btn {
+            #hmBtnRow .hm-tf-btn {
                 background: transparent;
                 border: none;
                 color: var(--muted);
@@ -469,45 +469,20 @@
                 font-weight: 400;
                 white-space: nowrap;
             }
-            #hmTfRow .hm-tf-btn:hover {
+            #hmBtnRow .hm-tf-btn:hover {
                 color: var(--text);
                 background: rgba(0,0,0,0.04);
             }
-            #hmTfRow .hm-tf-btn.active {
+            #hmBtnRow .hm-tf-btn.active {
                 color: #e11d48;
                 background: rgba(225,29,72,0.10);
                 font-weight: 700;
             }
-            #hmPeriodRow {
-                display: flex;
-                justify-content: center;
-                gap: 0;
-                background: var(--surface);
-                border: 1px solid var(--border);
-                border-radius: var(--radius);
-                padding: 3px 4px;
-                flex-shrink: 0;
-            }
-            #hmPeriodRow .hm-tf-btn {
-                background: transparent;
-                border: none;
-                color: var(--muted);
-                font-family: var(--mono);
-                font-size: 0.58rem;
+            #hmBtnRow .hm-period-btn {
+                font-weight: 700;
+                border-right: 1px solid var(--border);
                 padding: 4px 10px;
-                cursor: pointer;
-                transition: all 0.15s;
-                letter-spacing: 0.04em;
-                border-radius: var(--radius-sm);
-                font-weight: 400;
-                white-space: nowrap;
             }
-            #hmPeriodRow .hm-tf-btn:hover {
-                color: var(--text);
-                background: rgba(0,0,0,0.04);
-            }
-            #hmPeriodRow .hm-tf-btn.active {
-                color: #e11d48;
                 background: rgba(225,29,72,0.10);
                 font-weight: 700;
             }
@@ -1473,8 +1448,7 @@
                 .hm-input-group { min-width: 0; flex: 1 1 0; }
                 .hm-input-group label { font-size: 0.46rem; }
                 .hm-input-group input { font-size: 0.58rem; padding: 5px 4px; }
-                #hmTfRow .hm-tf-btn { font-size: 0.50rem; padding: 5px 6px; }
-                #hmPeriodRow .hm-tf-btn { font-size: 0.50rem; padding: 5px 6px; }
+                #hmBtnRow .hm-tf-btn { font-size: 0.50rem; padding: 5px 6px; }
                 .hm-legend { font-size: 0.44rem; gap: 8px; }
                 .hm-line-label { font-size: 0.42rem; }
                 #hmFundLabel { font-size: 0.44rem !important; }
@@ -3516,12 +3490,10 @@
                         <button onclick="drawHilegaMilega()" style="background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);padding:4px 10px;font-family:var(--mono);font-size:0.58rem;font-weight:700;cursor:pointer;letter-spacing:0.06em;">GO</button>
                     </div>
                 </div>
-                <div id="hmPeriodRow">
-                    <button class="hm-tf-btn active" onclick="setHmPeriod(this,'daily')">DAILY</button>
-                    <button class="hm-tf-btn" onclick="setHmPeriod(this,'weekly')">WEEKLY</button>
-                    <button class="hm-tf-btn" onclick="setHmPeriod(this,'monthly')">MONTHLY</button>
-                </div>
-                <div id="hmTfRow">
+                <div id="hmBtnRow">
+                    <button class="hm-tf-btn hm-period-btn active" onclick="setHmPeriod(this,'daily')">DAILY</button>
+                    <button class="hm-tf-btn hm-period-btn" onclick="setHmPeriod(this,'weekly')">WEEKLY</button>
+                    <button class="hm-tf-btn hm-period-btn" onclick="setHmPeriod(this,'monthly')">MONTHLY</button>
                     <button class="hm-tf-btn" onclick="setHmTf(this,7)">1W</button>
                     <button class="hm-tf-btn" onclick="setHmTf(this,14)">2W</button>
                     <button class="hm-tf-btn" onclick="setHmTf(this,30)">1M</button>
@@ -3532,7 +3504,7 @@
                     <button class="hm-tf-btn" onclick="setHmTf(this,1095)">3Y</button>
                     <button class="hm-tf-btn" onclick="setHmTf(this,1825)">5Y</button>
                     <button class="hm-tf-btn" onclick="setHmTf(this,3650)">10Y</button>
-                    <button class="hm-tf-btn active" onclick="setHmTf(this,99999)">ALL</button>
+                    <button class="hm-tf-btn" onclick="setHmTf(this,99999)">ALL</button>
                 </div>
                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;">
                     <div class="hm-legend">
@@ -12259,24 +12231,24 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                 if (period === 'monthly' && days < 365) days = 365;
                 window._hmTfDays = days;
                 localStorage.setItem('hm_tf_days', days);
-                document.querySelectorAll('#hmTfRow .hm-tf-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('#hmBtnRow .hm-tf-btn:not(.hm-period-btn)').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 drawHilegaMilega();
             }
             function setHmPeriod(btn, period) {
                 window._hmPeriod = period;
                 localStorage.setItem('hm_period', period);
-                document.querySelectorAll('#hmPeriodRow .hm-tf-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('#hmBtnRow .hm-period-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 const curTf = window._hmTfDays || 99999;
                 if (period === 'weekly' && curTf < 90) {
                     window._hmTfDays = 90;
-                    document.querySelectorAll('#hmTfRow .hm-tf-btn').forEach(b => b.classList.remove('active'));
-                    document.querySelector('#hmTfRow .hm-tf-btn:nth-child(4)').classList.add('active');
+                    document.querySelectorAll('#hmBtnRow .hm-tf-btn:not(.hm-period-btn)').forEach(b => b.classList.remove('active'));
+                    document.querySelector('#hmBtnRow .hm-tf-btn:nth-child(7)').classList.add('active');
                 } else if (period === 'monthly' && curTf < 365) {
                     window._hmTfDays = 365;
-                    document.querySelectorAll('#hmTfRow .hm-tf-btn').forEach(b => b.classList.remove('active'));
-                    document.querySelector('#hmTfRow .hm-tf-btn:nth-child(6)').classList.add('active');
+                    document.querySelectorAll('#hmBtnRow .hm-tf-btn:not(.hm-period-btn)').forEach(b => b.classList.remove('active'));
+                    document.querySelector('#hmBtnRow .hm-tf-btn:nth-child(9)').classList.add('active');
                 }
                 drawHilegaMilega();
             }
@@ -12336,25 +12308,24 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                 const savedPeriod = localStorage.getItem('hm_period');
                 window._hmTfDays = savedTf ? parseInt(savedTf) : 99999;
                 window._hmPeriod = savedPeriod || 'daily';
-                document.querySelectorAll('#hmTfRow .hm-tf-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('#hmPeriodRow .hm-tf-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('#hmBtnRow .hm-tf-btn').forEach(b => b.classList.remove('active'));
                 // Highlight active buttons based on saved values
-                var tfBtns = document.querySelectorAll('#hmTfRow .hm-tf-btn');
+                var tfBtns = document.querySelectorAll('#hmBtnRow .hm-tf-btn:not(.hm-period-btn)');
                 tfBtns.forEach(b => {
                     var onclick = b.getAttribute('onclick') || '';
                     if (onclick.includes(window._hmTfDays)) b.classList.add('active');
                 });
-                if (!document.querySelector('#hmTfRow .hm-tf-btn.active')) {
-                    var tfAll = document.querySelector('#hmTfRow .hm-tf-btn:last-child');
+                if (!document.querySelector('#hmBtnRow .hm-tf-btn:not(.hm-period-btn).active')) {
+                    var tfAll = document.querySelector('#hmBtnRow .hm-tf-btn:not(.hm-period-btn):last-child');
                     if (tfAll) tfAll.classList.add('active');
                 }
-                var pdBtns = document.querySelectorAll('#hmPeriodRow .hm-tf-btn');
+                var pdBtns = document.querySelectorAll('#hmBtnRow .hm-period-btn');
                 pdBtns.forEach(b => {
                     var onclick = b.getAttribute('onclick') || '';
                     if (onclick.includes("'" + window._hmPeriod + "'")) b.classList.add('active');
                 });
-                if (!document.querySelector('#hmPeriodRow .hm-tf-btn.active')) {
-                    var pdDaily = document.querySelector('#hmPeriodRow .hm-tf-btn[onclick*="\'daily\'"]');
+                if (!document.querySelector('#hmBtnRow .hm-period-btn.active')) {
+                    var pdDaily = document.querySelector('#hmBtnRow .hm-period-btn[onclick*="\'daily\'"]');
                     if (pdDaily) pdDaily.classList.add('active');
                 }
                 const now = new Date();
