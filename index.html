@@ -3,17 +3,17 @@
     <head>
         <!--
         ════════════════════════════════════════════════════════════════════════
-        NPS Clues_1E  (internal codename: NPC1E, formerly NPC1B)
+        NPS Clues_1G  (internal codename: NPC1G, formerly NPC1G)
         NPS-only NAV chart · RSI Regime System · Asset Allocator · Live Cockpit
 
         FILE MAP — this is one HTML file with 18 inline script blocks, in this
         document order. Search for the quoted header comment to jump to a block.
 
           1.  "Auto-restore from embed on startup"     — restores config from
-              the NPC1E_EMBED JSON blob above (for self-contained backup exports)
+              the NPC1G_EMBED JSON blob above (for self-contained backup exports)
           2.  "PSTORAGE — IndexedDB-backed Persistent Storage Layer"
               — survives Android Chrome's background localStorage clears
-          3.  "NPC1E — MAIN APPLICATION SCRIPT"         — the core app (~9000
+          3.  "NPC1G — MAIN APPLICATION SCRIPT"         — the core app (~9000
               lines). Has its own internal A–G section map; see its header.
           4.  "_renderAlertResults"                     — Alert Summary rendering
           5.  BAF NPS Sandbox / Switch Bridge engine (injectBafNpsUI)
@@ -29,21 +29,21 @@
           16. Service Worker registration + PWA install handling
           17. Landscape Chart View (rotated full-screen chart mode)
 
-        Renamed from Clues_1D → NPS-Clues_1E; internal codename bumped from
-        NPC1B → NPC1E to match (embed id, export filename prefix, version
+        Renamed from Clues_1D → NPS-Clues_1G; internal codename bumped from
+        NPC1G → NPC1G to match (embed id, export filename prefix, version
         stamp, AI prompt text, console-log tags). Two things were deliberately
-        LEFT AS NPC1B:
-          • The IndexedDB database name ("NPC1B_PStore") — renaming it would
+        LEFT AS NPC1G:
+          • The IndexedDB database name ("NPC1G_PStore") — renaming it would
             silently orphan any data a returning user already has stored
             there, for zero benefit (it's never shown to the user).
-          • "NPC1B_EMBED" inside the legacy-import fallback chain — kept so
+          • "NPC1G_EMBED" inside the legacy-import fallback chain — kept so
             backup/config files exported by the 1B/1D-era app can still be
             re-imported into this version.
         ════════════════════════════════════════════════════════════════════════
         -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <title>NPS Clues_1E — NPS Only NAV Chart · NPC1E</title>
+        <title>NPS Clues_1G — NPS Only NAV Chart · NPC1G</title>
         <link rel="manifest" href="manifest.json">
         <link rel="icon" type="image/svg+xml" href="icon.svg" sizes="any">
         <link rel="icon" type="image/png" href="icon-192.png" sizes="192x192">
@@ -52,8 +52,8 @@
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-        <meta name="apple-mobile-web-app-title" content="NPC1E">
-        <meta name="application-name" content="NPS Clues_1E">
+        <meta name="apple-mobile-web-app-title" content="NPC1G">
+        <meta name="application-name" content="NPS Clues_1G">
         <meta name="description" content="NPS-only NAV chart with RSI Regime System, Asset Allocator and Live Cockpit.">
         <meta name="msapplication-TileColor" content="#00c896">
         <meta name="msapplication-TileImage" content="icons/icon-144.png">
@@ -2649,8 +2649,8 @@
         <div id="sopModal">
             <div class="sop-header">
                 <div class="sop-header-left">
-                    <span class="sop-logo">Sacred RSI Regime System · NPC1E</span>
-                    <span class="sop-title">NPS Clues_1E SOP</span>
+                    <span class="sop-logo">Sacred RSI Regime System · NPC1G</span>
+                    <span class="sop-title">NPS Clues_1G SOP</span>
                     <span class="sop-subtitle">Standard Operating Procedure — Buy · Sell · Monitor · Review</span>
                 </div>
                 <span class="sop-close-btn" onclick="closeSOP()">[ X ] BACK</span>
@@ -3066,7 +3066,7 @@
                     Let the STCG clock run.&nbsp; Everything else is noise."
                 </div>
                 <div class="sop-note" style="text-align:center;margin-top:8px;">
-                    Sacred RSI Regime System · NPC1E &nbsp;|&nbsp; Data: npsnav.in &nbsp;|&nbsp;
+                    Sacred RSI Regime System · NPC1G &nbsp;|&nbsp; Data: npsnav.in &nbsp;|&nbsp;
                     STCG: 20% on gains held &lt; 365 days &nbsp;|&nbsp; For simulation and discipline training only.
                 </div>
             </div>
@@ -3078,7 +3078,7 @@
         <div id="setupScreen">
             <div class="setup-logo">Sacred RSI Regime System</div>
             <div class="streak-badge" id="streakBadge"></div>
-            <h1 class="setup-title">NPS Clues_1E <span onclick="openSOP()" class="version-badge-link" title="Open SOP / Operating Procedure" style="color:var(--muted);font-size:0.68rem;font-weight:400;cursor:pointer;">NPC1E 📋</span></h1>
+            <h1 class="setup-title">NPS Clues_1G <span onclick="openSOP()" class="version-badge-link" title="Open SOP / Operating Procedure" style="color:var(--muted);font-size:0.68rem;font-weight:400;cursor:pointer;">NPC1G 📋</span></h1>
 
             <div id="firstRunBanner" style="display:none;background:rgba(245,158,11,0.12);border:1.5px solid #f59e0b;border-radius:6px;padding:4px 8px;margin-bottom:3px;text-align:center;">
                 <div class="firstRunTitle" style="font-size:0.68rem;font-weight:700;color:#c97a00;margin-bottom:3px;">⚠ Storage cleared — open your backup HTML to restore</div>
@@ -3554,25 +3554,26 @@
                 </div>
             </div>
             <div style="flex:1;overflow:auto;padding:6px;">
-                <table id="npsScanTable" style="width:100%;min-width:920px;border-collapse:collapse;font-size:0.56rem;font-family:var(--mono);">
+                <table id="npsScanTable" style="width:100%;min-width:1000px;border-collapse:collapse;font-size:0.56rem;font-family:var(--mono);">
                     <thead>
                         <tr style="border-bottom:1.5px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:2;">
                             <th style="text-align:left;padding:6px 4px;color:var(--muted);font-weight:600;letter-spacing:0.04em;">PFM · SCHEME</th>
                             <th style="text-align:center;padding:6px 3px;color:var(--muted);font-weight:600;">TIER</th>
                             <th style="text-align:right;padding:6px 4px;color:var(--muted);font-weight:600;">NAV</th>
+                            <th style="text-align:center;padding:6px 4px;color:var(--muted);font-weight:600;">REGIME</th>
                             <th style="text-align:center;padding:6px 4px;color:var(--muted);font-weight:600;">RSI</th>
                             <th style="text-align:center;padding:6px 4px;color:var(--muted);font-weight:600;">ACTION</th>
                             <th style="text-align:center;padding:6px 4px;color:var(--muted);font-weight:600;">SWITCH</th>
                             <!-- WEEKLY HILEGA group — boxed in a thick blue border (left/top/right; see _npsScanRenderTable for the matching body-row borders) -->
                             <th style="text-align:center;padding:6px 4px;color:#1d4ed8;font-weight:700;border-left:3px solid #1d4ed8;border-top:3px solid #1d4ed8;background:rgba(29,78,216,0.07);">W·HILEGA</th>
-                            <th style="text-align:center;padding:6px 4px;color:#1d4ed8;font-weight:700;border-right:3px solid #1d4ed8;border-top:3px solid #1d4ed8;background:rgba(29,78,216,0.07);">W·TRIGGER</th>
+                            <th id="npsScanSortW" onclick="npsScanSort('wTrigger')" style="text-align:center;padding:6px 4px;color:#1d4ed8;font-weight:700;border-right:3px solid #1d4ed8;border-top:3px solid #1d4ed8;background:rgba(29,78,216,0.07);cursor:pointer;user-select:none;">W·TRIGGER <span id="npsScanSortWArrow" style="font-size:0.5rem;">▾</span></th>
                             <!-- MONTHLY HILEGA group — boxed in a thick purple border -->
                             <th style="text-align:center;padding:6px 4px;color:#9333ea;font-weight:700;border-left:3px solid #9333ea;border-top:3px solid #9333ea;background:rgba(147,51,234,0.07);">M·HILEGA</th>
-                            <th style="text-align:center;padding:6px 4px;color:#9333ea;font-weight:700;border-right:3px solid #9333ea;border-top:3px solid #9333ea;background:rgba(147,51,234,0.07);">M·TRIGGER</th>
+                            <th id="npsScanSortM" onclick="npsScanSort('mTrigger')" style="text-align:center;padding:6px 4px;color:#9333ea;font-weight:700;border-right:3px solid #9333ea;border-top:3px solid #9333ea;background:rgba(147,51,234,0.07);cursor:pointer;user-select:none;">M·TRIGGER <span id="npsScanSortMArrow" style="font-size:0.5rem;">▾</span></th>
                         </tr>
                     </thead>
                     <tbody id="npsScanBody">
-                        <tr><td colspan="10" style="text-align:center;padding:20px;color:var(--muted);">Tap NPS SCAN to begin…</td></tr>
+                        <tr><td colspan="11" style="text-align:center;padding:20px;color:var(--muted);">Tap NPS SCAN to begin…</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -3622,7 +3623,7 @@
                 </div>
                 <div id="switchBridgeNpsGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;"></div>
             </div>
-            <!-- ── NPC1E: Watchlist Backup / Restore ─────────────────── -->
+            <!-- ── NPC1G: Watchlist Backup / Restore ─────────────────── -->
             <div id="wlBackupBar" style="flex-shrink:0;padding:8px 8px 10px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px;">
                 <div style="display:flex;gap:6px;">
                     <button onclick="_wlBackup()" style="flex:1;padding:9px 4px;font-size:0.58rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;font-family:var(--mono);background:rgba(168,85,247,0.1);border:1.5px solid #a855f7;border-radius:6px;color:#a855f7;cursor:pointer;">
@@ -4025,7 +4026,7 @@ border-radius:var(--radius);padding:6px 9px;">
         <div id="gameUI" style="display:none;height:100vh;flex-direction:column;">
             <header class="app-header">
                 <div class="logo">
-                    NPS Clues_1E
+                    NPS Clues_1G
                     <span id="simModeTag" style="color:var(--muted2);font-size:0.7em;margin-left:4px;font-weight:400;">V3</span>
                     <span id="simFundName" class="fund-name-tag"></span>
                 </div>
@@ -4447,14 +4448,14 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                 </div>
             </div>
         </div>
-        <!-- NPC1E: Self-restoring config store — base64 encoded, written by BACKUP, read on startup -->
-        <script type="application/json" id="NPC1E_EMBED">null</script>
+        <!-- NPC1G: Self-restoring config store — base64 encoded, written by BACKUP, read on startup -->
+        <script type="application/json" id="NPC1G_EMBED">null</script>
         <script>
             'use strict';
             // Auto-restore from embed on startup (fires before main script)
             (function _autoRestoreFromEmbed() {
                 try {
-                    const embedEl = document.getElementById('NPC1E_EMBED');
+                    const embedEl = document.getElementById('NPC1G_EMBED');
                     if (!embedEl) return;
                     const raw = (embedEl.textContent || embedEl.innerText || '').trim();
                     if (!raw || raw === 'null') return;
@@ -4468,7 +4469,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                 } catch(e) { /* silent */ }
             })();
         </script>
-        <!-- NPC1E: IndexedDB permanent watchlist + fund-box storage — survives Chrome background clearing -->
+        <!-- NPC1G: IndexedDB permanent watchlist + fund-box storage — survives Chrome background clearing -->
         <script>
             // ════════════════════════════════════════════════════════════════════════
             //  PSTORAGE — IndexedDB-backed Persistent Storage Layer
@@ -4485,7 +4486,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
             //      window.PStorage.getAll() → Promise<{key:value,...}>
             // Falls back gracefully to localStorage if IDB unavailable.
             window.PStorage = (() => {
-                const DB_NAME = 'NPC1B_PStore';
+                const DB_NAME = 'NPC1G_PStore';
                 const DB_VER  = 1;
                 const STORE   = 'kv';
                 let _db = null;
@@ -4592,7 +4593,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         // Hide the "storage cleared" banner if it was shown
                         const banner = document.getElementById('firstRunBanner');
                         if (banner) banner.style.display = 'none';
-                        console.log('[NPC1E] IDB→LS sync: restored', restored, 'keys');
+                        console.log('[NPC1G] IDB→LS sync: restored', restored, 'keys');
                     }
                 }).catch(() => {});
             })();
@@ -4626,7 +4627,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
             // instead of swallowing it. Default off — zero behavior change.
             window.DEBUG_SILENT_CATCHES = window.DEBUG_SILENT_CATCHES || false;
             // ════════════════════════════════════════════════════════════════════════════════
-            //  NPC1E — MAIN APPLICATION SCRIPT
+            //  NPC1G — MAIN APPLICATION SCRIPT
             // ════════════════════════════════════════════════════════════════════════════════
             //  Structure:
             //    A. DATA ACQUISITION  — API fetchers, caching, IndexedDB, localStorage sync
@@ -5324,7 +5325,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         _sbEl.textContent = `Updated: ${_ist.toISOString().replace('T',' ').slice(0,16)} IST`;
                     }
                 } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
-                // NPC1E: banner stays visible — never auto-hide
+                // NPC1G: banner stays visible — never auto-hide
             }
             function _getPfmRecommendation() {
                 try {
@@ -5357,7 +5358,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         const j = raw ? JSON.parse(raw) : null;
                         if (j && j.switches) return j;
                     } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
-                    return { version: 'NPC1E', switches: {}, lastUpdated: 0 };
+                    return { version: 'NPC1G', switches: {}, lastUpdated: 0 };
                 },
                 save(j) {
                     try {
@@ -5461,7 +5462,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
             ];
             // Embed IDs used by this app across versions, newest first, so a
             // backup file exported by ANY past version can still be imported.
-            const _CONFIG_EMBED_FALLBACK_IDS = ['NPC1E_EMBED', 'NPC1B_EMBED', 'LD251_EMBED', 'LD250_EMBED', 'LD249A_EMBED', 'LD247_EMBED'];
+            const _CONFIG_EMBED_FALLBACK_IDS = ['NPC1G_EMBED', 'NPC1G_EMBED', 'LD251_EMBED', 'LD250_EMBED', 'LD249A_EMBED', 'LD247_EMBED'];
             function _buildConfigBlob() {
                 const blob = {};
                 CONFIG_KEYS.forEach(k => {
@@ -5474,11 +5475,11 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                     const v = localStorage.getItem(prefix + _todayKey);
                     if (v !== null) blob[prefix + _todayKey] = v;
                 });
-                blob['ld_last_version'] = 'NPC1E';
+                blob['ld_last_version'] = 'NPC1G';
                 return blob;
             }
             // Bakes the current config into a downloadable, self-contained HTML
-            // backup (replaces the NPC1E_EMBED script's contents) and mirrors
+            // backup (replaces the NPC1G_EMBED script's contents) and mirrors
             // every key into IndexedDB so the restore point survives an Android
             // Chrome background localStorage clear.
             function _exportConfigBackup(statusElId) {
@@ -5487,12 +5488,12 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                     const configB64 = btoa(unescape(encodeURIComponent(JSON.stringify(blob))));
                     const currentHtml = document.documentElement.outerHTML;
                     const newHtml = currentHtml.replace(
-                        /(<script[^>]*id="NPC1E_EMBED"[^>]*>)[\s\S]*?(<\/script>)/,
+                        /(<script[^>]*id="NPC1G_EMBED"[^>]*>)[\s\S]*?(<\/script>)/,
                         (_, open, close) => open + configB64 + close
                     );
                     const wl = JSON.parse(blob['ld_watchlist'] || '[]');
                     const date = new Date(Date.now()+5.5*3600000).toISOString().slice(0,10);
-                    const fname = `NPC1E_${date}_${wl.length}funds.html`;
+                    const fname = `NPC1G_${date}_${wl.length}funds.html`;
                     const a = document.createElement('a');
                     a.href = 'data:text/html;charset=utf-8,' + encodeURIComponent(newHtml);
                     a.download = fname;
@@ -5559,7 +5560,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         window.PStorage.set(fk, blob[fk]).catch(()=>{});
                     }
                 });
-                localStorage.setItem('ld_last_version', 'NPC1E');
+                localStorage.setItem('ld_last_version', 'NPC1G');
                 try { _watchlist = JSON.parse(localStorage.getItem('ld_watchlist') || '[]'); } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 const wl = _watchlist.length;
                 const hasKey = !!localStorage.getItem('ld_gemini_api_key');
@@ -5597,7 +5598,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
             window._configBackupImport = _configBackupImport;
             // First-run check: show banner if storage cleared
             (function _checkFirstRun() {
-                localStorage.setItem('ld_last_version', 'NPC1E');
+                localStorage.setItem('ld_last_version', 'NPC1G');
                 const hasKey = !!localStorage.getItem('ld_gemini_api_key');
                 const hasWl  = (JSON.parse(localStorage.getItem('ld_watchlist')||'[]')).length > 0;
                 if (!hasKey && !hasWl) {
@@ -5607,7 +5608,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         const idbHasWl  = (() => { try { return (JSON.parse(all['ld_watchlist']||'[]')).length > 0; } catch(_) { return false; } })();
                         if (idbHasKey || idbHasWl) {
                             // IDB intact — restore silently, no banner needed
-                            console.log('[NPC1E] Storage cleared but IDB intact — auto-restoring');
+                            console.log('[NPC1G] Storage cleared but IDB intact — auto-restoring');
                         } else {
                             setTimeout(() => {
                                 const banner = document.getElementById('firstRunBanner');
@@ -7864,7 +7865,7 @@ ${Math.abs(diff) < 0.05 ? 'Tied' : (aWins ? nameA : nameB) + ' outperforms by ' 
                 ctx.fillRect(0, 0, W, 44);
                 ctx.fillStyle = '#009e70';
                 ctx.font = 'bold 10px monospace';
-                ctx.fillText('NPS Clues_1E NPC1E · SIMULATION RESULT', 12, 16);
+                ctx.fillText('NPS Clues_1G NPC1G · SIMULATION RESULT', 12, 16);
                 ctx.fillStyle = '#304058';
                 ctx.font = '8px monospace';
                 ctx.fillText(`${getBriefFundName() || 'Fund Simulator'}`, 12, 30);
@@ -7925,11 +7926,11 @@ ${Math.abs(diff) < 0.05 ? 'Tied' : (aWins ? nameA : nameB) + ' outperforms by ' 
                 ctx.fillRect(0, 186, W, 1);
                 ctx.fillStyle = '#b0bece';
                 ctx.font = '7px monospace';
-                ctx.fillText('Sacred RSI Regime System · NPC1E', 12, 200);
+                ctx.fillText('Sacred RSI Regime System · NPC1G', 12, 200);
                 const streak = _streak.count;
                 if (streak > 0) ctx.fillText(`🔥 ${streak}-session streak`, W - 110, 200);
                 const link = document.createElement('a');
-                link.download = `NPC1E-${getBriefFundName().replace(/\s+/g, '_') || 'result'}.png`;
+                link.download = `NPC1G-${getBriefFundName().replace(/\s+/g, '_') || 'result'}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
             }
@@ -9451,7 +9452,7 @@ This is exactly how the system is meant to be played.
                 document.getElementById('liveAnalyticsModal').style.display = 'none';
                 initGame('custom', startDate, endDate);
             }
-            // NPC1E: Auto-add Investment Switch Bridge recommended funds to Watchlist
+            // NPC1G: Auto-add Investment Switch Bridge recommended funds to Watchlist
             function _autoAddSwitchBridgeToWatchlist() {
                 let bridge = {};
                 try {
@@ -9481,7 +9482,7 @@ This is exactly how the system is meant to be played.
 
             function openWatchlist() {
                 if (_watchlistRefreshTimer) { clearInterval(_watchlistRefreshTimer); _watchlistRefreshTimer = null; }
-                _autoAddSwitchBridgeToWatchlist(); // NPC1E: auto-add Switch Bridge funds
+                _autoAddSwitchBridgeToWatchlist(); // NPC1G: auto-add Switch Bridge funds
                 document.getElementById('setupScreen').style.display = 'none';
                 document.getElementById('watchlistModal').style.display = 'flex';
                 renderWatchlistStubs();
@@ -12328,12 +12329,24 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                 drawHilegaMilega();
             }
             let _npsScanToken = 0;
+            let _npsScanSortKey = null;
+            let _npsScanResults = [];
+            function npsScanSort(key) {
+                if (_npsScanSortKey === key) { _npsScanSortKey = null; }
+                else { _npsScanSortKey = key; }
+                document.getElementById('npsScanSortWArrow').textContent = _npsScanSortKey === 'wTrigger' ? '▴' : '▾';
+                document.getElementById('npsScanSortMArrow').textContent = _npsScanSortKey === 'mTrigger' ? '▴' : '▾';
+                document.getElementById('npsScanSortW').style.background = _npsScanSortKey === 'wTrigger' ? 'rgba(29,78,216,0.18)' : 'rgba(29,78,216,0.07)';
+                document.getElementById('npsScanSortM').style.background = _npsScanSortKey === 'mTrigger' ? 'rgba(147,51,234,0.18)' : 'rgba(147,51,234,0.07)';
+                const tbody = document.getElementById('npsScanBody');
+                _npsScanRenderTable(tbody, _npsScanResults);
+            }
             async function openNpsScan() {
                 document.getElementById('setupScreen').style.display = 'none';
                 document.getElementById('npsScanModal').style.display = 'flex';
                 const tbody = document.getElementById('npsScanBody');
                 const countEl = document.getElementById('npsScanCount');
-                tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:16px;color:#f4a261;font-weight:600;">⏳ Scanning 32 schemes…</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:16px;color:#f4a261;font-weight:600;">⏳ Scanning 32 schemes…</td></tr>';
                 countEl.textContent = '0/32';
                 const token = ++_npsScanToken;
                 const allItems = [];
@@ -12345,7 +12358,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                     const batch = allItems.slice(i, i + BATCH);
                     const promises = batch.map(async (item) => {
                         const tier = item.name.includes('Tier II') ? 'II' : 'I';
-                        const insufficient = { ...item, nav: null, rsi: 50, wma: 50, ema: 50, tier, action: 'ERR', actionColor: '#999', switchTxt: '—', switchColor: '#999', wHilega: _hmActionComment([], [], []), wTrigger: _hmTriggerStatus([]), mHilega: _hmActionComment([], [], []), mTrigger: _hmTriggerStatus([]) };
+                        const insufficient = { ...item, nav: null, rsi: 50, wma: 50, ema: 50, tier, regime: 'B', action: 'ERR', actionColor: '#999', switchTxt: '—', switchColor: '#999', wHilega: _hmActionComment([], [], []), wTrigger: _hmTriggerStatus([]), mHilega: _hmActionComment([], [], []), mTrigger: _hmTriggerStatus([]) };
                         try {
                             const url = `https://npsnav.in/api/historical/${item.code}`;
                             const res = await fetch(url);
@@ -12358,6 +12371,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                             const wmaArr = hmCalcWMA(rsiArr, 21);
                             const emaArr = hmCalcEMA(rsiArr, 3);
                             const lastRsi = rsiArr[rsiArr.length - 1];
+                            const regime = lastRsi >= 50 ? 'A' : lastRsi >= 40 ? 'B' : 'C';
                             const lastWma = wmaArr[wmaArr.length - 1] || 50;
                             const lastEma = emaArr[emaArr.length - 1] || 50;
                             const lastNav = navs[navs.length - 1];
@@ -12389,7 +12403,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                                 mHilega = _hmActionComment(mRsiArr, mWmaArr, mEmaArr);
                                 mTrigger = _hmTriggerStatus(mRsiArr);
                             }
-                            return { ...item, nav: lastNav, rsi: lastRsi, wma: lastWma, ema: lastEma, tier, action, actionColor, switchTxt, switchColor, wHilega, wTrigger, mHilega, mTrigger };
+                            return { ...item, nav: lastNav, rsi: lastRsi, wma: lastWma, ema: lastEma, tier, regime, action, actionColor, switchTxt, switchColor, wHilega, wTrigger, mHilega, mTrigger };
                         } catch(e) {
                             return { ...insufficient, err: e.message };
                         }
@@ -12397,18 +12411,17 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                     const batchResults = await Promise.all(promises);
                     results.push(...batchResults);
                     countEl.textContent = `${results.length}/32`;
+                    _npsScanResults = results;
                     _npsScanRenderTable(tbody, results);
                 }
             }
             function _npsScanRenderTable(tbody, results) {
                 let html = '';
-                // Primary sort: WEEKLY RSI(9)-vs-50 trigger rank — Crossover and
-                // Crossunder (the actionable, just-happened events) bubble to the
-                // top, then funds already sitting Above 50, then Below.
-                // Secondary/tertiary: PFM name then Tier, just for stable ordering
-                // within a tied trigger rank (not part of the requested priority).
+                // Sort logic: user-clicked trigger column sorts by that trigger's rank
+                // (Crossover→Crossunder→Above→Below). Default: W-Trigger rank.
+                const sortKey = _npsScanSortKey || 'wTrigger';
                 const sorted = results.slice().sort((a, b) => {
-                    const ra = a.wTrigger ? a.wTrigger.rank : 4, rb = b.wTrigger ? b.wTrigger.rank : 4;
+                    const ra = a[sortKey] ? a[sortKey].rank : 4, rb = b[sortKey] ? b[sortKey].rank : 4;
                     if (ra !== rb) return ra - rb;
                     const pf = a.pfm.localeCompare(b.pfm);
                     if (pf !== 0) return pf;
@@ -12418,7 +12431,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                 for (const r of sorted) {
                     const rsiColor = r.rsi > 50 ? '#009e70' : r.rsi < 50 ? '#c8102e' : '#f59e0b';
                     const rsiBg = r.rsi > 50 ? 'rgba(0,158,112,0.12)' : r.rsi < 50 ? 'rgba(200,16,46,0.12)' : 'rgba(245,158,11,0.12)';
-                    const navStr = r.nav != null ? r.nav.toFixed(4) : '—';
+                    const navStr = r.nav != null ? r.nav.toFixed(2) : '—';
                     const rsiStr = r.rsi != null ? r.rsi.toFixed(1) : '—';
                     const schemeShort = r.name.replace(/Tier [IC]/, '').trim();
                     const wH = r.wHilega || { text: '—', color: '#999' };
@@ -12429,6 +12442,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                         <td style="padding:5px 4px;color:var(--text);"><span style="color:#f4a261;font-weight:700;">${r.pfm}</span> <span style="color:var(--muted);font-size:0.5rem;">${schemeShort}</span></td>
                         <td style="text-align:center;padding:5px 3px;color:var(--muted);">${r.tier}</td>
                         <td style="text-align:right;padding:5px 4px;font-weight:600;color:#1d4ed8;">${navStr}</td>
+                        <td style="text-align:center;padding:5px 4px;"><span style="background:${r.regime === 'A' ? 'rgba(0,158,112,0.12)' : r.regime === 'B' ? 'rgba(245,158,11,0.12)' : 'rgba(200,16,46,0.12)'};color:${r.regime === 'A' ? '#009e70' : r.regime === 'B' ? '#f59e0b' : '#c8102e'};padding:2px 6px;border-radius:4px;font-weight:700;">${r.regime}</span></td>
                         <td style="text-align:center;padding:5px 4px;"><span style="background:${rsiBg};color:${rsiColor};padding:2px 6px;border-radius:4px;font-weight:700;">${rsiStr}</span></td>
                         <td style="text-align:center;padding:5px 4px;"><span style="color:${r.actionColor};font-weight:700;">${r.action}</span></td>
                         <td style="text-align:center;padding:5px 4px;"><span style="color:${r.switchColor};font-weight:600;font-size:0.5rem;">${r.switchTxt}</span></td>
@@ -12438,7 +12452,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                         <td style="text-align:center;padding:5px 4px;border-right:3px solid #9333ea;background:rgba(147,51,234,0.04);"><span style="color:${mT.color};font-weight:700;font-size:0.5rem;">${mT.label}</span></td>
                     </tr>`;
                 }
-                tbody.innerHTML = html || '<tr><td colspan="10" style="text-align:center;padding:16px;color:var(--muted);">No results</td></tr>';
+                tbody.innerHTML = html || '<tr><td colspan="11" style="text-align:center;padding:16px;color:var(--muted);">No results</td></tr>';
             }
             // Weekly/Monthly "Hilega" buy/sell action comment — identical condition
             // logic to the standalone Hilega-Milega page's Buy/Sell Action box
@@ -14570,7 +14584,7 @@ categories.forEach(cat => {
     });
 </script>
     <!-- ════════════════ AI BREADTH CODE ════════════════ -->
-    <!-- NPC1E: AI Breadth Confirmation Modal — Fund-scoped, one-tap from Alert page & Live Cockpit -->
+    <!-- NPC1G: AI Breadth Confirmation Modal — Fund-scoped, one-tap from Alert page & Live Cockpit -->
     <style>
     #aiBreadthOverlay {
         position:fixed;inset:0;z-index:20000;background:rgba(0,0,0,0.45);
@@ -14815,7 +14829,7 @@ categories.forEach(cat => {
     };
 
     // ════════════════════════════════════════════════════════════
-    // NPC1E — AI BREADTH CONFIRMATION ENGINE
+    // NPC1G — AI BREADTH CONFIRMATION ENGINE
     // Sections:
     //   1. IIFE: State + Modal API (open/close/populate)
     //   2. abpCleanAiResponse — JSON cleanup helper
@@ -15025,7 +15039,7 @@ categories.forEach(cat => {
 
                 window.openAIBreadthModal = function(fund) {
             _abpFund = fund;
-            window._abpFund = fund;   // NPC1E: expose for _abpAddToWatchlist
+            window._abpFund = fund;   // NPC1G: expose for _abpAddToWatchlist
             _resetPanel();
             _populateFundMeta(fund);
             document.getElementById('abpFundTag').textContent = fund.name || fund.code;
@@ -15536,10 +15550,10 @@ categories.forEach(cat => {
             ? _portfolioHoldings.map(h => `${h.ticker} (${h.weight.toFixed(1)}%)`).join(', ')
             : 'Not available';
 
-        const promptText2 = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the "NPS Clues_1E Auditor" for Indian NPS/MF funds.
+        const promptText2 = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the "NPS Clues_1G Auditor" for Indian NPS/MF funds.
 
 ════════════════════════════════════════════════════════
-AUDIT GUIDELINES — THE NPC1E RULES
+AUDIT GUIDELINES — THE NPC1G RULES
 ════════════════════════════════════════════════════════
 SACRED RULE: True compounders do NOT stay below 40 Weekly RSI. If an index or fund breaks W-RSI 40 and cannot reclaim 45, the earnings trust is broken — expect guidance cuts or downgrades.
 
@@ -15853,7 +15867,7 @@ Return a JSON object with this exact structure:
                     <td class="${actC(s.action||s.verdict)}">${s.action||s.verdict||'—'}</td>
                 </tr>${s.recommendation ? `
                 <tr class="recommendation-row">
-                    <td colspan="10" style="text-align:left;font-size:0.62rem;
+                    <td colspan="11" style="text-align:left;font-size:0.62rem;
                         color:#404060;background:#f8faff;
                         border-left:3px solid #6366f1;
                         padding:4px 8px 5px 10px;
@@ -16616,7 +16630,7 @@ Return a JSON object with this exact structure:
             return { fundName, fundCode };
         }
         function gatherLeanContext() {
-            let ctx = "=== NPC1E LEAN TARGET FUND DUMP ===\n";
+            let ctx = "=== NPC1G LEAN TARGET FUND DUMP ===\n";
             ctx += `Timestamp: ${new Date().toISOString()}\n`;
             const { fundName, fundCode } = getFundInfo();
             const regime = document.getElementById('liveRegimeBlock')?.textContent || document.getElementById('regimeBlock')?.textContent || 'N/A';
@@ -16741,7 +16755,7 @@ Return a JSON object with this exact structure:
             return ctx;
         }
         function gatherContext() {
-            let ctx = "=== NPC1E SIGNAL DEEP DUMP ===\n";
+            let ctx = "=== NPC1G SIGNAL DEEP DUMP ===\n";
             ctx += `Timestamp: ${new Date().toISOString()}\n`;
             const activeModal = document.querySelector('.modal[style*="display: flex"]');
             ctx += `\n[UI SURFACE]\nVisible Screen: ${activeModal ? activeModal.id : 'Main Dashboard'}\n`;
@@ -17266,7 +17280,7 @@ Return a JSON object with this exact structure:
             try { ctx = gatherLeanContext(); } catch(e) { ctx = '(Fund context unavailable — open Live Cockpit first)'; }
 
             const systemPrompt =
-                'You are the NPC1E System Brain — an expert NPS/MF fund analyst embedded in the NPS Clues_1E app.\n' +
+                'You are the NPC1G System Brain — an expert NPS/MF fund analyst embedded in the NPS Clues_1G app.\n' +
                 'You analyse Indian NPS NAV data using RSI, W-RSI, regime classification (A/B/C), TSL floors, WMA20, and momentum signals.\n' +
                 'Rules: Regime A (W-RSI≥50)=Bull, B (40-50)=Transition, C (<40)=Bear. D-RSI<40=oversold BUY zone. TSL breach=SELL ALL.\n' +
                 'Answer concisely. Use ₹ for prices. Highlight BUY/SELL signals clearly. Below is the current fund data:\n\n' +
@@ -17582,7 +17596,7 @@ Return a JSON object with this exact structure:
     <input type="file" id="ld-pdf-file-input" accept="application/pdf" style="display:none;">
 
         <!-- ═══════════════════════════════════════════════════════════════════
-         NPC1E — BACKGROUND BA ENGINE v2
+         NPC1G — BACKGROUND BA ENGINE v2
          ─────────────────────────────────────────────────────────────────
          Priority Order:
            1. Watchlist funds (in order) — check Regime A, run BA, store.
@@ -17599,7 +17613,7 @@ Return a JSON object with this exact structure:
     
     const GAP_MS        = (() => { try { const v=parseInt(localStorage.getItem('ld_api_gap_sec')||'5');  return (v>=5&&v<=50?v:5)*1000;  } catch(e){ return 5_000;  } })();
     const BOOT_DELAY_MS = 6_000;
-    const ADDON_VER     = 'NPC1E';
+    const ADDON_VER     = 'NPC1G';
     const RUN_FLAG_KEY  = 'bgbreadth_ran_';
 
     
@@ -17709,7 +17723,7 @@ Return a JSON object with this exact structure:
         const batchLines = items.map((item, i) =>
             `[${i+1}] ${item.name}: W-RSI=${item.wrsi}, Regime=${item.wrsi>=50?'A (Hope)':item.wrsi>=40?'B (Watch)':'C (Fear)'}`
         ).join('\n');
-        const prompt = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the NPS Clues_1E Auditor.
+        const prompt = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the NPS Clues_1G Auditor.
 
 TASK: For EACH of the ${items.length} funds below, perform Constituent X-Ray on the fund's benchmark index.
 For each fund determine: bull_count, confirmation (CONFIRMED/MARGINAL/WEAK), sop_action, divergence_alert, psychology_audit, and reasoning.
@@ -18045,7 +18059,7 @@ ${batchLines}`;
         } else {
         }
 
-        // ── NPC1E: WATCHLIST BA — BATCH PROCESSING (BATCH_SIZE=10) ──
+        // ── NPC1G: WATCHLIST BA — BATCH PROCESSING (BATCH_SIZE=10) ──
         // Processes up to BA_BATCH_SIZE funds per Gemini call.
         // Uses responseMimeType: "application/json" for forced JSON output.
         // 4200ms gap between batches (Free Tier: 15 RPM = 1 req per 4s).
@@ -18347,7 +18361,7 @@ ${batchLines}`;
         try { localStorage.removeItem(`bg_amc_scan_done_${d}`); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
         try { localStorage.removeItem(`ba_completed_funds_${d}`); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
 
-        // NPC1E FIX: Clear breadth_v1_ cache for all watchlist funds today.
+        // NPC1G FIX: Clear breadth_v1_ cache for all watchlist funds today.
         // Without this, _cacheExists() returns true → every fund is marked done
         // instantly → Gemini is never called → no BA download happens on restart.
         try {
@@ -19364,7 +19378,7 @@ function calcTSI(closes, period = 21) {
   return out;
 }
 
-// ── NPC1E: STOOQ FALLBACK FOR SCANNER ─────────────────────────────────────
+// ── NPC1G: STOOQ FALLBACK FOR SCANNER ─────────────────────────────────────
 // Stooq uses different tickers for NSE/BSE indices. This map covers the major ones.
 // Pattern for NSE indices on Stooq: lowercase, no ^ prefix, .in suffix
 const STOOQ_SYMBOL_MAP = {
@@ -19450,7 +19464,7 @@ async function fetchIdx(symbol) {
       qtD = qtR?.ok ? await qtR.json() : null;
     let wC = wkD?.chart?.result?.[0]?.indicators?.quote?.[0]?.close || [];
     const dC = dD?.chart?.result?.[0]?.indicators?.quote?.[0]?.close || [];
-    // NPC1E: Stooq fallback — if Yahoo returned no weekly closes, try Stooq
+    // NPC1G: Stooq fallback — if Yahoo returned no weekly closes, try Stooq
     if (wC.filter(x => x != null && !isNaN(x)).length < 10) {
       try {
         const stooqCloses = await _fetchStooqWeekly(symbol);
@@ -19632,7 +19646,7 @@ function LDScanner() {
     dir: "asc"
   });
   const [baRes, setBaRes] = useState({});
-  const [retrying, setRetrying] = useState(false); // NPC1E: retry failed fetches
+  const [retrying, setRetrying] = useState(false); // NPC1G: retry failed fetches
   const [gemKey, setGemKey] = useState(() => {
     try {
       return localStorage.getItem("ld_scn_gem_key") || localStorage.getItem("ld_gemini_api_key") || "";
@@ -19804,7 +19818,7 @@ function LDScanner() {
       });
     }
   }
-  // NPC1E: Retry only failed / empty rows — no full re-scan needed
+  // NPC1G: Retry only failed / empty rows — no full re-scan needed
   async function doRetry() {
     const failedSymbols = ALL_INDICES.filter(i => {
       if (!i.symbol) return false;
@@ -19896,7 +19910,7 @@ function LDScanner() {
   }, [results, regF, phaseF, vix, sortCfg, baRes]);
   const pct = progress.total > 0 ? Math.round(progress.done / progress.total * 100) : 0;
   const hasData = rows.length > 0 && Object.keys(results).length > 0;
-  // NPC1E fix: count only rows that actually render (have wRsi data or error)
+  // NPC1G fix: count only rows that actually render (have wRsi data or error)
   const displayedRows = rows.filter(r => r.wRsi || r.error);
   const thS = {
     position: "sticky",
@@ -20839,7 +20853,7 @@ window.LDScannerComponent = LDScanner;
         loadFaKeys();
     })();
     </script>
-    <!-- ═══════════════ NPC1E: SERVICE WORKER + PWA INSTALL HANDLER ═══════════════ -->
+    <!-- ═══════════════ NPC1G: SERVICE WORKER + PWA INSTALL HANDLER ═══════════════ -->
     <script>
     (function() {
         // ── Service Worker ──
@@ -20896,7 +20910,7 @@ window.LDScannerComponent = LDScanner;
     <!-- L. UI — Landscape chart for landscape phone orientation -->
     <div id="landscapeChartView">
         <div class="lcv-header">
-            <span class="lcv-title" id="lcvTitle">NPS Clues_1E — LANDSCAPE CHART</span>
+            <span class="lcv-title" id="lcvTitle">NPS Clues_1G — LANDSCAPE CHART</span>
             <span class="lcv-close" onclick="exitLandscapeChart()">[ X ] PORTRAIT</span>
         </div>
         <div class="lcv-body" id="lcvBody">
@@ -20957,7 +20971,7 @@ window.LDScannerComponent = LDScanner;
             </div>
         </div>
     </div>
-    <!-- ── NPC1E: LOCAL DATA MODAL ───────────────────────────────── -->
+    <!-- ── NPC1G: LOCAL DATA MODAL ───────────────────────────────── -->
     <div id="localDataModal" class="modal-overlay" style="z-index:700;align-items:center;padding-top:3vh;">
         <div class="ldm-wrap">
             <div class="ldm-head">
@@ -20970,7 +20984,7 @@ window.LDScannerComponent = LDScanner;
         </div>
     </div>
     <script>
-    // ── NPC1E: Landscape Chart View ──────────────────────────
+    // ── NPC1G: Landscape Chart View ──────────────────────────
     let _lcvActive = false;
     let _lcvMode = null;
     function enterLandscapeChart(mode) {
@@ -21079,7 +21093,7 @@ window.LDScannerComponent = LDScanner;
     document.addEventListener('webkitfullscreenchange', function() {
         if (!document.webkitFullscreenElement && _lcvActive) exitLandscapeChart();
     });
-    // ── NPC1E: LOCAL DATA VIEW / ANALYSIS ────────────────────────
+    // ── NPC1G: LOCAL DATA VIEW / ANALYSIS ────────────────────────
     window._localDataEntries = null;
     function openLocalDataModal() {
         var modal = document.getElementById('localDataModal');
@@ -21462,7 +21476,7 @@ window.LDScannerComponent = LDScanner;
         }
     }
     </script>
-    <!-- NPC1E: PWA Install Banner (shown when Brave fires beforeinstallprompt) -->
+    <!-- NPC1G: PWA Install Banner (shown when Brave fires beforeinstallprompt) -->
     <div id="ld-pwa-install-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#0d0d0d;border-top:1px solid #00c896;padding:10px 16px;align-items:center;justify-content:space-between;font-family:'Space Mono',monospace;font-size:0.65rem;color:#00c896;">
         <span>📡 Install <strong>LDNPS</strong> as an app for offline access</span>
         <div style="display:flex;gap:8px;">
@@ -21470,4 +21484,4 @@ window.LDScannerComponent = LDScanner;
             <button onclick="document.getElementById('ld-pwa-install-banner').style.display='none'" style="background:transparent;color:#888;border:1px solid #444;padding:5px 10px;font-family:inherit;font-size:0.65rem;cursor:pointer;border-radius:3px;">✕</button>
         </div>
     </div>
-    <!-- ═══════════════ END NPC1E PWA BLOCK ═══════════════ -->
+    <!-- ═══════════════ END NPC1G PWA BLOCK ═══════════════ -->
