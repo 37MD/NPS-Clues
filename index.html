@@ -1436,13 +1436,12 @@
             }
             @media (max-width: 480px) {
                 #hilegaMilegaModal .hm-canvas-wrap { height: 50vh; min-height: 200px; }
-                #hmDateRange { flex-direction: column; align-items: stretch; gap: 4px; }
-                #hmDateRange > div { width: 100%; }
-                #hmDateRange input[type="date"] { width: 100%; font-size: 0.85rem !important; padding: 6px 8px !important; }
-                #hmDateRange > div > span { font-size: 0.7rem !important; }
-                #hmRangeResult > div { justify-content: flex-start !important; gap: 6px !important; }
-                #hmRangeResult > div > span { font-size: 0.8rem !important; }
-                #hmRangeReturn { font-size: 0.95rem !important; }
+                #hmDateRange { flex-wrap: nowrap !important; gap: 3px !important; }
+                #hmDateRange span { font-size: 0.46rem !important; }
+                #hmDateRange input[type="date"] { font-size: 0.52rem !important; padding: 2px 3px !important; }
+                #hmRangeResult { gap: 3px !important; }
+                #hmRangeResult span { font-size: 0.46rem !important; }
+                #hmRangeReturn { font-size: 0.52rem !important; }
                 #hmInfoRow { grid-template-columns: repeat(5, 1fr) !important; }
                 .hm-input-row { gap: 4px; }
                 .hm-input-group { min-width: 0; flex: 1 1 0; }
@@ -3456,21 +3455,15 @@
                     <select id="hmPfmSelect" onchange="hmOnPfmChange()" style="flex:1;padding:6px 8px;font-size:0.58rem;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;"></select>
                     <select id="hmSchemeSelect" onchange="hmOnSchemeChange()" style="flex:1.4;padding:6px 8px;font-size:0.58rem;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;"></select>
                 </div>
-                <div id="hmDateRange" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-                    <div style="display:flex;align-items:center;gap:4px;">
-                        <span style="font-size:0.96rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;">From</span>
-                        <input type="date" id="hmDateFrom" onchange="hmCalcDateRange()" style="padding:4px 6px;font-size:1.0rem;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);font-family:var(--mono);">
-                    </div>
-                    <div style="display:flex;align-items:center;gap:4px;">
-                        <span style="font-size:0.96rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;">To</span>
-                        <input type="date" id="hmDateTo" onchange="hmCalcDateRange()" style="padding:4px 6px;font-size:1.0rem;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);font-family:var(--mono);">
-                    </div>
-                    <div id="hmRangeResult" style="display:none;flex:1;min-width:0;">
-                        <div style="display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap;">
-                            <span style="font-size:1.04rem;color:var(--muted);">NAV: <strong id="hmRangeNavA" style="color:#000;">—</strong> → <strong id="hmRangeNavB" style="color:#000;">—</strong></span>
-                            <span style="font-size:1.04rem;color:var(--muted);">Days: <strong id="hmRangeDays" style="color:#1d4ed8;">—</strong></span>
-                            <span style="font-size:1.24rem;font-weight:700;">Return: <strong id="hmRangeReturn">—</strong></span>
-                        </div>
+                <div id="hmDateRange" style="display:flex;gap:4px;align-items:center;flex-wrap:nowrap;">
+                    <span style="font-size:0.52rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;white-space:nowrap;">From</span>
+                    <input type="date" id="hmDateFrom" onchange="hmCalcDateRange()" style="padding:3px 4px;font-size:0.6rem;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);font-family:var(--mono);min-width:0;flex:1;">
+                    <span style="font-size:0.52rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;white-space:nowrap;">To</span>
+                    <input type="date" id="hmDateTo" onchange="hmCalcDateRange()" style="padding:3px 4px;font-size:0.6rem;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);font-family:var(--mono);min-width:0;flex:1;">
+                    <div id="hmRangeResult" style="display:none;gap:4px;align-items:center;white-space:nowrap;flex-shrink:0;">
+                        <span style="font-size:0.52rem;color:var(--muted);">NAV:<strong id="hmRangeNavA" style="color:#000;">—</strong>→<strong id="hmRangeNavB" style="color:#000;">—</strong></span>
+                        <span style="font-size:0.52rem;color:var(--muted);">D:<strong id="hmRangeDays" style="color:#1d4ed8;">—</strong></span>
+                        <span style="font-size:0.58rem;font-weight:700;">R:<strong id="hmRangeReturn">—</strong></span>
                     </div>
                 </div>
                 <div class="hm-input-row">
@@ -12223,7 +12216,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                 const retEl = document.getElementById('hmRangeReturn');
                 retEl.textContent = (retPct >= 0 ? '+' : '') + retPct.toFixed(2) + '%';
                 retEl.style.color = retPct >= 0 ? '#16a34a' : '#ef4444';
-                res.style.display = 'block';
+                res.style.display = 'flex';
             }
             function setHmTf(btn, days) {
                 const period = window._hmPeriod || 'daily';
