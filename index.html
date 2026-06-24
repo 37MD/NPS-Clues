@@ -1,9 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <!--
+        ════════════════════════════════════════════════════════════════════════
+        NPS Clues_1F  (internal codename: NPC1E, formerly NPC1B)
+        NPS-only NAV chart · RSI Regime System · Asset Allocator · Live Cockpit
+
+        FILE MAP — this is one HTML file with 18 inline script blocks, in this
+        document order. Search for the quoted header comment to jump to a block.
+
+          1.  "Auto-restore from embed on startup"     — restores config from
+              the NPC1E_EMBED JSON blob above (for self-contained backup exports)
+          2.  "PSTORAGE — IndexedDB-backed Persistent Storage Layer"
+              — survives Android Chrome's background localStorage clears
+          3.  "NPC1E — MAIN APPLICATION SCRIPT"         — the core app (~9000
+              lines). Has its own internal A–G section map; see its header.
+          4.  "_renderAlertResults"                     — Alert Summary rendering
+          5.  BAF NPS Sandbox / Switch Bridge engine (injectBafNpsUI)
+          6.  "H. DATA ACQUISITION — MFDATA.IN Portfolio Holdings"
+          7.  AI chat panel wiring (#ld-ai-toggle / #ld-ai-panel)
+          8.  PDF AI Analysis engine (Gemini PDF upload + parsing)
+          9.  AI Breadth Confirmation background engine (scheduled regime checks)
+          10–11. LD Scanner launcher + Gemini API key UI for the scanner
+          12. Vendor: React 18.3.1 (production, unmodified, MIT licensed)
+          13. Vendor: ReactDOM 18.3.1 (production, unmodified, MIT licensed)
+          14. LD Scanner React app (multi-tab fund scanner UI)
+          15. Fund AI Analysis modal (per-fund Gemini analysis)
+          16. Service Worker registration + PWA install handling
+          17. Landscape Chart View (rotated full-screen chart mode)
+
+        File history: Clues_1D → NPS-Clues_1E → NPS-Clues_1F. The 1D→1E step
+        bumped the internal codename NPC1B → NPC1E to match (embed id, export
+        filename prefix, version stamp, AI prompt text, console-log tags).
+        The 1E→1F step (this one) is a label/filename bump only — internal
+        codename stays NPC1E. Two things were deliberately LEFT AS NPC1B back
+        in the 1D→1E step, and remain so:
+          • The IndexedDB database name ("NPC1B_PStore") — renaming it would
+            silently orphan any data a returning user already has stored
+            there, for zero benefit (it's never shown to the user).
+          • "NPC1B_EMBED" inside the legacy-import fallback chain — kept so
+            backup/config files exported by the 1B/1D-era app can still be
+            re-imported into this version.
+        ════════════════════════════════════════════════════════════════════════
+        -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <title>NPS Clues_1B — NPS Only NAV Chart · NPC1B</title>
+        <title>NPS Clues_1F — NPS Only NAV Chart · NPC1E</title>
         <link rel="manifest" href="manifest.json">
         <link rel="icon" type="image/svg+xml" href="icon.svg" sizes="any">
         <link rel="icon" type="image/png" href="icon-192.png" sizes="192x192">
@@ -12,15 +54,13 @@
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-        <meta name="apple-mobile-web-app-title" content="NPC1B">
-        <meta name="application-name" content="NPS Clues_1B">
+        <meta name="apple-mobile-web-app-title" content="NPC1E">
+        <meta name="application-name" content="NPS Clues_1F">
         <meta name="description" content="NPS-only NAV chart with RSI Regime System, Asset Allocator and Live Cockpit.">
         <meta name="msapplication-TileColor" content="#00c896">
         <meta name="msapplication-TileImage" content="icons/icon-144.png">
-        <link rel="apple-touch-icon" href="icons/icon-152.png">
         <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
         <link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-96.png">
         <link rel="icon" type="image/png" sizes="96x96" href="icons/icon-96.png">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -2635,8 +2675,8 @@
         <div id="sopModal">
             <div class="sop-header">
                 <div class="sop-header-left">
-                    <span class="sop-logo">Sacred RSI Regime System · NPC1B</span>
-                    <span class="sop-title">NPS Clues_1B SOP</span>
+                    <span class="sop-logo">Sacred RSI Regime System · NPC1E</span>
+                    <span class="sop-title">NPS Clues_1F SOP</span>
                     <span class="sop-subtitle">Standard Operating Procedure — Buy · Sell · Monitor · Review</span>
                 </div>
                 <span class="sop-close-btn" onclick="closeSOP()">[ X ] BACK</span>
@@ -3052,7 +3092,7 @@
                     Let the STCG clock run.&nbsp; Everything else is noise."
                 </div>
                 <div class="sop-note" style="text-align:center;margin-top:8px;">
-                    Sacred RSI Regime System · NPC1B &nbsp;|&nbsp; Data: npsnav.in &nbsp;|&nbsp;
+                    Sacred RSI Regime System · NPC1E &nbsp;|&nbsp; Data: npsnav.in &nbsp;|&nbsp;
                     STCG: 20% on gains held &lt; 365 days &nbsp;|&nbsp; For simulation and discipline training only.
                 </div>
             </div>
@@ -3064,7 +3104,7 @@
         <div id="setupScreen">
             <div class="setup-logo">Sacred RSI Regime System</div>
             <div class="streak-badge" id="streakBadge"></div>
-            <h1 class="setup-title">NPS Clues_1B <span onclick="openSOP()" class="version-badge-link" title="Open SOP / Operating Procedure" style="color:var(--muted);font-size:0.68rem;font-weight:400;cursor:pointer;">NPC1B 📋</span></h1>
+            <h1 class="setup-title">NPS Clues_1F <span onclick="openSOP()" class="version-badge-link" title="Open SOP / Operating Procedure" style="color:var(--muted);font-size:0.68rem;font-weight:400;cursor:pointer;">NPC1E 📋</span></h1>
 
             <div id="firstRunBanner" style="display:none;background:rgba(245,158,11,0.12);border:1.5px solid #f59e0b;border-radius:6px;padding:4px 8px;margin-bottom:3px;text-align:center;">
                 <div class="firstRunTitle" style="font-size:0.68rem;font-weight:700;color:#c97a00;margin-bottom:3px;">⚠ Storage cleared — open your backup HTML to restore</div>
@@ -3545,15 +3585,15 @@
             <div class="modal-close">
                 <div style="display:flex;flex-direction:column;">
                     <span class="modal-title" style="color:#f4a261;">📡 NPS SCAN</span>
-                    <span style="font-size:0.52rem;color:var(--text);margin-top:2px;">All 32 Direct NPS Schemes · Weekly RSI</span>
+                    <span style="font-size:0.52rem;color:var(--text);margin-top:2px;">All 32 Direct NPS Schemes · Weekly + Monthly RSI(9)</span>
                 </div>
                 <div style="display:flex;gap:8px;align-items:center;">
                     <span id="npsScanCount" style="font-size:0.48rem;color:var(--muted);font-family:var(--mono);">0/32</span>
                     <span class="modal-close-btn" onclick="document.getElementById('npsScanModal').style.display='none';document.getElementById('setupScreen').style.display='flex';">[ X ] CLOSE</span>
                 </div>
             </div>
-            <div style="flex:1;overflow-y:auto;padding:6px;">
-                <table id="npsScanTable" style="width:100%;border-collapse:collapse;font-size:0.56rem;font-family:var(--mono);">
+            <div style="flex:1;overflow:auto;padding:6px;">
+                <table id="npsScanTable" style="width:100%;min-width:920px;border-collapse:collapse;font-size:0.56rem;font-family:var(--mono);">
                     <thead>
                         <tr style="border-bottom:1.5px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:2;">
                             <th style="text-align:left;padding:6px 4px;color:var(--muted);font-weight:600;letter-spacing:0.04em;">PFM · SCHEME</th>
@@ -3562,10 +3602,16 @@
                             <th style="text-align:center;padding:6px 4px;color:var(--muted);font-weight:600;">RSI</th>
                             <th style="text-align:center;padding:6px 4px;color:var(--muted);font-weight:600;">ACTION</th>
                             <th style="text-align:center;padding:6px 4px;color:var(--muted);font-weight:600;">SWITCH</th>
+                            <!-- WEEKLY HILEGA group — boxed in a thick blue border (left/top/right; see _npsScanRenderTable for the matching body-row borders) -->
+                            <th style="text-align:center;padding:6px 4px;color:#1d4ed8;font-weight:700;border-left:3px solid #1d4ed8;border-top:3px solid #1d4ed8;background:rgba(29,78,216,0.07);">W·HILEGA</th>
+                            <th style="text-align:center;padding:6px 4px;color:#1d4ed8;font-weight:700;border-right:3px solid #1d4ed8;border-top:3px solid #1d4ed8;background:rgba(29,78,216,0.07);">W·TRIGGER</th>
+                            <!-- MONTHLY HILEGA group — boxed in a thick purple border -->
+                            <th style="text-align:center;padding:6px 4px;color:#9333ea;font-weight:700;border-left:3px solid #9333ea;border-top:3px solid #9333ea;background:rgba(147,51,234,0.07);">M·HILEGA</th>
+                            <th style="text-align:center;padding:6px 4px;color:#9333ea;font-weight:700;border-right:3px solid #9333ea;border-top:3px solid #9333ea;background:rgba(147,51,234,0.07);">M·TRIGGER</th>
                         </tr>
                     </thead>
                     <tbody id="npsScanBody">
-                        <tr><td colspan="6" style="text-align:center;padding:20px;color:var(--muted);">Tap NPS SCAN to begin…</td></tr>
+                        <tr><td colspan="10" style="text-align:center;padding:20px;color:var(--muted);">Tap NPS SCAN to begin…</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -3615,7 +3661,7 @@
                 </div>
                 <div id="switchBridgeNpsGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;"></div>
             </div>
-            <!-- ── NPC1B: Watchlist Backup / Restore ─────────────────── -->
+            <!-- ── NPC1E: Watchlist Backup / Restore ─────────────────── -->
             <div id="wlBackupBar" style="flex-shrink:0;padding:8px 8px 10px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px;">
                 <div style="display:flex;gap:6px;">
                     <button onclick="_wlBackup()" style="flex:1;padding:9px 4px;font-size:0.58rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;font-family:var(--mono);background:rgba(168,85,247,0.1);border:1.5px solid #a855f7;border-radius:6px;color:#a855f7;cursor:pointer;">
@@ -4018,7 +4064,7 @@ border-radius:var(--radius);padding:6px 9px;">
         <div id="gameUI" style="display:none;height:100vh;flex-direction:column;">
             <header class="app-header">
                 <div class="logo">
-                    NPS Clues_1B
+                    NPS Clues_1F
                     <span id="simModeTag" style="color:var(--muted2);font-size:0.7em;margin-left:4px;font-weight:400;">V3</span>
                     <span id="simFundName" class="fund-name-tag"></span>
                 </div>
@@ -4440,14 +4486,14 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                 </div>
             </div>
         </div>
-        <!-- NPC1B: Self-restoring config store — base64 encoded, written by BACKUP, read on startup -->
-        <script type="application/json" id="NPC1B_EMBED">null</script>
+        <!-- NPC1E: Self-restoring config store — base64 encoded, written by BACKUP, read on startup -->
+        <script type="application/json" id="NPC1E_EMBED">null</script>
         <script>
             'use strict';
             // Auto-restore from embed on startup (fires before main script)
             (function _autoRestoreFromEmbed() {
                 try {
-                    const embedEl = document.getElementById('NPC1B_EMBED');
+                    const embedEl = document.getElementById('NPC1E_EMBED');
                     if (!embedEl) return;
                     const raw = (embedEl.textContent || embedEl.innerText || '').trim();
                     if (!raw || raw === 'null') return;
@@ -4456,15 +4502,18 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                     if (hasKey || hasWl) return; // localStorage intact — skip
                     const config = JSON.parse(decodeURIComponent(escape(atob(raw))));
                     Object.entries(config).forEach(([k, v]) => {
-                        try { if (k && !k.startsWith('_')) localStorage.setItem(k, v); } catch(_) {}
+                        try { if (k && !k.startsWith('_')) localStorage.setItem(k, v); } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                     });
                 } catch(e) { /* silent */ }
             })();
         </script>
-        <!-- NPC1B: IndexedDB permanent watchlist + fund-box storage — survives Chrome background clearing -->
+        <!-- NPC1E: IndexedDB permanent watchlist + fund-box storage — survives Chrome background clearing -->
         <script>
             // ════════════════════════════════════════════════════════════════════════
-            //  A. DATA ACQUISITION — IndexedDB, fetch cache, localStorage sync
+            //  PSTORAGE — IndexedDB-backed Persistent Storage Layer
+            //  (Standalone module, separate from the MAIN script's own "A. DATA
+            //   ACQUISITION" section below — this one only handles survival of
+            //   localStorage clears, not API fetching.)
             // ════════════════════════════════════════════════════════════════════════
             'use strict';
             // ── PERMANENT STORAGE via IndexedDB ─────────────────────────────────────
@@ -4511,7 +4560,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                 }
                 async function set(key, value) {
                     // Always write to localStorage too for fast sync reads
-                    try { localStorage.setItem(key, value); } catch(_) {}
+                    try { localStorage.setItem(key, value); } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                     try {
                         const db = await _open();
                         return new Promise((res, rej) => {
@@ -4556,7 +4605,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                     let restored = 0;
                     SYNC_KEYS.forEach(k => {
                         if (all[k] != null && !localStorage.getItem(k)) {
-                            try { localStorage.setItem(k, all[k]); restored++; } catch(_) {}
+                            try { localStorage.setItem(k, all[k]); restored++; } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                         }
                     });
                     // Also restore today's BA/alert flags
@@ -4564,7 +4613,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                     ['bgbreadth_ran_','ld_alert_ran_'].forEach(pfx => {
                         const k = pfx + today;
                         if (all[k] != null && !localStorage.getItem(k)) {
-                            try { localStorage.setItem(k, all[k]); restored++; } catch(_) {}
+                            try { localStorage.setItem(k, all[k]); restored++; } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                         }
                     });
                     if (restored > 0) {
@@ -4578,11 +4627,11 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                                     if (typeof renderWatchlistStubs === 'function') renderWatchlistStubs();
                                 }
                             }
-                        } catch(_) {}
+                        } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                         // Hide the "storage cleared" banner if it was shown
                         const banner = document.getElementById('firstRunBanner');
                         if (banner) banner.style.display = 'none';
-                        console.log('[NPC1B] IDB→LS sync: restored', restored, 'keys');
+                        console.log('[NPC1E] IDB→LS sync: restored', restored, 'keys');
                     }
                 }).catch(() => {});
             })();
@@ -4605,20 +4654,25 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                             }
                         }
                     }
-                } catch(_) {}
+                } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
             })();
         </script>
         <script>
             'use strict';
+            // Flip this in the console (window.DEBUG_SILENT_CATCHES = true) to make
+            // every normally-silent try/catch in this app (~130 of them, mostly
+            // best-effort localStorage/network guards) log what they caught,
+            // instead of swallowing it. Default off — zero behavior change.
+            window.DEBUG_SILENT_CATCHES = window.DEBUG_SILENT_CATCHES || false;
             // ════════════════════════════════════════════════════════════════════════════════
-            //  NPC1B — MAIN APPLICATION SCRIPT
+            //  NPC1E — MAIN APPLICATION SCRIPT
             // ════════════════════════════════════════════════════════════════════════════════
             //  Structure:
             //    A. DATA ACQUISITION  — API fetchers, caching, IndexedDB, localStorage sync
             //    B. INDICATOR ENGINE  — RSI, WMA, EMA, LOWESS, regime detection, signals
             //    C. SIMULATION        — Game engine, trade logic, P&L, pre-trade checklist
-            //    D. CHART RENDERING   — Canvas charts, crosshair, overlays
-            //    E. UI / UX           — Modals, screens, navigation, watchlist
+            //    D. UI / UX           — Modals, screens, navigation, watchlist
+            //    E. CHART RENDERING   — Canvas charts, crosshair, overlays
             //    F. SCANNERS          — Regime A/B/C, RRG, NPS Scan, Alert Summary
             //    G. HILEGA-MILEGA     — RSI·WMA·EMA indicator page
             // ════════════════════════════════════════════════════════════════════════════════
@@ -4859,7 +4913,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                     const json = JSON.stringify(state);
                     localStorage.setItem('ld_sim_state', json);
                     window.PStorage.set('ld_sim_state', json).catch(()=>{});
-                } catch (_) {}
+                } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
             }
             function _loadSimState() {
                 try {
@@ -4883,10 +4937,10 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         const parsed = JSON.parse(raw);
                         if (Array.isArray(parsed) && parsed.length > 0) {
                             _watchlist = parsed;
-                            try { localStorage.setItem('ld_watchlist', raw); } catch(_) {}
+                            try { localStorage.setItem('ld_watchlist', raw); } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                             if (typeof renderWatchlistStubs === 'function') renderWatchlistStubs();
                         }
-                    } catch(_) {}
+                    } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 }).catch(() => {});
             })();
             let _watchlistRefreshTimer = null; 
@@ -5129,7 +5183,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                                 const lastWr = wRsi[wRsi.length - 1] || 50;
                                 const r1m    = prices.length > 21 ? (prices[prices.length-1] - prices[prices.length-22]) / prices[prices.length-22] * 100 : 0;
                                 snapshots.push({ code: f.code, name: f.name, wrsi: lastWr, regime: lastWr >= 50 ? 'A' : lastWr >= 40 ? 'B' : 'C', r1m });
-                            } catch(_){}
+                            } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                         }
                         snapshots.sort((a,b) => b.r1m - a.r1m);
                         const baf = snapshots.find(s => s.name.toLowerCase().includes('balanced advantage'));
@@ -5139,7 +5193,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         try {
                             const lsAlloc = localStorage.getItem('ld_v3_last_alloc_top2');
                             if (lsAlloc) heldCodes = JSON.parse(lsAlloc);
-                        } catch(_){}
+                        } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                         const candidates = snapshots.filter(s => s.regime === 'A' && s.r1m > hurdle && !heldCodes.includes(s.code));
                         window._c3NewFundCount = candidates.length;
                         const badge = document.getElementById('assetAllocC3Badge');
@@ -5147,7 +5201,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                             badge.textContent = candidates.length > 0 ? `(${candidates.length})` : '';
                             badge.style.display = candidates.length > 0 ? 'inline' : 'none';
                         }
-                    } catch(_){}
+                    } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 }, 4000); 
                 setTimeout(() => {
                     try {
@@ -5156,7 +5210,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                             localStorage.setItem('ld_switch_bridge', JSON.stringify(j.switches));
                         }
                         _startBridgePnLTimer();
-                    } catch(_) {}
+                    } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 }, 5500); 
                 setTimeout(() => {
                     const today = new Date().toISOString().slice(0, 10);
@@ -5169,7 +5223,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
             async function _runMorningScan() {
                 const _mb = () => document.getElementById('baStatusMsg');
                 const _setBanner = (msg, color) => {
-                    try { if (window._updateUnifiedBAStatus) window._updateUnifiedBAStatus(msg, color || '#f59e0b'); } catch(_) {}
+                    try { if (window._updateUnifiedBAStatus) window._updateUnifiedBAStatus(msg, color || '#f59e0b'); } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                     const el = _mb(); if (el) el.textContent = msg;
                 };
                 _setBanner('🌅 Morning scan starting…');
@@ -5201,7 +5255,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                                     scanResults[key] = { rank1: _prev.rank1, scanned: _prev.scanned, type, amc };
                                     totalScanned += _prev.scanned || 0;
                                 }
-                            } catch(_) {}
+                            } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                             continue; // skip network fetch for this bucket
                         }
                         const fundScores = [];
@@ -5227,7 +5281,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                                 const r1m     = last >= 21 ? (prices[last] - prices[last-21]) / prices[last-21] * 100 : 0;
                                 fundScores.push({ code: f.code, name: f.name, r1m, regime, wrsi: Math.round(wrsi) });
                                 totalScanned++;
-                            } catch(_) {  }
+                            } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                         }
                         fundScores.sort((a, b) => {
                             if (a.regime === 'A' && b.regime !== 'A') return -1;
@@ -5251,10 +5305,10 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                                 return arr;
                             },[]);
                             const _scanMsg = `🔍 Regime A Scan: ${_mc.length}/${_allBuckets.length} buckets done today`;
-                            try { if (window._updateUnifiedBAStatus) window._updateUnifiedBAStatus(_scanMsg, '#f59e0b'); } catch(_) {}
+                            try { if (window._updateUnifiedBAStatus) window._updateUnifiedBAStatus(_scanMsg, '#f59e0b'); } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                             const _sce = document.getElementById('baStatusMsg');
                             if (_sce) _sce.textContent = _scanMsg;
-                        } catch(_) {}
+                        } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                         if (rank1 && rank1.regime === 'A') {
                             if (!_watchlist.find(w => w.code === rank1.code) && _watchlist.length < 30) {
                                 _watchlist.push({ code: rank1.code, name: rank1.name, morningAdd: true, portfolio: false });
@@ -5289,7 +5343,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                 }
                 const today = new Date().toISOString().slice(0, 10);
                 localStorage.setItem('ld_v3_morning_scan_date', today);
-                try { renderWatchlistStubs(); } catch(_) {}
+                try { renderWatchlistStubs(); } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 const hopeCount = Object.values(scanResults).filter(r => r.rank1?.regime === 'A').length;
                 const fearCount = Object.values(scanResults).filter(r => r.rank1?.regime === 'C').length;
                 let summaryLines = [
@@ -5308,8 +5362,8 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         const _ist = new Date(_now.getTime() + 5.5*3600000);
                         _sbEl.textContent = `Updated: ${_ist.toISOString().replace('T',' ').slice(0,16)} IST`;
                     }
-                } catch(_) {}
-                // NPC1B: banner stays visible — never auto-hide
+                } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
+                // NPC1E: banner stays visible — never auto-hide
             }
             function _getPfmRecommendation() {
                 try {
@@ -5341,14 +5395,14 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         const raw = localStorage.getItem(this.KEY);
                         const j = raw ? JSON.parse(raw) : null;
                         if (j && j.switches) return j;
-                    } catch(_) {}
-                    return { version: 'NPC1B', switches: {}, lastUpdated: 0 };
+                    } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
+                    return { version: 'NPC1E', switches: {}, lastUpdated: 0 };
                 },
                 save(j) {
                     try {
                         j.lastUpdated = Date.now();
                         localStorage.setItem(this.KEY, JSON.stringify(j));
-                    } catch(_) {}
+                    } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 },
                 upsert(amc, entry) {
                     const j = this.get();
@@ -5356,10 +5410,10 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                     this.save(j);
                     try {
                         let bridge = {};
-                        try { bridge = JSON.parse(localStorage.getItem('ld_switch_bridge') || '{}'); } catch(_) {}
+                        try { bridge = JSON.parse(localStorage.getItem('ld_switch_bridge') || '{}'); } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                         bridge[amc] = j.switches[amc];
                         localStorage.setItem('ld_switch_bridge', JSON.stringify(bridge));
-                    } catch(_) {}
+                    } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 },
                 alert(code, alertText, alertClass) {
                     try {
@@ -5374,7 +5428,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         this.save(j);
                         try {
                             let bridge = {};
-                            try { bridge = JSON.parse(localStorage.getItem('ld_switch_bridge') || '{}'); } catch(_) {}
+                            try { bridge = JSON.parse(localStorage.getItem('ld_switch_bridge') || '{}'); } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                             for (const amc of Object.keys(bridge)) {
                                 if (bridge[amc]?.code === code) {
                                     bridge[amc].latestAlert      = alertText  || '';
@@ -5382,8 +5436,8 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                                 }
                             }
                             localStorage.setItem('ld_switch_bridge', JSON.stringify(bridge));
-                        } catch(_) {}
-                    } catch(_) {}
+                        } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
+                    } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 },
                 export() {
                     try {
@@ -5397,7 +5451,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         a.click();
                         document.body.removeChild(a);
                         URL.revokeObjectURL(url);
-                    } catch(e) { }
+                    } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
                 },
                 import(file) {
                     if (!file) return;
@@ -5420,7 +5474,18 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
             };
             window._SJ = _SJ;
 
-            // ── NPC1B: FULL CONFIG BACKUP / RESTORE ─────────────────────────────
+            // ── CONFIG BACKUP / RESTORE — shared helpers ─────────────────────────
+            // _configBackupExport/_configBackupImport (SOP-page API, currently not
+            // wired to any visible button — kept as a console/external entry
+            // point) and _wlBackup/_wlRestore (the Watchlist-modal buttons) used
+            // to be four separately-maintained copies of the same logic and had
+            // drifted apart: _wlRestore was missing the LD249A_EMBED legacy
+            // fallback that the other copy had, and _configBackupExport/Import
+            // never mirrored restored settings into IndexedDB (PStorage) the way
+            // the _wl variants did — meaning a config restored via that path
+            // would NOT survive Android Chrome's next background localStorage
+            // clear, defeating the whole point of PStorage. Consolidated below
+            // so both entry points share one correct implementation.
             const CONFIG_KEYS = [
                 'ld_gemini_api_key', 'ld_gemini_api_key2', 'ld_gemini_model',
                 'ld_api_gap_sec', 'ld_active_key_slot',
@@ -5433,207 +5498,145 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                 'hm_pfm', 'hm_scheme', 'hm_tf_days', 'hm_period',
                 'ld_sim_state', 'ld_nps_actions'
             ];
-            function _configBackupExport() {
+            // Embed IDs used by this app across versions, newest first, so a
+            // backup file exported by ANY past version can still be imported.
+            const _CONFIG_EMBED_FALLBACK_IDS = ['NPC1E_EMBED', 'NPC1B_EMBED', 'LD251_EMBED', 'LD250_EMBED', 'LD249A_EMBED', 'LD247_EMBED'];
+            function _buildConfigBlob() {
+                const blob = {};
+                CONFIG_KEYS.forEach(k => {
+                    const v = localStorage.getItem(k);
+                    if (v !== null) blob[k] = v;
+                });
+                // Also preserve today's BA/alert run flags
+                const _todayKey = new Date(Date.now()+5.5*3600000).toISOString().slice(0,10).replace(/-/g,'');
+                ['bgbreadth_ran_','ld_alert_ran_'].forEach(prefix => {
+                    const v = localStorage.getItem(prefix + _todayKey);
+                    if (v !== null) blob[prefix + _todayKey] = v;
+                });
+                blob['ld_last_version'] = 'NPC1E';
+                return blob;
+            }
+            // Bakes the current config into a downloadable, self-contained HTML
+            // backup (replaces the NPC1E_EMBED script's contents) and mirrors
+            // every key into IndexedDB so the restore point survives an Android
+            // Chrome background localStorage clear.
+            function _exportConfigBackup(statusElId) {
                 try {
-                    const blob = {};
-                    CONFIG_KEYS.forEach(k => {
-                        const v = localStorage.getItem(k);
-                        if (v !== null) blob[k] = v;
-                    });
-                    // Also preserve today's BA/alert run flags
-                    const _todayKey = new Date(Date.now()+5.5*3600000).toISOString().slice(0,10).replace(/-/g,'');
-                    ['bgbreadth_ran_','ld_alert_ran_'].forEach(prefix => {
-                        const v = localStorage.getItem(prefix + _todayKey);
-                        if (v !== null) blob[prefix + _todayKey] = v;
-                    });
-                    blob['ld_last_version'] = 'NPC1B';
+                    const blob = _buildConfigBlob();
                     const configB64 = btoa(unescape(encodeURIComponent(JSON.stringify(blob))));
                     const currentHtml = document.documentElement.outerHTML;
                     const newHtml = currentHtml.replace(
-                        /(<script[^>]*id="NPC1B_EMBED"[^>]*>)[\s\S]*?(<\/script>)/,
+                        /(<script[^>]*id="NPC1E_EMBED"[^>]*>)[\s\S]*?(<\/script>)/,
                         (_, open, close) => open + configB64 + close
                     );
                     const wl = JSON.parse(blob['ld_watchlist'] || '[]');
                     const date = new Date(Date.now()+5.5*3600000).toISOString().slice(0,10);
-                    const fname = `NPC1B_${date}_${wl.length}funds.html`;
+                    const fname = `NPC1E_${date}_${wl.length}funds.html`;
                     const a = document.createElement('a');
                     a.href = 'data:text/html;charset=utf-8,' + encodeURIComponent(newHtml);
                     a.download = fname;
                     a.click();
-                    const st = document.getElementById('configBackupStatus');
+                    const st = document.getElementById(statusElId);
                     if (st) { st.style.color='#009e70'; st.textContent = `✅ Saved: ${fname} — ${wl.length} funds baked in`; }
-                } catch(e) {
-                    const st = document.getElementById('configBackupStatus');
-                    if (st) { st.style.color='#c8102e'; st.textContent = '⚠ Backup failed: '+e.message; }
-                }
-            }
-            function _configBackupImport(file) {
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    try {
-                        let blob;
-                        const raw = ev.target.result;
-                        let fileType = 'unknown';
-                        if (raw.trim().startsWith('<!DOCTYPE') || raw.trim().startsWith('<html')) {
-                            fileType = 'html';
-                            const match = raw.match(/<script[^>]*id="NPC1B_EMBED"[^>]*>([\s\S]*?)<\/script>/) ||
-                                         raw.match(/<script[^>]*id="LD251_EMBED"[^>]*>([\s\S]*?)<\/script>/) ||
-                                         raw.match(/<script[^>]*id="LD250_EMBED"[^>]*>([\s\S]*?)<\/script>/) ||
-                                         raw.match(/<script[^>]*id="LD249A_EMBED"[^>]*>([\s\S]*?)<\/script>/) ||
-                                         raw.match(/<script[^>]*id="LD247_EMBED"[^>]*>([\s\S]*?)<\/script>/);
-                            if (!match || !match[1] || match[1].trim() === 'null') {
-                                throw new Error('HTML file has no embedded config — use a backup HTML, not the base app');
-                            }
-                            blob = JSON.parse(decodeURIComponent(escape(atob(match[1].trim()))));
-                        } else {
-                            const parsed = JSON.parse(raw);
-                            if (parsed.switches && typeof parsed.switches === 'object' &&
-                                !parsed.ld_watchlist && !parsed.ld_gemini_api_key) {
-                                // Switch Journal only
-                                fileType = 'switch_journal';
-                                localStorage.setItem('ld_switch_journal', JSON.stringify(parsed));
-                                localStorage.setItem('ld_switch_bridge', JSON.stringify(parsed.switches));
-                                if (typeof renderSwitchBridgeGrid === 'function') renderSwitchBridgeGrid();
-                                if (typeof renderSwitchBridgeNpsGrid === 'function') renderSwitchBridgeNpsGrid();
-                                if (typeof refreshLiveBridgePnL === 'function') refreshLiveBridgePnL();
-                                const st = document.getElementById('configBackupStatus');
-                                const n = Object.keys(parsed.switches||{}).length;
-                                if (st) { st.style.color='#009e70'; st.textContent = `✅ Switch Journal restored: ${n} AMC entries`; }
-                                return;
-                            } else {
-                                fileType = 'json_config';
-                                blob = parsed;
-                            }
-                        }
-                        let count = 0;
-                        CONFIG_KEYS.forEach(k => {
-                            if (blob[k] !== undefined) { localStorage.setItem(k, blob[k]); count++; }
-                        });
-                        const _todayKey = new Date(Date.now()+5.5*3600000).toISOString().slice(0,10).replace(/-/g,'');
-                        ['bgbreadth_ran_','ld_alert_ran_'].forEach(prefix => {
-                            if (blob[prefix + _todayKey] !== undefined) localStorage.setItem(prefix + _todayKey, blob[prefix + _todayKey]);
-                        });
-                        localStorage.setItem('ld_last_version', 'NPC1B');
-                        try { _watchlist = JSON.parse(localStorage.getItem('ld_watchlist') || '[]'); } catch(_) {}
-                        const wl = _watchlist.length;
-                        const hasKey = !!localStorage.getItem('ld_gemini_api_key');
-                        const st = document.getElementById('configBackupStatus');
-                        if (st) { st.style.color='#009e70'; st.textContent = `✅ Restored [${fileType}]: ${count} settings · ${wl} funds · key:${hasKey?'✓':'✗'} — Reloading…`; }
-                        if (typeof renderWatchlistStubs === 'function') renderWatchlistStubs();
-                        setTimeout(() => location.reload(), 1800);
-                    } catch(e) {
-                        const st = document.getElementById('configBackupStatus');
-                        if (st) { st.style.color='#c8102e'; st.textContent = '⚠ Import failed: '+e.message; }
-                    }
-                };
-                reader.readAsText(file);
-            }
-            // ── NPC1B: Watchlist-level Backup / Restore (2 buttons in WL modal) ──
-            function _wlBackup() {
-                try {
-                    // Collect all config from LS + IDB mirror
-                    const blob = {};
-                    CONFIG_KEYS.forEach(k => {
-                        const v = localStorage.getItem(k);
-                        if (v !== null) blob[k] = v;
-                    });
-                    const _todayKey = new Date(Date.now()+5.5*3600000).toISOString().slice(0,10).replace(/-/g,'');
-                    ['bgbreadth_ran_','ld_alert_ran_'].forEach(prefix => {
-                        const v = localStorage.getItem(prefix + _todayKey);
-                        if (v !== null) blob[prefix + _todayKey] = v;
-                    });
-                    blob['ld_last_version'] = 'NPC1B';
-                    const configB64 = btoa(unescape(encodeURIComponent(JSON.stringify(blob))));
-                    const currentHtml = document.documentElement.outerHTML;
-                    const newHtml = currentHtml.replace(
-                        /(<script[^>]*id="NPC1B_EMBED"[^>]*>)[\s\S]*?(<\/script>)/,
-                        (_, open, close) => open + configB64 + close
-                    );
-                    const wl = JSON.parse(blob['ld_watchlist'] || '[]');
-                    const date = new Date(Date.now()+5.5*3600000).toISOString().slice(0,10);
-                    const fname = `NPC1B_${date}_${wl.length}funds.html`;
-                    const a = document.createElement('a');
-                    a.href = 'data:text/html;charset=utf-8,' + encodeURIComponent(newHtml);
-                    a.download = fname;
-                    a.click();
-                    const st = document.getElementById('wlBackupStatus');
-                    if (st) { st.style.color='#009e70'; st.textContent = `✅ Saved: ${fname} — ${wl.length} funds baked in`; }
-                    // Also sync all keys to IDB
                     Object.entries(blob).forEach(([k, v]) => { window.PStorage.set(k, v).catch(()=>{}); });
                 } catch(e) {
-                    const st = document.getElementById('wlBackupStatus');
+                    const st = document.getElementById(statusElId);
                     if (st) { st.style.color='#c8102e'; st.textContent = '⚠ Backup failed: '+e.message; }
                 }
             }
-            function _wlRestore(file) {
+            // Parses an uploaded backup (self-contained HTML export, plain JSON
+            // config export, or a Switch-Journal-only JSON export) into
+            // { blob, fileType }. Throws on unrecognized/empty content.
+            function _parseConfigFile(raw) {
+                if (raw.trim().startsWith('<!DOCTYPE') || raw.trim().startsWith('<html')) {
+                    let match = null;
+                    for (const id of _CONFIG_EMBED_FALLBACK_IDS) {
+                        match = raw.match(new RegExp('<script[^>]*id="' + id + '"[^>]*>([\\s\\S]*?)<\\/script>'));
+                        if (match) break;
+                    }
+                    if (!match || !match[1] || match[1].trim() === 'null') {
+                        throw new Error('HTML file has no embedded config — use a backup HTML, not the base app');
+                    }
+                    return { blob: JSON.parse(decodeURIComponent(escape(atob(match[1].trim())))), fileType: 'html' };
+                }
+                const parsed = JSON.parse(raw);
+                if (parsed.switches && typeof parsed.switches === 'object' &&
+                    !parsed.ld_watchlist && !parsed.ld_gemini_api_key) {
+                    return { blob: parsed, fileType: 'switch_journal' };
+                }
+                return { blob: parsed, fileType: 'json_config' };
+            }
+            // Restores a Switch-Journal-only export (no watchlist/API key data).
+            function _restoreSwitchJournalOnly(parsed, statusElId) {
+                localStorage.setItem('ld_switch_journal', JSON.stringify(parsed));
+                localStorage.setItem('ld_switch_bridge', JSON.stringify(parsed.switches));
+                window.PStorage.set('ld_switch_journal', JSON.stringify(parsed)).catch(()=>{});
+                window.PStorage.set('ld_switch_bridge', JSON.stringify(parsed.switches)).catch(()=>{});
+                if (typeof renderSwitchBridgeGrid === 'function') renderSwitchBridgeGrid();
+                if (typeof renderSwitchBridgeNpsGrid === 'function') renderSwitchBridgeNpsGrid();
+                if (typeof refreshLiveBridgePnL === 'function') refreshLiveBridgePnL();
+                const st = document.getElementById(statusElId);
+                const n = Object.keys(parsed.switches||{}).length;
+                if (st) { st.style.color='#009e70'; st.textContent = `✅ Switch Journal restored: ${n} AMC entries`; }
+            }
+            // Applies a parsed config blob into localStorage + IndexedDB, then
+            // reloads the page so every module picks up the restored state.
+            function _applyConfigBlob(blob, fileType, statusElId) {
+                let count = 0;
+                CONFIG_KEYS.forEach(k => {
+                    if (blob[k] !== undefined) {
+                        localStorage.setItem(k, blob[k]);
+                        window.PStorage.set(k, blob[k]).catch(()=>{});
+                        count++;
+                    }
+                });
+                const _todayKey = new Date(Date.now()+5.5*3600000).toISOString().slice(0,10).replace(/-/g,'');
+                ['bgbreadth_ran_','ld_alert_ran_'].forEach(prefix => {
+                    const fk = prefix + _todayKey;
+                    if (blob[fk] !== undefined) {
+                        localStorage.setItem(fk, blob[fk]);
+                        window.PStorage.set(fk, blob[fk]).catch(()=>{});
+                    }
+                });
+                localStorage.setItem('ld_last_version', 'NPC1E');
+                try { _watchlist = JSON.parse(localStorage.getItem('ld_watchlist') || '[]'); } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
+                const wl = _watchlist.length;
+                const hasKey = !!localStorage.getItem('ld_gemini_api_key');
+                const st = document.getElementById(statusElId);
+                if (st) { st.style.color='#009e70'; st.textContent = `✅ Restored [${fileType}]: ${count} settings · ${wl} funds · key:${hasKey?'✓':'✗'} — Reloading…`; }
+                if (typeof renderWatchlistStubs === 'function') renderWatchlistStubs();
+                setTimeout(() => location.reload(), 1800);
+            }
+            function _importConfigFile(file, statusElId) {
                 if (!file) return;
-                const st = document.getElementById('wlBackupStatus');
-                if (st) { st.style.color='var(--muted)'; st.textContent = '⏳ Reading…'; }
+                const st0 = document.getElementById(statusElId);
+                if (st0) { st0.style.color='var(--muted)'; st0.textContent = '⏳ Reading…'; }
                 const reader = new FileReader();
                 reader.onload = (ev) => {
                     try {
-                        let blob;
-                        const raw = ev.target.result;
-                        if (raw.trim().startsWith('<!DOCTYPE') || raw.trim().startsWith('<html')) {
-                            const match = raw.match(/<script[^>]*id="NPC1B_EMBED"[^>]*>([\s\S]*?)<\/script>/) ||
-                                         raw.match(/<script[^>]*id="LD251_EMBED"[^>]*>([\s\S]*?)<\/script>/) ||
-                                         raw.match(/<script[^>]*id="LD250_EMBED"[^>]*>([\s\S]*?)<\/script>/) ||
-                                         raw.match(/<script[^>]*id="LD247_EMBED"[^>]*>([\s\S]*?)<\/script>/);
-                            if (!match || !match[1] || match[1].trim() === 'null') {
-                                throw new Error('HTML has no embedded config — use a backup HTML file');
-                            }
-                            blob = JSON.parse(decodeURIComponent(escape(atob(match[1].trim()))));
-                        } else {
-                            blob = JSON.parse(raw);
-                            if (blob.switches && !blob.ld_watchlist) {
-                                // Switch journal only
-                                localStorage.setItem('ld_switch_journal', JSON.stringify(blob));
-                                localStorage.setItem('ld_switch_bridge', JSON.stringify(blob.switches));
-                                window.PStorage.set('ld_switch_journal', JSON.stringify(blob)).catch(()=>{});
-                                window.PStorage.set('ld_switch_bridge', JSON.stringify(blob.switches)).catch(()=>{});
-                                if (typeof renderSwitchBridgeGrid === 'function') renderSwitchBridgeGrid();
-                                if (typeof renderSwitchBridgeNpsGrid === 'function') renderSwitchBridgeNpsGrid();
-                                if (st) { st.style.color='#009e70'; st.textContent = `✅ Switch Journal restored: ${Object.keys(blob.switches||{}).length} AMC entries`; }
-                                return;
-                            }
-                        }
-                        let count = 0;
-                        CONFIG_KEYS.forEach(k => {
-                            if (blob[k] !== undefined) {
-                                localStorage.setItem(k, blob[k]);
-                                window.PStorage.set(k, blob[k]).catch(()=>{});
-                                count++;
-                            }
-                        });
-                        const _todayKey = new Date(Date.now()+5.5*3600000).toISOString().slice(0,10).replace(/-/g,'');
-                        ['bgbreadth_ran_','ld_alert_ran_'].forEach(prefix => {
-                            const fk = prefix + _todayKey;
-                            if (blob[fk] !== undefined) {
-                                localStorage.setItem(fk, blob[fk]);
-                                window.PStorage.set(fk, blob[fk]).catch(()=>{});
-                            }
-                        });
-                        localStorage.setItem('ld_last_version', 'NPC1B');
-                        try { _watchlist = JSON.parse(localStorage.getItem('ld_watchlist') || '[]'); } catch(_) {}
-                        const wl = _watchlist.length;
-                        const hasKey = !!localStorage.getItem('ld_gemini_api_key');
-                        if (st) { st.style.color='#009e70'; st.textContent = `✅ Restored: ${count} settings · ${wl} funds · key:${hasKey?'✓':'✗'} — Reloading…`; }
-                        if (typeof renderWatchlistStubs === 'function') renderWatchlistStubs();
-                        setTimeout(() => location.reload(), 1800);
+                        const { blob, fileType } = _parseConfigFile(ev.target.result);
+                        if (fileType === 'switch_journal') { _restoreSwitchJournalOnly(blob, statusElId); return; }
+                        _applyConfigBlob(blob, fileType, statusElId);
                     } catch(e) {
+                        const st = document.getElementById(statusElId);
                         if (st) { st.style.color='#c8102e'; st.textContent = '⚠ Restore failed: '+e.message; }
                     }
                 };
                 reader.readAsText(file);
             }
+            // ── Public entry points (names/signatures unchanged) ──
+            function _configBackupExport() { _exportConfigBackup('configBackupStatus'); }
+            function _configBackupImport(file) { _importConfigFile(file, 'configBackupStatus'); }
+            // ── Watchlist-modal Backup / Restore (the 2 buttons users actually see) ──
+            function _wlBackup() { _exportConfigBackup('wlBackupStatus'); }
+            function _wlRestore(file) { _importConfigFile(file, 'wlBackupStatus'); }
             window._wlBackup  = _wlBackup;
             window._wlRestore = _wlRestore;
             window._configBackupExport = _configBackupExport;
             window._configBackupImport = _configBackupImport;
             // First-run check: show banner if storage cleared
             (function _checkFirstRun() {
-                localStorage.setItem('ld_last_version', 'NPC1B');
+                localStorage.setItem('ld_last_version', 'NPC1E');
                 const hasKey = !!localStorage.getItem('ld_gemini_api_key');
                 const hasWl  = (JSON.parse(localStorage.getItem('ld_watchlist')||'[]')).length > 0;
                 if (!hasKey && !hasWl) {
@@ -5643,7 +5646,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         const idbHasWl  = (() => { try { return (JSON.parse(all['ld_watchlist']||'[]')).length > 0; } catch(_) { return false; } })();
                         if (idbHasKey || idbHasWl) {
                             // IDB intact — restore silently, no banner needed
-                            console.log('[NPC1B] Storage cleared but IDB intact — auto-restoring');
+                            console.log('[NPC1E] Storage cleared but IDB intact — auto-restoring');
                         } else {
                             setTimeout(() => {
                                 const banner = document.getElementById('firstRunBanner');
@@ -5678,11 +5681,11 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                         const raw = localStorage.getItem(this.KEY);
                         const lp  = raw ? JSON.parse(raw) : null;
                         if (lp && typeof lp === 'object') return lp;
-                    } catch(_) {}
+                    } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                     return { slot1: null, slot2: null };
                 },
                 save(lp) {
-                    try { localStorage.setItem(this.KEY, JSON.stringify(lp)); } catch(_) {}
+                    try { localStorage.setItem(this.KEY, JSON.stringify(lp)); } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 },
                 confirmSwitch(slot, fund) {
                     const lp         = this.get();
@@ -5787,14 +5790,14 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                             const ret = (latestNav - sw.switchNav) / sw.switchNav * 100;
                             total += ret;
                             count++;
-                        } catch(_) {}
+                        } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                     }
                     if (count > 0) {
                         const avg = total / count;
                         _bridgePnLCache = { pct: avg, ts: Date.now() };
                         _updateBridgePnLDisplay(avg);
                     }
-                } catch(_) {}
+                } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
             }
             function _updateBridgePnLDisplay(pct) {
                 const el = document.getElementById('ddVal');
@@ -5882,11 +5885,11 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                                 const store = tx.objectStore('fundData');
                                 const putReq = store.put({ url, data: result, ts: Date.now() });
                                 putReq.onerror = () => {};
-                                tx.oncomplete = () => { try { db.close(); } catch(_){} };
+                                tx.oncomplete = () => { try { db.close(); } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); } };
                             }
                         };
                         dbReq.onerror = () => {};
-                    } catch (_) {}
+                    } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                     return result;
                 } catch (err) {
                     clearTimeout(timer);
@@ -5922,8 +5925,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                                 .filter(d => Number.isFinite(d.nav) && d.nav > 0)
                                 .reverse();
                         }
-                    } catch (_) {
-                         }
+                    } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                     ovTxt.textContent = err.name === 'AbortError' ?
                         'API TIMEOUT (12s) — RETRY' :
                         `NETWORK ERROR: ${err.message}`;
@@ -6229,8 +6231,15 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                 const currentNav = slice[slice.length - 1];
                 const prevNav = slice.length > 1 ? slice[slice.length - 2] : currentNav;
                 const currentDrsi = cachedDrsiArr[dayIndex] ?? calculateRSI(slice, userRsiLength);
-                const currentWrsi = cachedWrsiArr[dayIndex] ?? calculateRSI(
-                    slice.filter((_, i) => i % 5 === 0), userRsiLength
+                // Fallback only fires if the caller didn't pre-build the weekly RSI cache
+                // (every current call site does, via window.buildWeeklyRsiFast — this is a
+                // safety net, not the primary path). Use the same canonical calendar-week
+                // RSI builder used everywhere else, instead of an arbitrary every-5th-day
+                // sample whose phase drifts with dayIndex and never aligns to real weeks.
+                const currentWrsi = cachedWrsiArr[dayIndex] ?? (
+                    window.buildWeeklyRsiFast
+                        ? window.buildWeeklyRsiFast(slice, userRsiLength)[slice.length - 1]
+                        : calculateRSI(slice.filter((_, i) => i % 5 === 0), userRsiLength)
                 );
                 const lowessFloor = (cachedLowessArr && cachedLowessArr[dayIndex] != null) ?
                     cachedLowessArr[dayIndex] :
@@ -6420,7 +6429,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                                 ? `${window._lastLiveAlertClass} banner-on` : 'banner-on';
                         }
                     }
-                } catch(_) {}
+                } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 const tfRow = document.getElementById('liveChartTfRow');
                 Array.from(tfRow.children).forEach(b => b.classList.remove('active'));
                 const btn1Y = Array.from(tfRow.children).find(b =>
@@ -6568,7 +6577,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
 
                         // Refresh debug panel if open
 
-                    } catch(_e) { }
+                    } catch(_e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _e); }
                 })();
                 // === FIX A: Export pcAlert + ncAlert to window so AI context can read them ===
                 window._lastPcAlert = snap.pcAlert || false;
@@ -6615,7 +6624,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                             const mIdx = parseInt(parts[1]) - 1;
                             _liveRegimeSinceDate = `${parts[2]}-${months[mIdx] || parts[1]}`;
                         }
-                    } catch(_) {}
+                    } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                     const sinceEl = document.getElementById('liveRegimeSince');
                     if (sinceEl) sinceEl.textContent = `Since ${_liveRegimeSinceDate}`;
                 })();
@@ -6807,7 +6816,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                                             baf3m = calcReturn(bp, 63);
                                         }
                                     }
-                                } catch (_) {}
+                                } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                             }
                             break;
                         }
@@ -6911,7 +6920,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                                 ? `${window._lastLiveAlertClass} banner-on` : 'banner-on';
                         }
                     }
-                } catch(_) {}
+                } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 _liveEstInterval = setInterval(updateLiveEstimate, 900_000);
                 updateLiveChart(250);
                 updateLiveEstimate();
@@ -7001,7 +7010,7 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                     window.wRsi4Cache  = window.buildWeeklyRsiFast(_auditNavs, 4,  _auditDates);
                     window.wRsi8Cache  = window.buildWeeklyRsiFast(_auditNavs, 8,  _auditDates);
                     window.wRsi14Cache = window.buildWeeklyRsiFast(_auditNavs, 14, _auditDates);
-                } catch(_e) {}
+                } catch(_e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _e); }
                 const smaDist = lastSma ? (lastNav - lastSma) / lastSma * 100 : null;
                 document.getElementById('laSMA').textContent = lastSma ? `₹${lastSma.toFixed(2)}` : '--';
                 document.getElementById('laSMA').style.color = smaDist === null ? 'var(--muted)' :
@@ -7894,7 +7903,7 @@ ${Math.abs(diff) < 0.05 ? 'Tied' : (aWins ? nameA : nameB) + ' outperforms by ' 
                 ctx.fillRect(0, 0, W, 44);
                 ctx.fillStyle = '#009e70';
                 ctx.font = 'bold 10px monospace';
-                ctx.fillText('NPS Clues_1B NPC1B · SIMULATION RESULT', 12, 16);
+                ctx.fillText('NPS Clues_1F NPC1E · SIMULATION RESULT', 12, 16);
                 ctx.fillStyle = '#304058';
                 ctx.font = '8px monospace';
                 ctx.fillText(`${getBriefFundName() || 'Fund Simulator'}`, 12, 30);
@@ -7955,11 +7964,11 @@ ${Math.abs(diff) < 0.05 ? 'Tied' : (aWins ? nameA : nameB) + ' outperforms by ' 
                 ctx.fillRect(0, 186, W, 1);
                 ctx.fillStyle = '#b0bece';
                 ctx.font = '7px monospace';
-                ctx.fillText('Sacred RSI Regime System · NPC1B', 12, 200);
+                ctx.fillText('Sacred RSI Regime System · NPC1E', 12, 200);
                 const streak = _streak.count;
                 if (streak > 0) ctx.fillText(`🔥 ${streak}-session streak`, W - 110, 200);
                 const link = document.createElement('a');
-                link.download = `NPC1B-${getBriefFundName().replace(/\s+/g, '_') || 'result'}.png`;
+                link.download = `NPC1E-${getBriefFundName().replace(/\s+/g, '_') || 'result'}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
             }
@@ -8030,8 +8039,7 @@ ${Math.abs(diff) < 0.05 ? 'Tied' : (aWins ? nameA : nameB) + ' outperforms by ' 
                             el.disabled = true;
                         }
                     });
-                } catch (e) {
-                     }
+                } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
             }
             function startSimulation() {
                 const val = document.getElementById('simTypeSelect').value;
@@ -8189,7 +8197,7 @@ ${Math.abs(diff) < 0.05 ? 'Tied' : (aWins ? nameA : nameB) + ' outperforms by ' 
                         else { _scEl.textContent='★☆☆ LOW'; _scEl.style.color='var(--red)'; }
                     }
                     if (_scSub) _scSub.textContent = `W4:${_sv4??'?'} W8:${_sv8??'?'} W14:${_sv14??'?'}`;
-                } catch(_tErr) {}
+                } catch(_tErr) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _tErr); }
                 document.getElementById('cashVal').textContent =
                     `₹${Math.round(cash).toLocaleString('en-IN')}`;
                 document.getElementById('nwVal').textContent =
@@ -8241,7 +8249,7 @@ ${Math.abs(diff) < 0.05 ? 'Tied' : (aWins ? nameA : nameB) + ' outperforms by ' 
                     if (activeCode && typeof _SJ !== 'undefined') {
                         _SJ.alert(activeCode, alertText, alertClass);
                     }
-                } catch(_) {}
+                } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 if (_bridgePnLCache && (Date.now() - _bridgePnLCache.ts < 10 * 60 * 1000)) {
                     _updateBridgePnLDisplay(_bridgePnLCache.pct);
                 } else {
@@ -9482,7 +9490,7 @@ This is exactly how the system is meant to be played.
                 document.getElementById('liveAnalyticsModal').style.display = 'none';
                 initGame('custom', startDate, endDate);
             }
-            // NPC1B: Auto-add Investment Switch Bridge recommended funds to Watchlist
+            // NPC1E: Auto-add Investment Switch Bridge recommended funds to Watchlist
             function _autoAddSwitchBridgeToWatchlist() {
                 let bridge = {};
                 try {
@@ -9490,7 +9498,7 @@ This is exactly how the system is meant to be played.
                     bridge = (j.switches && Object.keys(j.switches).length) ? j.switches
                            : JSON.parse(localStorage.getItem('ld_switch_bridge') || '{}');
                 } catch(_) {
-                    try { bridge = JSON.parse(localStorage.getItem('ld_switch_bridge') || '{}'); } catch(_) {}
+                    try { bridge = JSON.parse(localStorage.getItem('ld_switch_bridge') || '{}'); } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 }
                 let addedCount = 0;
                 Object.values(bridge).forEach(entry => {
@@ -9512,7 +9520,7 @@ This is exactly how the system is meant to be played.
 
             function openWatchlist() {
                 if (_watchlistRefreshTimer) { clearInterval(_watchlistRefreshTimer); _watchlistRefreshTimer = null; }
-                _autoAddSwitchBridgeToWatchlist(); // NPC1B: auto-add Switch Bridge funds
+                _autoAddSwitchBridgeToWatchlist(); // NPC1E: auto-add Switch Bridge funds
                 document.getElementById('setupScreen').style.display = 'none';
                 document.getElementById('watchlistModal').style.display = 'flex';
                 renderWatchlistStubs();
@@ -9539,7 +9547,7 @@ This is exactly how the system is meant to be played.
                         bridge = JSON.parse(localStorage.getItem('ld_switch_bridge') || '{}');
                     }
                 } catch(_) {
-                    try { bridge = JSON.parse(localStorage.getItem('ld_switch_bridge') || '{}'); } catch(_) {}
+                    try { bridge = JSON.parse(localStorage.getItem('ld_switch_bridge') || '{}'); } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 }
                 const amcOrder = [
                     ['ABSL',  '#00b4d8'],
@@ -9647,7 +9655,7 @@ This is exactly how the system is meant to be played.
                     const j = _SJ.get();
                     bridge = (j.switches && Object.keys(j.switches).length) ? j.switches
                            : JSON.parse(localStorage.getItem('ld_switch_bridge') || '{}');
-                } catch(_) {}
+                } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
 
                 // ── NPS Fund Universe ──────────────────────────────────────────
                 // Code pattern: SM[pfm][type] where last digit = fund type
@@ -9680,12 +9688,12 @@ This is exactly how the system is meant to be played.
                     try {
                         const c = localStorage.getItem(`ld_morning_${code}_${today}`);
                         if (c) return JSON.parse(c);
-                    } catch(_) {}
+                    } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                     // Try NPS allocator result cache
                     try {
                         const ac = localStorage.getItem(`ld_nps_live_${code}`);
                         if (ac) return JSON.parse(ac);
-                    } catch(_) {}
+                    } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                     // Fallback: switch bridge
                     for (const k of Object.keys(bridge)) {
                         if (bridge[k]?.code === code) return bridge[k];
@@ -9805,7 +9813,7 @@ This is exactly how the system is meant to be played.
                 });
             }
             // ──────────────────────────────────────────────────────────────────────────────
-            //  E. UI / UX — Modals, screens, navigation, watchlist
+            //  D. UI / UX — Modals, screens, navigation, watchlist
             // ──────────────────────────────────────────────────────────────────────────────
             // ── SECTION: WATCHLIST ──────────────────────────────────────────────
             // Pin/unpin funds, render watchlist cards, backup/restore, switch bridge.
@@ -9954,8 +9962,7 @@ This is exactly how the system is meant to be played.
                             swEl.textContent = switchTxt;
                             swEl.style.color = switchColor;
                         }
-                    } catch (e) {
-                         }
+                    } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
                 }
             }
             function _removeWatchlistItem(i) {
@@ -10111,7 +10118,7 @@ function buildWeeklyRsiFast(allPrices, period = 4, allDates = null) {
                 window.buildWeeklyRsiFast = buildWeeklyRsiFast;
             })();
             // ──────────────────────────────────────────────────────────────────────────────
-            //  D. CHART RENDERING — Canvas charts, crosshair, overlays
+            //  E. CHART RENDERING — Canvas charts, crosshair, overlays
             // ──────────────────────────────────────────────────────────────────────────────
             // ════════════════════════════════════════════════════════════════════════
             // CHART RENDERERS  (V14B main price pane + Sacred Momentum RSI pane)
@@ -10740,8 +10747,7 @@ function buildWeeklyRsiFast(allPrices, period = 4, allDates = null) {
                             else if (zone === 'HOLD'   && isHoldSignal)   results.push(entry);
                             else if (zone === 'PROFIT' && isProfitSignal)  results.push(entry);
                         }
-                    } catch (e) {
-                    }
+                    } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
                 };
                 for (let i = 0; i < fundsToScan.length; i += SCANNER_BATCH_SIZE) {
                     if (currentToken !== _activeScannerToken) {
@@ -10872,7 +10878,7 @@ border-radius:var(--radius);padding:8px 10px;cursor:pointer;margin-bottom:6px;`;
                             tx.objectStore('fundData').put({ url: '_yahoo_' + key, data: value, ts: Date.now() });
                         }
                     };
-                } catch (_) {}
+                } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
             }
             async function fetchLiveProxyPercentCached(fundCode) {
                 try {
@@ -10950,8 +10956,7 @@ border-radius:var(--radius);padding:8px 10px;cursor:pointer;margin-bottom:6px;`;
                                 });
                             }
                         }
-                    } catch (e) {
-                    }
+                    } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
                 };
                 for (let i = 0; i < fundsToScan.length; i += SCANNER_BATCH_SIZE) {
                     if (currentToken !== _activeScannerToken) {
@@ -11057,7 +11062,7 @@ border-radius:var(--radius);padding:8px 10px;cursor:pointer;margin-bottom:6px;`;
                             return cached;
                         }
                     }
-                } catch (_) {}
+                } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 const CANDIDATES = [
                     { code: '120716', label: 'UTI Nifty 50 Direct' },
                     { code: '119063', label: 'HDFC Nifty 50 Direct' },
@@ -11084,10 +11089,9 @@ border-radius:var(--radius);padding:8px 10px;cursor:pointer;margin-bottom:6px;`;
                                 await window._idbSetCache(db, window._idbStores.STORE_DATA, NIFTY50_CACHE_KEY, navMap);
                                 await window._idbSetCache(db, window._idbStores.STORE_META, NIFTY50_CACHE_KEY, { timestamp: Date.now() });
                             }
-                        } catch (_) {}
+                        } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                         return navMap;
-                    } catch (err) {
-                    }
+                    } catch(err) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', err); }
                 }
                 return null;
             }
@@ -11131,8 +11135,7 @@ border-radius:var(--radius);padding:8px 10px;cursor:pointer;margin-bottom:6px;`;
                             );
                             return;
                         }
-                    } catch (e) {
-                    }
+                    } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
                 }
                 const ovEl = document.getElementById('ov');
                 const ovTxt = document.getElementById('ovTxt');
@@ -11193,8 +11196,7 @@ border-radius:var(--radius);padding:8px 10px;cursor:pointer;margin-bottom:6px;`;
                             scanRegime,
                             lastWr,
                         });
-                    } catch (e) {
-                    }
+                    } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
                 };
                 for (let i = 0; i < fundsToScan.length; i += SCANNER_BATCH_SIZE) {
                     if (currentToken !== _activeScannerToken) return;
@@ -11285,8 +11287,7 @@ border-radius:var(--radius);padding:8px 10px;cursor:pointer;margin-bottom:6px;`;
                     await window._idbSetCache(db, STORE_META, CACHE_KEY, {
                         timestamp: Date.now()
                     });
-                } catch (e) {
-                }
+                } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
                 ovEl.style.display = 'none';
                 window._rrgFromCache = false; 
                 renderRRGScannerUI(allFunds, targetQuadrant, bench1m, bench2m, bench3m);
@@ -12372,7 +12373,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                 document.getElementById('npsScanModal').style.display = 'flex';
                 const tbody = document.getElementById('npsScanBody');
                 const countEl = document.getElementById('npsScanCount');
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:16px;color:#f4a261;font-weight:600;">⏳ Scanning 32 schemes…</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:16px;color:#f4a261;font-weight:600;">⏳ Scanning 32 schemes…</td></tr>';
                 countEl.textContent = '0/32';
                 const token = ++_npsScanToken;
                 const allItems = [];
@@ -12383,12 +12384,14 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                     if (token !== _npsScanToken) return;
                     const batch = allItems.slice(i, i + BATCH);
                     const promises = batch.map(async (item) => {
+                        const tier = item.name.includes('Tier II') ? 'II' : 'I';
+                        const insufficient = { ...item, nav: null, rsi: 50, wma: 50, ema: 50, tier, action: 'ERR', actionColor: '#999', switchTxt: '—', switchColor: '#999', wHilega: _hmActionComment([], [], []), wTrigger: _hmTriggerStatus([]), mHilega: _hmActionComment([], [], []), mTrigger: _hmTriggerStatus([]) };
                         try {
                             const url = `https://npsnav.in/api/historical/${item.code}`;
                             const res = await fetch(url);
                             const raw = await res.json();
                             const hist = (raw.data || []).map(d => ({ nav: parseFloat(d.nav), date: d.date })).filter(d => Number.isFinite(d.nav) && d.nav > 0).reverse();
-                            if (hist.length < 15) return { ...item, nav: hist.length ? hist[hist.length-1].nav : null, rsi: 50, wma: 50, ema: 50, err: 'insufficient data' };
+                            if (hist.length < 15) return { ...insufficient, err: 'insufficient data' };
                             const weekly = hmAggregateWeeks(hist);
                             const navs = weekly.map(d => d.nav);
                             const rsiArr = hmCalcRSI(navs, 9);
@@ -12398,7 +12401,6 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                             const lastWma = wmaArr[wmaArr.length - 1] || 50;
                             const lastEma = emaArr[emaArr.length - 1] || 50;
                             const lastNav = navs[navs.length - 1];
-                            const tier = item.name.includes('Tier II') ? 'II' : 'I';
                             const aboveWma = lastRsi > lastWma;
                             const aboveEma = lastRsi > lastEma;
                             let action, actionColor;
@@ -12409,9 +12411,27 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                             if (lastRsi > 50) { switchTxt = 'Add Equity'; switchColor = '#009e70'; }
                             else if (lastRsi < 30) { switchTxt = '↑ Debt'; switchColor = '#c8102e'; }
                             else { switchTxt = 'Hold'; switchColor = '#f59e0b'; }
-                            return { ...item, nav: lastNav, rsi: lastRsi, wma: lastWma, ema: lastEma, tier, action, actionColor, switchTxt, switchColor };
+                            // WEEKLY Hilega action-comment + RSI(9)-vs-50 trigger (same condition
+                            // logic as the standalone Hilega-Milega page's Buy/Sell Action box)
+                            const wHilega = _hmActionComment(rsiArr, wmaArr, emaArr);
+                            const wTrigger = _hmTriggerStatus(rsiArr);
+                            // MONTHLY — same methodology, aggregated to month-end NAVs instead of week-end
+                            const monthly = hmAggregateMonths(hist);
+                            const mNavs = monthly.map(d => d.nav);
+                            let mHilega, mTrigger;
+                            if (mNavs.length < 22) {
+                                mHilega = { text: 'Insufficient Data', color: '#999' };
+                                mTrigger = { label: '—', color: '#999', rank: 4 };
+                            } else {
+                                const mRsiArr = hmCalcRSI(mNavs, 9);
+                                const mWmaArr = hmCalcWMA(mRsiArr, 21);
+                                const mEmaArr = hmCalcEMA(mRsiArr, 3);
+                                mHilega = _hmActionComment(mRsiArr, mWmaArr, mEmaArr);
+                                mTrigger = _hmTriggerStatus(mRsiArr);
+                            }
+                            return { ...item, nav: lastNav, rsi: lastRsi, wma: lastWma, ema: lastEma, tier, action, actionColor, switchTxt, switchColor, wHilega, wTrigger, mHilega, mTrigger };
                         } catch(e) {
-                            return { ...item, nav: null, rsi: 50, wma: 50, ema: 50, tier: item.name.includes('Tier II') ? 'II' : 'I', action: 'ERR', actionColor: '#999', switchTxt: '—', switchColor: '#999', err: e.message };
+                            return { ...insufficient, err: e.message };
                         }
                     });
                     const batchResults = await Promise.all(promises);
@@ -12422,7 +12442,14 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
             }
             function _npsScanRenderTable(tbody, results) {
                 let html = '';
+                // Primary sort: WEEKLY RSI(9)-vs-50 trigger rank — Crossover and
+                // Crossunder (the actionable, just-happened events) bubble to the
+                // top, then funds already sitting Above 50, then Below.
+                // Secondary/tertiary: PFM name then Tier, just for stable ordering
+                // within a tied trigger rank (not part of the requested priority).
                 const sorted = results.slice().sort((a, b) => {
+                    const ra = a.wTrigger ? a.wTrigger.rank : 4, rb = b.wTrigger ? b.wTrigger.rank : 4;
+                    if (ra !== rb) return ra - rb;
                     const pf = a.pfm.localeCompare(b.pfm);
                     if (pf !== 0) return pf;
                     const ta = a.tier === 'II' ? 1 : 0, tb = b.tier === 'II' ? 1 : 0;
@@ -12434,6 +12461,10 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                     const navStr = r.nav != null ? r.nav.toFixed(4) : '—';
                     const rsiStr = r.rsi != null ? r.rsi.toFixed(1) : '—';
                     const schemeShort = r.name.replace(/Tier [IC]/, '').trim();
+                    const wH = r.wHilega || { text: '—', color: '#999' };
+                    const wT = r.wTrigger || { label: '—', color: '#999' };
+                    const mH = r.mHilega || { text: '—', color: '#999' };
+                    const mT = r.mTrigger || { label: '—', color: '#999' };
                     html += `<tr style="border-bottom:1px solid var(--border);">
                         <td style="padding:5px 4px;color:var(--text);"><span style="color:#f4a261;font-weight:700;">${r.pfm}</span> <span style="color:var(--muted);font-size:0.5rem;">${schemeShort}</span></td>
                         <td style="text-align:center;padding:5px 3px;color:var(--muted);">${r.tier}</td>
@@ -12441,9 +12472,43 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                         <td style="text-align:center;padding:5px 4px;"><span style="background:${rsiBg};color:${rsiColor};padding:2px 6px;border-radius:4px;font-weight:700;">${rsiStr}</span></td>
                         <td style="text-align:center;padding:5px 4px;"><span style="color:${r.actionColor};font-weight:700;">${r.action}</span></td>
                         <td style="text-align:center;padding:5px 4px;"><span style="color:${r.switchColor};font-weight:600;font-size:0.5rem;">${r.switchTxt}</span></td>
+                        <td style="text-align:center;padding:5px 4px;border-left:3px solid #1d4ed8;background:rgba(29,78,216,0.04);"><span style="color:${wH.color};font-weight:600;font-size:0.5rem;">${wH.text}</span></td>
+                        <td style="text-align:center;padding:5px 4px;border-right:3px solid #1d4ed8;background:rgba(29,78,216,0.04);"><span style="color:${wT.color};font-weight:700;font-size:0.5rem;">${wT.label}</span></td>
+                        <td style="text-align:center;padding:5px 4px;border-left:3px solid #9333ea;background:rgba(147,51,234,0.04);"><span style="color:${mH.color};font-weight:600;font-size:0.5rem;">${mH.text}</span></td>
+                        <td style="text-align:center;padding:5px 4px;border-right:3px solid #9333ea;background:rgba(147,51,234,0.04);"><span style="color:${mT.color};font-weight:700;font-size:0.5rem;">${mT.label}</span></td>
                     </tr>`;
                 }
-                tbody.innerHTML = html || '<tr><td colspan="6" style="text-align:center;padding:16px;color:var(--muted);">No results</td></tr>';
+                tbody.innerHTML = html || '<tr><td colspan="10" style="text-align:center;padding:16px;color:var(--muted);">No results</td></tr>';
+            }
+            // Weekly/Monthly "Hilega" buy/sell action comment — identical condition
+            // logic to the standalone Hilega-Milega page's Buy/Sell Action box
+            // (RSI(9) vs its own WMA(21) and EMA(3)), just returned as one comment
+            // string instead of separate UI elements, so it can reuse one function
+            // for both timeframes in the NPS Scan table.
+            function _hmActionComment(rsiArr, wmaArr, emaArr) {
+                if (!rsiArr || !rsiArr.length) return { text: 'Insufficient Data', color: '#999' };
+                const i = rsiArr.length - 1;
+                const r = rsiArr[i], w = wmaArr ? wmaArr[i] : null, e = emaArr ? emaArr[i] : null;
+                if (r == null) return { text: 'Insufficient Data', color: '#999' };
+                const aboveWma = w != null && r > w, aboveEma = e != null && r > e;
+                const belowWma = w != null && r < w, belowEma = e != null && r < e;
+                if (aboveWma && aboveEma) return { text: '🟢 BUY · Add Equity', color: '#16a34a' };
+                if (belowWma && belowEma) return { text: '🔴 SELL · Reduce Equity', color: '#ef4444' };
+                return { text: '🟠 WATCH · Hold', color: '#f59e0b' };
+            }
+            // RSI(9)-vs-level-50 trigger status, using the last two bars of the
+            // series. rank is the sort priority requested for the NPS Scan table:
+            // Crossover/Crossunder (just happened, most actionable) before
+            // Above/Below (already-established, no new information).
+            function _hmTriggerStatus(rsiArr) {
+                if (!rsiArr || rsiArr.length < 2) return { label: '—', color: '#999', rank: 4 };
+                const cur = rsiArr[rsiArr.length - 1], prev = rsiArr[rsiArr.length - 2];
+                if (cur == null || prev == null) return { label: '—', color: '#999', rank: 4 };
+                const curUp = cur >= 50, prevUp = prev >= 50;
+                if (curUp && !prevUp) return { label: '↗ Crossover', color: '#16a34a', rank: 0 };
+                if (!curUp && prevUp) return { label: '↘ Crossunder', color: '#ef4444', rank: 1 };
+                if (curUp) return { label: '▲ Above', color: '#059669', rank: 2 };
+                return { label: '▼ Below', color: '#dc2626', rank: 3 };
             }
             function hmCalcRSI(prices, period) {
                 const rsi = new Array(prices.length).fill(50);
@@ -12516,7 +12581,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                     const wmaLen = parseInt(document.getElementById('hmWmaLen').value) || 21;
                     const emaLen = parseInt(document.getElementById('hmEmaLen').value) || 3;
                     const midLine = parseFloat(document.getElementById('hmMidLine').value) || 50;
-                    const tfDays = window._hmTfDays || 1825;
+                    const tfDays = window._hmTfDays || 99999;
                     const rsi = hmCalcRSI(viewData.map(d => d.nav), rsiLen);
                     const wma = hmCalcWMA(rsi, wmaLen);
                     const ema = hmCalcEMA(rsi, emaLen);
@@ -12958,7 +13023,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                                     };
                                 }
                             }
-                        } catch(_){}
+                        } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                     }
                 }
                 const fundsData = {};
@@ -12985,8 +13050,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                                 lowessArr,
                             };
                         }
-                    } catch (e) {
-                    }
+                    } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
                     completed++;
                     ovTxt.textContent = `FETCHING DATA... ${Math.round((completed / baseFunds.length) * 100)}%`;
                 }
@@ -13239,12 +13303,12 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                             tmEl.insertBefore(tsDiv, tmEl.firstChild.nextSibling); 
                         }
                         tsDiv.textContent = `Last run: ${label}  ·  ${amc} / ${type}`;
-                    } catch(_) {}
+                    } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 })();
                 try {
                     localStorage.setItem('ld_v3_last_alloc_top2',
                         JSON.stringify(lastAlloc.top2.map(f => f.code)));
-                } catch(_) {}
+                } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 const switchPromptEl = document.getElementById('tmSwitchPrompt');
                 const switchMsgEl    = document.getElementById('tmSwitchMsg');
                 const switchBtnEl    = document.getElementById('tmSwitchBtn');
@@ -13303,7 +13367,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                                 }).catch(() => {});
                             setTimeout(() => runAssetAllocator(), 150);
                             switchPromptEl.style.display = 'none';
-                        } catch(e) { }
+                        } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
                     };
                     switchPromptEl.style.display = 'block';
                 } else if (switchPromptEl) {
@@ -13337,7 +13401,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                             ts         : Date.now()
                         });
                     }
-                } catch(_) {}
+                } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 const condHTML = (icon, label, detail, triggered, triggerLabel, safeLabel) => {
                     const bgCol = triggered ? 'rgba(200,16,46,0.10)' : 'rgba(0,158,112,0.08)';
                     const bdCol = triggered ? 'rgba(200,16,46,0.35)' : 'rgba(0,158,112,0.3)';
@@ -13408,7 +13472,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                     c3Badge.textContent = c3NewFunds.length > 0 ? `(${c3NewFunds.length})` : '';
                     c3Badge.style.display = c3NewFunds.length > 0 ? 'inline' : 'none';
                 }
-                try { window._c3NewFundCount = c3NewFunds.length; } catch(_){}
+                try { window._c3NewFundCount = c3NewFunds.length; } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 document.getElementById('tmCond3').outerHTML = `<div id="tmCond3">${condHTML('🔄', 'CONDITION 3 — MOMENTUM SWAP (Regime Hope only)', c3detail, c3triggerDisplay, '⚠ TRIGGER SWAP', '✓ HOLD')}</div>`;
                 el.style.display = 'block';
             }
@@ -13588,7 +13652,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
             }
             function _alertCacheKey() { return `ld_alerts_${_alertIstDate()}`; }
             function _alertCacheSave(results, ts) {
-                try { localStorage.setItem(_alertCacheKey(), JSON.stringify({ results, ts })); } catch(e) {}
+                try { localStorage.setItem(_alertCacheKey(), JSON.stringify({ results, ts })); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
             }
             function _alertCacheLoad() {
                 try {
@@ -13634,7 +13698,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                 };
                 let processed = 0;
                 let _prevNpsActions = {};
-                try { _prevNpsActions = JSON.parse(localStorage.getItem('ld_nps_actions') || '{}'); } catch(e) {}
+                try { _prevNpsActions = JSON.parse(localStorage.getItem('ld_nps_actions') || '{}'); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
                 let _currNpsActions = {};
                 for (const fund of allFunds) {
                     try {
@@ -13734,7 +13798,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                                 results.ACTION_CHANGED.push(item);
                             }
                         }
-                    } catch (e) {}
+                    } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
                     processed++;
                     const prog = document.getElementById('alertProg');
                     if (prog) prog.textContent = `${processed}/${allFunds.length} funds processed`;
@@ -13743,7 +13807,7 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                 // ── Save to daily cache before rendering ──────────────────
                 const _alertTs = new Date(Date.now()+5.5*3600000).toISOString().replace('T',' ').slice(0,16)+' IST';
                 _alertCacheSave(results, _alertTs);
-                try { localStorage.setItem('ld_nps_actions', JSON.stringify(_currNpsActions)); } catch(e) {}
+                try { localStorage.setItem('ld_nps_actions', JSON.stringify(_currNpsActions)); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
 
                 const amcList = Object.keys(window.amcFunds).filter(a => !['NPS'].includes(a));
                 for (const amc of amcList) {
@@ -14051,7 +14115,7 @@ categories.forEach(cat => {
                 const allFunds = Object.values(window.amcFunds).flat();
                 let count = 0;
                 let _prevActs = {};
-                try { _prevActs = JSON.parse(localStorage.getItem('ld_nps_actions') || '{}'); } catch(e) {}
+                try { _prevActs = JSON.parse(localStorage.getItem('ld_nps_actions') || '{}'); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
                 let _newActs = {};
                 for (const fund of allFunds) {
                     try {
@@ -14103,11 +14167,11 @@ categories.forEach(cat => {
                                 _setBadge(`(${count})`);
                             }
                         }
-                    } catch (e) {}
+                    } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
                     await new Promise(r => setTimeout(r, 10));
                 }
                 _setBadge(`(${count})`);
-                try { localStorage.setItem('ld_nps_actions', JSON.stringify(_newActs)); } catch(e) {}
+                try { localStorage.setItem('ld_nps_actions', JSON.stringify(_newActs)); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
             }
             function launchLiveFromAlert(code) {
                 ['alertSummaryModal','assetAllocatorModal','watchlistModal','compareModal'].forEach(id => {
@@ -14229,7 +14293,7 @@ categories.forEach(cat => {
                     { label: '1Y',  d: 250 },
                 ];
                 let niftyMap = null;
-                try { niftyMap = await fetchNifty50Nav(); } catch (_) {}
+                try { niftyMap = await fetchNifty50Nav(); } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                 const niftyAligned = fundDates.map(d => (niftyMap && niftyMap[d]) ? niftyMap[d] : null);
                 const last = fundNavs.length - 1;
                 el.innerHTML = tfs.map(tf => {
@@ -14320,7 +14384,7 @@ categories.forEach(cat => {
     .action-row { display: flex; flex-direction: column; gap: 10px; }
     .action-btn { background: #fdfdfd; border: 1px solid #cccccc; color: #333333; padding: 10px; border-radius: 4px; cursor: pointer; }
     .divider-hr { border: 0; border-top: 1px solid #dddddd; margin: 20px 0; }
-    .section-title { font-size: 12px; color: #555555; text-transform: uppercase; margin-bottom: 10px; }
+    #bafNpsModal .section-title { font-size: 12px; color: #555555; text-transform: uppercase; margin-bottom: 10px; }
     .amc-status-grid { display: grid; grid-template-columns: 1.2fr 2fr 2fr; gap: 4px; font-size: 12px; }
     .amc-row { display: contents; }
     .amc-cell { background: #fafafa; border: 1px solid #cccccc; padding: 10px; border-radius: 3px; color: #000000; display: flex; flex-direction: column; justify-content: center; }
@@ -14545,7 +14609,7 @@ categories.forEach(cat => {
     });
 </script>
     <!-- ════════════════ AI BREADTH CODE ════════════════ -->
-    <!-- NPC1B: AI Breadth Confirmation Modal — Fund-scoped, one-tap from Alert page & Live Cockpit -->
+    <!-- NPC1E: AI Breadth Confirmation Modal — Fund-scoped, one-tap from Alert page & Live Cockpit -->
     <style>
     #aiBreadthOverlay {
         position:fixed;inset:0;z-index:20000;background:rgba(0,0,0,0.45);
@@ -14754,13 +14818,13 @@ categories.forEach(cat => {
         try {
             const c = localStorage.getItem(key);
             if (c) return c;
-        } catch(e) {}
+        } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
         try {
             const res = await fetch(window._MFDATA_BASE + '/schemes/' + code, { signal: AbortSignal.timeout(8000) });
             if (!res.ok) return null;
             const d = await res.json();
             const fid = d?.data?.family_id || d?.data?.familyId || d?.data?.family || null;
-            if (fid) { try { localStorage.setItem(key, String(fid)); } catch(e) {} return String(fid); }
+            if (fid) { try { localStorage.setItem(key, String(fid)); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); } return String(fid); }
             return null;
         } catch(e) { return null; }
     };
@@ -14771,7 +14835,7 @@ categories.forEach(cat => {
         try {
             const raw = localStorage.getItem(ckey);
             if (raw) { const p = JSON.parse(raw); if (Date.now() - p._ts < window._HOLDINGS_CACHE_TTL) return p.data; }
-        } catch(e) {}
+        } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
         const fid = await window._getFamilyId(code);
         if (!fid) return null;
         try {
@@ -14782,7 +14846,7 @@ categories.forEach(cat => {
             if (raw && Array.isArray(raw) && raw.length > 0) {
                 const top = raw.sort((a, b) => (b.weight_pct||0) - (a.weight_pct||0)).slice(0, 10)
                     .map(h => ({ ticker: h.stock_name || h.name || '?', weight: h.weight_pct || 0 }));
-                try { localStorage.setItem(ckey, JSON.stringify({ _ts: Date.now(), data: top, fid: fid })); } catch(e) {}
+                try { localStorage.setItem(ckey, JSON.stringify({ _ts: Date.now(), data: top, fid: fid })); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
                 return top;
             }
             return null;
@@ -14790,7 +14854,7 @@ categories.forEach(cat => {
     };
 
     // ════════════════════════════════════════════════════════════
-    // NPC1B — AI BREADTH CONFIRMATION ENGINE
+    // NPC1E — AI BREADTH CONFIRMATION ENGINE
     // Sections:
     //   1. IIFE: State + Modal API (open/close/populate)
     //   2. abpCleanAiResponse — JSON cleanup helper
@@ -14838,7 +14902,7 @@ categories.forEach(cat => {
 
         function _cacheClear(fundCode) {
             // Clear today's key so next run re-fetches
-            try { localStorage.removeItem(_cacheKey(fundCode)); } catch(e) {}
+            try { localStorage.removeItem(_cacheKey(fundCode)); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
         }
 
         
@@ -14859,7 +14923,7 @@ categories.forEach(cat => {
             try { return localStorage.getItem(BA_LOCK_KEY()) === 'true'; } catch(e) { return false; }
         }
         function _baSetLock()        {
-            try { localStorage.setItem(BA_LOCK_KEY(), 'true'); } catch(e) {}
+            try { localStorage.setItem(BA_LOCK_KEY(), 'true'); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
         }
 
         
@@ -14869,7 +14933,7 @@ categories.forEach(cat => {
                 const list = raw ? JSON.parse(raw) : [];
                 if (!list.includes(fundCode)) { list.push(fundCode); }
                 localStorage.setItem(BA_COMPLETED_KEY(), JSON.stringify(list));
-            } catch(e) {}
+            } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
         }
         function _baGetCompleted() {
             try {
@@ -14883,7 +14947,7 @@ categories.forEach(cat => {
 
         
         function _baSaveRegimeA(fundList) {
-            try { localStorage.setItem(BA_REGIMEA_KEY(), JSON.stringify(fundList)); } catch(e) {}
+            try { localStorage.setItem(BA_REGIMEA_KEY(), JSON.stringify(fundList)); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
         }
         function _baLoadRegimeA() {
             try { const r = localStorage.getItem(BA_REGIMEA_KEY()); return r ? JSON.parse(r) : null; } catch(e) { return null; }
@@ -14926,7 +14990,7 @@ categories.forEach(cat => {
             let _cachedCount = 0;
             showFunds.forEach(f => {
                 const _ck = `breadth_v1_${(f.code||'').replace(/\W/g,'_')}_${_dateKey}`;
-                try { if (localStorage.getItem(_ck)) _cachedCount++; } catch(e2) {}
+                try { if (localStorage.getItem(_ck)) _cachedCount++; } catch(e2) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e2); }
             });
             // Update top status bar (wlStatusBar) with live counts
             (function(){
@@ -15000,7 +15064,7 @@ categories.forEach(cat => {
 
                 window.openAIBreadthModal = function(fund) {
             _abpFund = fund;
-            window._abpFund = fund;   // NPC1B: expose for _abpAddToWatchlist
+            window._abpFund = fund;   // NPC1E: expose for _abpAddToWatchlist
             _resetPanel();
             _populateFundMeta(fund);
             document.getElementById('abpFundTag').textContent = fund.name || fund.code;
@@ -15245,7 +15309,7 @@ categories.forEach(cat => {
 
         
         let _portfolioHoldings = null;
-        try { _portfolioHoldings = await window._fetchPortfolioHoldings(fundKey); } catch(e) {}
+        try { _portfolioHoldings = await window._fetchPortfolioHoldings(fundKey); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
 
         
         if (idxInfo.equity && parseFloat(fundWrsi) >= 50) {
@@ -15289,6 +15353,7 @@ categories.forEach(cat => {
                 avgGain = (avgGain * (p - 1) + (d > 0 ? d : 0)) / p;
                 avgLoss = (avgLoss * (p - 1) + (d < 0 ? -d : 0)) / p;
             }
+            if (avgGain === 0 && avgLoss === 0) return 50; // flat/stale data — neutral, not overbought
             if (avgLoss === 0) return 100;
             return Math.round(100 - 100 / (1 + avgGain / avgLoss));
         }
@@ -15370,7 +15435,7 @@ categories.forEach(cat => {
                 () => fetchStooqProxy(ticker),
             ];
             for (const src of sources) {
-                try { return await src(); } catch(e) {  }
+                try { return await src(); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
             }
             throw new Error('All sources failed');
         }
@@ -15510,10 +15575,10 @@ categories.forEach(cat => {
             ? _portfolioHoldings.map(h => `${h.ticker} (${h.weight.toFixed(1)}%)`).join(', ')
             : 'Not available';
 
-        const promptText2 = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the "NPS Clues_1B Auditor" for Indian NPS/MF funds.
+        const promptText2 = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the "NPS Clues_1F Auditor" for Indian NPS/MF funds.
 
 ════════════════════════════════════════════════════════
-AUDIT GUIDELINES — THE NPC1B RULES
+AUDIT GUIDELINES — THE NPC1E RULES
 ════════════════════════════════════════════════════════
 SACRED RULE: True compounders do NOT stay below 40 Weekly RSI. If an index or fund breaks W-RSI 40 and cannot reclaim 45, the earnings trust is broken — expect guidance cuts or downgrades.
 
@@ -15715,7 +15780,7 @@ Return a JSON object with this exact structure:
         let done = 0;
         _wl2.forEach(function(f){
             var ck='breadth_v1_'+(f.code||'').replace(/\W/g,'_')+'_'+_dk2;
-            try{ if(localStorage.getItem(ck)) done++; }catch(e){}
+            try{ if(localStorage.getItem(ck)) done++; }catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
         });
         var tn=document.getElementById('wlStatTotalN');
         var dn=document.getElementById('wlStatDoneN');
@@ -16255,7 +16320,7 @@ Return a JSON object with this exact structure:
         let savedModel = localStorage.getItem('ld_gemini_model') || GEMINI_MODEL_DEFAULT;
         // Migrate old 2.5 default → new 3.1 default
         const _validModels = ['gemini-3.1-flash-lite','gemini-3-flash','gemini-3.1-pro','gemini-2.5-flash-lite','gemini-2.5-flash'];
-        if (!_validModels.includes(savedModel)) { savedModel = GEMINI_MODEL_DEFAULT; try { localStorage.setItem('ld_gemini_model', savedModel); } catch(_){} }
+        if (!_validModels.includes(savedModel)) { savedModel = GEMINI_MODEL_DEFAULT; try { localStorage.setItem('ld_gemini_model', savedModel); } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); } }
         if (modelSelect) {
             modelSelect.value = savedModel;
             modelSelect.addEventListener('change', function() {
@@ -16325,7 +16390,7 @@ Return a JSON object with this exact structure:
             const backup = _getKey(2);
             if (backup && _activeKeySlot === 1) {
                 _activeKeySlot = 2;
-                try { localStorage.setItem('ld_active_key_slot', '2'); } catch(e2) {}
+                try { localStorage.setItem('ld_active_key_slot', '2'); } catch(e2) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e2); }
                 return true;
             }
             return false;
@@ -16586,11 +16651,11 @@ Return a JSON object with this exact structure:
                     fundName = fs.options[fs.selectedIndex].text;
                     fundCode = fs.value;
                 }
-            } catch(e) {}
+            } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
             return { fundName, fundCode };
         }
         function gatherLeanContext() {
-            let ctx = "=== NPC1B LEAN TARGET FUND DUMP ===\n";
+            let ctx = "=== NPC1E LEAN TARGET FUND DUMP ===\n";
             ctx += `Timestamp: ${new Date().toISOString()}\n`;
             const { fundName, fundCode } = getFundInfo();
             const regime = document.getElementById('liveRegimeBlock')?.textContent || document.getElementById('regimeBlock')?.textContent || 'N/A';
@@ -16715,7 +16780,7 @@ Return a JSON object with this exact structure:
             return ctx;
         }
         function gatherContext() {
-            let ctx = "=== NPC1B SIGNAL DEEP DUMP ===\n";
+            let ctx = "=== NPC1E SIGNAL DEEP DUMP ===\n";
             ctx += `Timestamp: ${new Date().toISOString()}\n`;
             const activeModal = document.querySelector('.modal[style*="display: flex"]');
             ctx += `\n[UI SURFACE]\nVisible Screen: ${activeModal ? activeModal.id : 'Main Dashboard'}\n`;
@@ -16789,7 +16854,7 @@ Return a JSON object with this exact structure:
                         ctx += `Rank ${i+1}: ${f.name || f.code} | 1M Return: ${f.r1m != null ? f.r1m.toFixed(2)+'%' : 'N/A'} | W-RSI: ${f.wrsi || 'N/A'}\n`;
                     });
                 }
-            } catch(e) {}
+            } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
             const allocTypeEl = document.getElementById('assetAllocType');
             const allocType = allocTypeEl ? allocTypeEl.value : 'N/A';
             ctx += `\n[C3 MOMENTUM FILTER]\nAsset Alloc Type: ${allocType}\nC3 Qualification Threshold: 1M return > 2%\n`;
@@ -16799,7 +16864,7 @@ Return a JSON object with this exact structure:
                 wl.forEach(f => {
                     ctx += `- ${f.name} | Regime:${f.regime} | wRSI:${f.wrsi||'N/A'}\n`;
                 });
-            } catch(e) {}
+            } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
             const rrgQuad = document.getElementById('lcRrgStatusLabel')?.textContent || 'N/A';
             const rrgCross = document.getElementById('lcRrgCrossDate')?.textContent || 'N/A';
             const rrgRsTrend = document.getElementById('lcRrgRSTrend')?.textContent || 'N/A';
@@ -17240,7 +17305,7 @@ Return a JSON object with this exact structure:
             try { ctx = gatherLeanContext(); } catch(e) { ctx = '(Fund context unavailable — open Live Cockpit first)'; }
 
             const systemPrompt =
-                'You are the NPC1B System Brain — an expert NPS/MF fund analyst embedded in the NPS Clues_1B app.\n' +
+                'You are the NPC1E System Brain — an expert NPS/MF fund analyst embedded in the NPS Clues_1F app.\n' +
                 'You analyse Indian NPS NAV data using RSI, W-RSI, regime classification (A/B/C), TSL floors, WMA20, and momentum signals.\n' +
                 'Rules: Regime A (W-RSI≥50)=Bull, B (40-50)=Transition, C (<40)=Bear. D-RSI<40=oversold BUY zone. TSL breach=SELL ALL.\n' +
                 'Answer concisely. Use ₹ for prices. Highlight BUY/SELL signals clearly. Below is the current fund data:\n\n' +
@@ -17556,7 +17621,7 @@ Return a JSON object with this exact structure:
     <input type="file" id="ld-pdf-file-input" accept="application/pdf" style="display:none;">
 
         <!-- ═══════════════════════════════════════════════════════════════════
-         NPC1B — BACKGROUND BA ENGINE v2
+         NPC1E — BACKGROUND BA ENGINE v2
          ─────────────────────────────────────────────────────────────────
          Priority Order:
            1. Watchlist funds (in order) — check Regime A, run BA, store.
@@ -17573,7 +17638,7 @@ Return a JSON object with this exact structure:
     
     const GAP_MS        = (() => { try { const v=parseInt(localStorage.getItem('ld_api_gap_sec')||'5');  return (v>=5&&v<=50?v:5)*1000;  } catch(e){ return 5_000;  } })();
     const BOOT_DELAY_MS = 6_000;
-    const ADDON_VER     = 'NPC1B';
+    const ADDON_VER     = 'NPC1E';
     const RUN_FLAG_KEY  = 'bgbreadth_ran_';
 
     
@@ -17603,12 +17668,12 @@ Return a JSON object with this exact structure:
                     _cachedAtDisplay:  _tsDisplay
                 })
             ));
-        } catch(e) {}
+        } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
     }
 
     
     function _hasRanToday()  { try { return !!localStorage.getItem(RUN_FLAG_KEY + _istDate()); } catch(e){ return false; } }
-    function _markRanToday() { try { localStorage.setItem(RUN_FLAG_KEY + _istDate(), '1');      } catch(e){} }
+    function _markRanToday() { try { localStorage.setItem(RUN_FLAG_KEY + _istDate(), '1');      } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); } }
 
     
     
@@ -17616,12 +17681,12 @@ Return a JSON object with this exact structure:
     
     function _qKey()   { return `bg_ba_queue_${_istDate()}`; }
     function _loadQ()  { try { return JSON.parse(localStorage.getItem(_qKey())||'[]'); } catch(e){ return []; } }
-    function _saveQ(q) { try { localStorage.setItem(_qKey(), JSON.stringify(q));        } catch(e){} }
+    function _saveQ(q) { try { localStorage.setItem(_qKey(), JSON.stringify(q));        } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); } }
 
     
     function _cntKey()  { return `bg_ba_counter_${_istDate()}`; }
     function _getCnt()  { try { return parseInt(localStorage.getItem(_cntKey())||'0');  } catch(e){ return 0; } }
-    function _incCnt()  { try { localStorage.setItem(_cntKey(), String(_getCnt()+1));   } catch(e){} }
+    function _incCnt()  { try { localStorage.setItem(_cntKey(), String(_getCnt()+1));   } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); } }
 
     
     function _allFunds() {
@@ -17683,7 +17748,7 @@ Return a JSON object with this exact structure:
         const batchLines = items.map((item, i) =>
             `[${i+1}] ${item.name}: W-RSI=${item.wrsi}, Regime=${item.wrsi>=50?'A (Hope)':item.wrsi>=40?'B (Watch)':'C (Fear)'}`
         ).join('\n');
-        const prompt = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the NPS Clues_1B Auditor.
+        const prompt = `You are the AI Breadth Confirmation engine of the Sacred RSI Regime System — the NPS Clues_1F Auditor.
 
 TASK: For EACH of the ${items.length} funds below, perform Constituent X-Ray on the fund's benchmark index.
 For each fund determine: bull_count, confirmation (CONFIRMED/MARGINAL/WEAK), sop_action, divergence_alert, psychology_audit, and reasoning.
@@ -17737,7 +17802,7 @@ ${batchLines}`;
                                 const result = JSON.parse(raw.slice(js, je + 1));
                                 result._modelUsed = model;
                                 return result;
-                            } catch(_) {}
+                            } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
                         }
                         lastErr = new Error('JSON parse failed — response truncated.');
                         continue;
@@ -17774,7 +17839,7 @@ ${batchLines}`;
             let cached     = 0;
             q.forEach(item => {
                 const ck = `breadth_v1_${(item.code||'').replace(/\W/g,'_')}_${_dateKey}`;
-                try { if (localStorage.getItem(ck)) cached++; } catch(_) {}
+                try { if (localStorage.getItem(ck)) cached++; } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
             });
 
             // Keep bar visible as flex column
@@ -17813,7 +17878,7 @@ ${batchLines}`;
             // Next label
             if (nextLbl) nextLbl.textContent = nextLabel || '';
 
-        } catch(e) {}
+        } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
     }
 
     // ── Status pill UI ────────────────────────────────────────────────
@@ -17845,7 +17910,7 @@ ${batchLines}`;
     function _updateBanner(text, color) {
         try {
             _updateUnifiedBAStatus(text, color || '#f59e0b');
-        } catch(_) {}
+        } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
     }
 
     
@@ -18001,7 +18066,7 @@ ${batchLines}`;
             const allF     = _allFunds();
             const allCodes = new Set(allF.map(f => f.code));
             let wl = [];
-            try { wl = JSON.parse(localStorage.getItem('ld_watchlist') || '[]'); } catch(e) {}
+            try { wl = JSON.parse(localStorage.getItem('ld_watchlist') || '[]'); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
             for (const wf of (Array.isArray(wl) ? wl : [])) {
                 if (!wf.code || !allCodes.has(wf.code)) continue; 
                 const found = allF.find(f => f.code === wf.code);
@@ -18019,7 +18084,7 @@ ${batchLines}`;
         } else {
         }
 
-        // ── NPC1B: WATCHLIST BA — BATCH PROCESSING (BATCH_SIZE=10) ──
+        // ── NPC1E: WATCHLIST BA — BATCH PROCESSING (BATCH_SIZE=10) ──
         // Processes up to BA_BATCH_SIZE funds per Gemini call.
         // Uses responseMimeType: "application/json" for forced JSON output.
         // 4200ms gap between batches (Free Tier: 15 RPM = 1 req per 4s).
@@ -18042,7 +18107,7 @@ ${batchLines}`;
             if (!it || it.wrsi !== null) continue;
             let navRows = [];
             for (let attempt = 0; attempt < 3; attempt++) {
-                try { navRows = await _fetchNav(it.code); if (navRows.length >= 14) break; } catch(e) {}
+                try { navRows = await _fetchNav(it.code); if (navRows.length >= 14) break; } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
                 await _sleep(2000);
             }
             const w = navRows.length >= 14 ? _computeWrsi(navRows) : null;
@@ -18143,8 +18208,7 @@ ${batchLines}`;
                             regimeAGlobal.push({ ...fund, wrsi: Math.round(w * 10) / 10 });
                         }
                     }
-                } catch(e) {
-                }
+                } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
                 scanned++;
                 if (scanned % 5 === 0 || scanned === equityFunds.length) {
                     _setPillMsg(`🔍 Global: ${scanned}/${equityFunds.length} scanned — ${regimeAGlobal.length} Regime A`);
@@ -18159,7 +18223,7 @@ ${batchLines}`;
                 const rAData = regimeAGlobal.map(f => ({ code: f.code, name: f.name, wrsi: f.wrsi }));
                 localStorage.setItem(`bgbreadth_regimeA_${today}`,   JSON.stringify(rAData));
                 localStorage.setItem(`ba_regimeA_funds_${today}`,     JSON.stringify(rAData));
-            } catch(e) {}
+            } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
 
             
             let q = _loadQ();
@@ -18187,7 +18251,7 @@ ${batchLines}`;
                     added++;
                 }
                 if (added) { _saveQ(q); }
-            } catch(e) {}
+            } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
         }
 
         
@@ -18276,7 +18340,7 @@ ${batchLines}`;
             try {
                 localStorage.setItem(`ba_completed_today_${today}`, 'true');
                 localStorage.setItem(`bg_ba_counter_${today}`, String(finalCnt));
-            } catch(e) {}
+            } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
         } else {
             
             
@@ -18318,19 +18382,19 @@ ${batchLines}`;
         if (_nextLbl) _nextLbl.innerHTML = '';
 
         
-        try { localStorage.removeItem(RUN_FLAG_KEY + d); } catch(e) {}
-        try { localStorage.removeItem(`bg_amc_scan_done_${d}`); } catch(e) {}
-        try { localStorage.removeItem(`ba_completed_funds_${d}`); } catch(e) {}
+        try { localStorage.removeItem(RUN_FLAG_KEY + d); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
+        try { localStorage.removeItem(`bg_amc_scan_done_${d}`); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
+        try { localStorage.removeItem(`ba_completed_funds_${d}`); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
 
-        // NPC1B FIX: Clear breadth_v1_ cache for all watchlist funds today.
+        // NPC1E FIX: Clear breadth_v1_ cache for all watchlist funds today.
         // Without this, _cacheExists() returns true → every fund is marked done
         // instantly → Gemini is never called → no BA download happens on restart.
         try {
             const q = _loadQ();
             q.forEach(item => {
-                try { localStorage.removeItem(_cacheKey(item.code)); } catch(_) {}
+                try { localStorage.removeItem(_cacheKey(item.code)); } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
             });
-        } catch(e) {}
+        } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
         // Also sweep any other breadth_v1_ keys for today that may have accumulated
         try {
             Object.keys(localStorage).forEach(k => {
@@ -18338,7 +18402,7 @@ ${batchLines}`;
                     localStorage.removeItem(k);
                 }
             });
-        } catch(e) {}
+        } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
 
         // Reset ALL queue items to done=false and clear skipReason & wrsi
         // so regime is re-checked fresh and Gemini is called for every fund.
@@ -18350,10 +18414,10 @@ ${batchLines}`;
                 item.wrsi = null; // force fresh regime re-check
             });
             _saveQ(q);
-        } catch(e) { try { localStorage.removeItem(_qKey()); } catch(_) {} }
+        } catch(e) { try { localStorage.removeItem(_qKey()); } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); } }
 
         
-        try { localStorage.removeItem(_cntKey()); } catch(e) {}
+        try { localStorage.removeItem(_cntKey()); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
 
         setTimeout(() => _runBackgroundScan(), 300);
     };
@@ -18387,7 +18451,7 @@ ${batchLines}`;
                 // Fresh day — show bar immediately so user knows engine will start
                 _updateUnifiedBAStatus('⏳ BA engine starting in 6s…', '#f59e0b');
             }
-        } catch(_) {}
+        } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
         setTimeout(_runBackgroundScan, BOOT_DELAY_MS);
     });
 
@@ -18433,9 +18497,9 @@ ${batchLines}`;
         (function(){
           var GK_KEY = "ld_scn_gem_key", GK_KEY2 = "ld_gemini_api_key";
           function _dot(has){ var el=document.getElementById('scn-key-dot'); if(!el)return; el.textContent=has?'●':'○'; el.style.color=has?'#009e70':'#c8102e'; var box=document.getElementById('scn-key-box'); if(box)box.style.borderColor=has?'#009e70':'#c8102e'; var clr=document.getElementById('scn-key-clear'); if(clr)clr.style.display=has?'':'none'; }
-          function _sync(){ try{ var k=localStorage.getItem(GK_KEY)||localStorage.getItem(GK_KEY2)||''; _dot(k.length>20); var cd=document.getElementById('scn-cache-date'); if(cd && window._scnCacheDate){ cd.textContent='💾 '+window._scnCacheDate; cd.style.display=''; } }catch(e){} }
-          window.scnSaveKey=function(){ var inp=document.getElementById('scn-key-input'); if(!inp)return; var k=inp.value.trim(); if(k.length<20){ var st=document.getElementById('scn-key-st'); if(st){st.textContent='Too short';st.style.display='';setTimeout(function(){st.style.display='none';},2000);} return; } try{localStorage.setItem(GK_KEY,k);localStorage.setItem(GK_KEY2,k);}catch(e){} inp.value=''; _dot(true); var st=document.getElementById('scn-key-st'); if(st){st.textContent='Saved ✓';st.style.display='';setTimeout(function(){st.style.display='none';},2500);} if(window._scnReactSync)window._scnReactSync(k); };
-          window.scnClearKey=function(){ try{localStorage.removeItem(GK_KEY);localStorage.removeItem(GK_KEY2);}catch(e){} _dot(false); if(window._scnReactSync)window._scnReactSync(''); };
+          function _sync(){ try{ var k=localStorage.getItem(GK_KEY)||localStorage.getItem(GK_KEY2)||''; _dot(k.length>20); var cd=document.getElementById('scn-cache-date'); if(cd && window._scnCacheDate){ cd.textContent='💾 '+window._scnCacheDate; cd.style.display=''; } }catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); } }
+          window.scnSaveKey=function(){ var inp=document.getElementById('scn-key-input'); if(!inp)return; var k=inp.value.trim(); if(k.length<20){ var st=document.getElementById('scn-key-st'); if(st){st.textContent='Too short';st.style.display='';setTimeout(function(){st.style.display='none';},2000);} return; } try{localStorage.setItem(GK_KEY,k);localStorage.setItem(GK_KEY2,k);}catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); } inp.value=''; _dot(true); var st=document.getElementById('scn-key-st'); if(st){st.textContent='Saved ✓';st.style.display='';setTimeout(function(){st.style.display='none';},2500);} if(window._scnReactSync)window._scnReactSync(k); };
+          window.scnClearKey=function(){ try{localStorage.removeItem(GK_KEY);localStorage.removeItem(GK_KEY2);}catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); } _dot(false); if(window._scnReactSync)window._scnReactSync(''); };
           document.addEventListener('DOMContentLoaded',_sync);
           setTimeout(_sync,500);
         })();
@@ -18494,7 +18558,7 @@ b[0]&&"O"!==b[0]||"n"!==b[1]&&"N"!==b[1])ej(b,c,e,d)&&(c=null),d||null===e?bj(b)
 c){if(void 0===ae)try{throw Error();}catch(d){ae=(b=d.stack.trim().match(/\n( *(at )?)/))&&b[1]||""}return"\n"+ae+a}function be(a,b){if(!a||ce)return"";ce=!0;var c=Error.prepareStackTrace;Error.prepareStackTrace=void 0;try{if(b)if(b=function(){throw Error();},Object.defineProperty(b.prototype,"props",{set:function(){throw Error();}}),"object"===typeof Reflect&&Reflect.construct){try{Reflect.construct(b,[])}catch(n){var d=n}Reflect.construct(a,[],b)}else{try{b.call()}catch(n){d=n}a.call(b.prototype)}else{try{throw Error();
 }catch(n){d=n}a()}}catch(n){if(n&&d&&"string"===typeof n.stack){for(var e=n.stack.split("\n"),f=d.stack.split("\n"),g=e.length-1,h=f.length-1;1<=g&&0<=h&&e[g]!==f[h];)h--;for(;1<=g&&0<=h;g--,h--)if(e[g]!==f[h]){if(1!==g||1!==h){do if(g--,h--,0>h||e[g]!==f[h]){var k="\n"+e[g].replace(" at new "," at ");a.displayName&&k.includes("<anonymous>")&&(k=k.replace("<anonymous>",a.displayName));return k}while(1<=g&&0<=h)}break}}}finally{ce=!1,Error.prepareStackTrace=c}return(a=a?a.displayName||a.name:"")?bc(a):
 ""}function fj(a){switch(a.tag){case 5:return bc(a.type);case 16:return bc("Lazy");case 13:return bc("Suspense");case 19:return bc("SuspenseList");case 0:case 2:case 15:return a=be(a.type,!1),a;case 11:return a=be(a.type.render,!1),a;case 1:return a=be(a.type,!0),a;default:return""}}function de(a){if(null==a)return null;if("function"===typeof a)return a.displayName||a.name||null;if("string"===typeof a)return a;switch(a){case Bb:return"Fragment";case Cb:return"Portal";case ee:return"Profiler";case fe:return"StrictMode";
-case ge:return"Suspense";case he:return"SuspenseList"}if("object"===typeof a)switch(a.$$typeof){case gg:return(a.displayName||"Context")+".Consumer";case hg:return(a._context.displayName||"Context")+".Provider";case ie:var b=a.render;a=a.displayName;a||(a=b.displayName||b.name||"",a=""!==a?"ForwardRef("+a+")":"ForwardRef");return a;case je:return b=a.displayName||null,null!==b?b:de(a.type)||"Memo";case Ta:b=a._payload;a=a._init;try{return de(a(b))}catch(c){}}return null}function gj(a){var b=a.type;
+case ge:return"Suspense";case he:return"SuspenseList"}if("object"===typeof a)switch(a.$$typeof){case gg:return(a.displayName||"Context")+".Consumer";case hg:return(a._context.displayName||"Context")+".Provider";case ie:var b=a.render;a=a.displayName;a||(a=b.displayName||b.name||"",a=""!==a?"ForwardRef("+a+")":"ForwardRef");return a;case je:return b=a.displayName||null,null!==b?b:de(a.type)||"Memo";case Ta:b=a._payload;a=a._init;try{return de(a(b))}catch(c) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', c); }}return null}function gj(a){var b=a.type;
 switch(a.tag){case 24:return"Cache";case 9:return(b.displayName||"Context")+".Consumer";case 10:return(b._context.displayName||"Context")+".Provider";case 18:return"DehydratedFragment";case 11:return a=b.render,a=a.displayName||a.name||"",b.displayName||(""!==a?"ForwardRef("+a+")":"ForwardRef");case 7:return"Fragment";case 5:return b;case 4:return"Portal";case 3:return"Root";case 6:return"Text";case 16:return de(b);case 8:return b===fe?"StrictMode":"Mode";case 22:return"Offscreen";case 12:return"Profiler";
 case 21:return"Scope";case 13:return"Suspense";case 19:return"SuspenseList";case 25:return"TracingMarker";case 1:case 0:case 17:case 2:case 14:case 15:if("function"===typeof b)return b.displayName||b.name||null;if("string"===typeof b)return b}return null}function Ua(a){switch(typeof a){case "boolean":case "number":case "string":case "undefined":return a;case "object":return a;default:return""}}function ig(a){var b=a.type;return(a=a.nodeName)&&"input"===a.toLowerCase()&&("checkbox"===b||"radio"===
 b)}function hj(a){var b=ig(a)?"checked":"value",c=Object.getOwnPropertyDescriptor(a.constructor.prototype,b),d=""+a[b];if(!a.hasOwnProperty(b)&&"undefined"!==typeof c&&"function"===typeof c.get&&"function"===typeof c.set){var e=c.get,f=c.set;Object.defineProperty(a,b,{configurable:!0,get:function(){return e.call(this)},set:function(a){d=""+a;f.call(this,a)}});Object.defineProperty(a,b,{enumerable:c.enumerable});return{getValue:function(){return d},setValue:function(a){d=""+a},stopTracking:function(){a._valueTracker=
@@ -18511,7 +18575,7 @@ default:return!0}}function re(a){a=a.target||a.srcElement||window;a.correspondin
 if(c&&"function"!==typeof c)throw Error(m(231,b,typeof c));return c}function jj(a,b,c,d,e,f,g,h,k){gc=!1;Sc=null;kj.apply(lj,arguments)}function mj(a,b,c,d,e,f,g,h,k){jj.apply(this,arguments);if(gc){if(gc){var n=Sc;gc=!1;Sc=null}else throw Error(m(198));Tc||(Tc=!0,ue=n)}}function nb(a){var b=a,c=a;if(a.alternate)for(;b.return;)b=b.return;else{a=b;do b=a,0!==(b.flags&4098)&&(c=b.return),a=b.return;while(a)}return 3===b.tag?c:null}function zg(a){if(13===a.tag){var b=a.memoizedState;null===b&&(a=a.alternate,
 null!==a&&(b=a.memoizedState));if(null!==b)return b.dehydrated}return null}function Ag(a){if(nb(a)!==a)throw Error(m(188));}function nj(a){var b=a.alternate;if(!b){b=nb(a);if(null===b)throw Error(m(188));return b!==a?null:a}for(var c=a,d=b;;){var e=c.return;if(null===e)break;var f=e.alternate;if(null===f){d=e.return;if(null!==d){c=d;continue}break}if(e.child===f.child){for(f=e.child;f;){if(f===c)return Ag(e),a;if(f===d)return Ag(e),b;f=f.sibling}throw Error(m(188));}if(c.return!==d.return)c=e,d=f;
 else{for(var g=!1,h=e.child;h;){if(h===c){g=!0;c=e;d=f;break}if(h===d){g=!0;d=e;c=f;break}h=h.sibling}if(!g){for(h=f.child;h;){if(h===c){g=!0;c=f;d=e;break}if(h===d){g=!0;d=f;c=e;break}h=h.sibling}if(!g)throw Error(m(189));}}if(c.alternate!==d)throw Error(m(190));}if(3!==c.tag)throw Error(m(188));return c.stateNode.current===c?a:b}function Bg(a){a=nj(a);return null!==a?Cg(a):null}function Cg(a){if(5===a.tag||6===a.tag)return a;for(a=a.child;null!==a;){var b=Cg(a);if(null!==b)return b;a=a.sibling}return null}
-function oj(a,b){if(Ca&&"function"===typeof Ca.onCommitFiberRoot)try{Ca.onCommitFiberRoot(Uc,a,void 0,128===(a.current.flags&128))}catch(c){}}function pj(a){a>>>=0;return 0===a?32:31-(qj(a)/rj|0)|0}function hc(a){switch(a&-a){case 1:return 1;case 2:return 2;case 4:return 4;case 8:return 8;case 16:return 16;case 32:return 32;case 64:case 128:case 256:case 512:case 1024:case 2048:case 4096:case 8192:case 16384:case 32768:case 65536:case 131072:case 262144:case 524288:case 1048576:case 2097152:return a&
+function oj(a,b){if(Ca&&"function"===typeof Ca.onCommitFiberRoot)try{Ca.onCommitFiberRoot(Uc,a,void 0,128===(a.current.flags&128))}catch(c) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', c); }}function pj(a){a>>>=0;return 0===a?32:31-(qj(a)/rj|0)|0}function hc(a){switch(a&-a){case 1:return 1;case 2:return 2;case 4:return 4;case 8:return 8;case 16:return 16;case 32:return 32;case 64:case 128:case 256:case 512:case 1024:case 2048:case 4096:case 8192:case 16384:case 32768:case 65536:case 131072:case 262144:case 524288:case 1048576:case 2097152:return a&
 4194240;case 4194304:case 8388608:case 16777216:case 33554432:case 67108864:return a&130023424;case 134217728:return 134217728;case 268435456:return 268435456;case 536870912:return 536870912;case 1073741824:return 1073741824;default:return a}}function Vc(a,b){var c=a.pendingLanes;if(0===c)return 0;var d=0,e=a.suspendedLanes,f=a.pingedLanes,g=c&268435455;if(0!==g){var h=g&~e;0!==h?d=hc(h):(f&=g,0!==f&&(d=hc(f)))}else g=c&~e,0!==g?d=hc(g):0!==f&&(d=hc(f));if(0===d)return 0;if(0!==b&&b!==d&&0===(b&e)&&
 (e=d&-d,f=b&-b,e>=f||16===e&&0!==(f&4194240)))return b;0!==(d&4)&&(d|=c&16);b=a.entangledLanes;if(0!==b)for(a=a.entanglements,b&=d;0<b;)c=31-ta(b),e=1<<c,d|=a[c],b&=~e;return d}function sj(a,b){switch(a){case 1:case 2:case 4:return b+250;case 8:case 16:case 32:case 64:case 128:case 256:case 512:case 1024:case 2048:case 4096:case 8192:case 16384:case 32768:case 65536:case 131072:case 262144:case 524288:case 1048576:case 2097152:return b+5E3;case 4194304:case 8388608:case 16777216:case 33554432:case 67108864:return-1;
 case 134217728:case 268435456:case 536870912:case 1073741824:return-1;default:return-1}}function tj(a,b){for(var c=a.suspendedLanes,d=a.pingedLanes,e=a.expirationTimes,f=a.pendingLanes;0<f;){var g=31-ta(f),h=1<<g,k=e[g];if(-1===k){if(0===(h&c)||0!==(h&d))e[g]=sj(h,b)}else k<=b&&(a.expiredLanes|=h);f&=~h}}function ve(a){a=a.pendingLanes&-1073741825;return 0!==a?a:a&1073741824?1073741824:0}function Dg(){var a=Wc;Wc<<=1;0===(Wc&4194240)&&(Wc=64);return a}function we(a){for(var b=[],c=0;31>c;c++)b.push(a);
@@ -18590,7 +18654,7 @@ destroy:c,deps:d,next:null};b=C.updateQueue;null===b?(b={lastEffect:null,stores:
 Cc(b,c,f,d);return}}C.flags|=a;e.memoizedState=Cc(1|b,c,f,d)}function Sh(a,b){return Bd(8390656,8,a,b)}function qf(a,b){return Cd(2048,8,a,b)}function Th(a,b){return Cd(4,2,a,b)}function Uh(a,b){return Cd(4,4,a,b)}function Vh(a,b){if("function"===typeof b)return a=a(),b(a),function(){b(null)};if(null!==b&&void 0!==b)return a=a(),b.current=a,function(){b.current=null}}function Wh(a,b,c){c=null!==c&&void 0!==c?c.concat([a]):null;return Cd(4,4,Vh.bind(null,b,a),c)}function rf(a,b){}function Xh(a,b){var c=
 sa();b=void 0===b?null:b;var d=c.memoizedState;if(null!==d&&null!==b&&lf(b,d[1]))return d[0];c.memoizedState=[a,b];return a}function Yh(a,b){var c=sa();b=void 0===b?null:b;var d=c.memoizedState;if(null!==d&&null!==b&&lf(b,d[1]))return d[0];a=a();c.memoizedState=[a,b];return a}function Zh(a,b,c){if(0===(vb&21))return a.baseState&&(a.baseState=!1,ha=!0),a.memoizedState=c;ua(c,b)||(c=Dg(),C.lanes|=c,ra|=c,a.baseState=!0);return b}function pk(a,b,c){c=z;z=0!==c&&4>c?c:4;a(!0);var d=sf.transition;sf.transition=
 {};try{a(!1),b()}finally{z=c,sf.transition=d}}function $h(){return sa().memoizedState}function qk(a,b,c){var d=hb(a);c={lane:d,action:c,hasEagerState:!1,eagerState:null,next:null};if(ai(a))bi(b,c);else if(c=Eh(a,b,c,d),null!==c){var e=Z();xa(c,a,d,e);ci(c,b,d)}}function ok(a,b,c){var d=hb(a),e={lane:d,action:c,hasEagerState:!1,eagerState:null,next:null};if(ai(a))bi(b,e);else{var f=a.alternate;if(0===a.lanes&&(null===f||0===f.lanes)&&(f=b.lastRenderedReducer,null!==f))try{var g=b.lastRenderedState,
-h=f(g,c);e.hasEagerState=!0;e.eagerState=h;if(ua(h,g)){var k=b.interleaved;null===k?(e.next=e,ef(b)):(e.next=k.next,k.next=e);b.interleaved=e;return}}catch(n){}finally{}c=Eh(a,b,e,d);null!==c&&(e=Z(),xa(c,a,d,e),ci(c,b,d))}}function ai(a){var b=a.alternate;return a===C||null!==b&&b===C}function bi(a,b){zc=Ad=!0;var c=a.pending;null===c?b.next=b:(b.next=c.next,c.next=b);a.pending=b}function ci(a,b,c){if(0!==(c&4194240)){var d=b.lanes;d&=a.pendingLanes;c|=d;b.lanes=c;xe(a,c)}}function ya(a,b){if(a&&
+h=f(g,c);e.hasEagerState=!0;e.eagerState=h;if(ua(h,g)){var k=b.interleaved;null===k?(e.next=e,ef(b)):(e.next=k.next,k.next=e);b.interleaved=e;return}}catch(n) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', n); }finally{}c=Eh(a,b,e,d);null!==c&&(e=Z(),xa(c,a,d,e),ci(c,b,d))}}function ai(a){var b=a.alternate;return a===C||null!==b&&b===C}function bi(a,b){zc=Ad=!0;var c=a.pending;null===c?b.next=b:(b.next=c.next,c.next=b);a.pending=b}function ci(a,b,c){if(0!==(c&4194240)){var d=b.lanes;d&=a.pendingLanes;c|=d;b.lanes=c;xe(a,c)}}function ya(a,b){if(a&&
 a.defaultProps){b=E({},b);a=a.defaultProps;for(var c in a)void 0===b[c]&&(b[c]=a[c]);return b}return b}function tf(a,b,c,d){b=a.memoizedState;c=c(d,b);c=null===c||void 0===c?b:E({},b,c);a.memoizedState=c;0===a.lanes&&(a.updateQueue.baseState=c)}function di(a,b,c,d,e,f,g){a=a.stateNode;return"function"===typeof a.shouldComponentUpdate?a.shouldComponentUpdate(d,f,g):b.prototype&&b.prototype.isPureReactComponent?!qc(c,d)||!qc(e,f):!0}function ei(a,b,c){var d=!1,e=cb;var f=b.contextType;"object"===typeof f&&
 null!==f?f=qa(f):(e=ea(b)?pb:J.current,d=b.contextTypes,f=(d=null!==d&&void 0!==d)?Nb(a,e):cb);b=new b(c,f);a.memoizedState=null!==b.state&&void 0!==b.state?b.state:null;b.updater=Dd;a.stateNode=b;b._reactInternals=a;d&&(a=a.stateNode,a.__reactInternalMemoizedUnmaskedChildContext=e,a.__reactInternalMemoizedMaskedChildContext=f);return b}function fi(a,b,c,d){a=b.state;"function"===typeof b.componentWillReceiveProps&&b.componentWillReceiveProps(c,d);"function"===typeof b.UNSAFE_componentWillReceiveProps&&
 b.UNSAFE_componentWillReceiveProps(c,d);b.state!==a&&Dd.enqueueReplaceState(b,b.state,null)}function uf(a,b,c,d){var e=a.stateNode;e.props=c;e.state=a.memoizedState;e.refs={};ff(a);var f=b.contextType;"object"===typeof f&&null!==f?e.context=qa(f):(f=ea(b)?pb:J.current,e.context=Nb(a,f));e.state=a.memoizedState;f=b.getDerivedStateFromProps;"function"===typeof f&&(tf(a,b,f,c),e.state=a.memoizedState);"function"===typeof b.getDerivedStateFromProps||"function"===typeof e.getSnapshotBeforeUpdate||"function"!==
@@ -18642,7 +18706,7 @@ b.stateNode.containerInfo;1===t.nodeType?t.textContent="":9===t.nodeType&&t.docu
 function Id(a,b){b=b.updateQueue;b=null!==b?b.lastEffect:null;if(null!==b){var c=b=b.next;do{if((c.tag&a)===a){var d=c.create;c.destroy=d()}c=c.next}while(c!==b)}}function Lf(a){var b=a.ref;if(null!==b){var c=a.stateNode;switch(a.tag){case 5:a=c;break;default:a=c}"function"===typeof b?b(a):b.current=a}}function Ai(a){var b=a.alternate;null!==b&&(a.alternate=null,Ai(b));a.child=null;a.deletions=null;a.sibling=null;5===a.tag&&(b=a.stateNode,null!==b&&(delete b[Da],delete b[uc],delete b[Me],delete b[Dk],
 delete b[Ek]));a.stateNode=null;a.return=null;a.dependencies=null;a.memoizedProps=null;a.memoizedState=null;a.pendingProps=null;a.stateNode=null;a.updateQueue=null}function Bi(a){return 5===a.tag||3===a.tag||4===a.tag}function Ci(a){a:for(;;){for(;null===a.sibling;){if(null===a.return||Bi(a.return))return null;a=a.return}a.sibling.return=a.return;for(a=a.sibling;5!==a.tag&&6!==a.tag&&18!==a.tag;){if(a.flags&2)continue a;if(null===a.child||4===a.tag)continue a;else a.child.return=a,a=a.child}if(!(a.flags&
 2))return a.stateNode}}function Mf(a,b,c){var d=a.tag;if(5===d||6===d)a=a.stateNode,b?8===c.nodeType?c.parentNode.insertBefore(a,b):c.insertBefore(a,b):(8===c.nodeType?(b=c.parentNode,b.insertBefore(a,c)):(b=c,b.appendChild(a)),c=c._reactRootContainer,null!==c&&void 0!==c||null!==b.onclick||(b.onclick=kd));else if(4!==d&&(a=a.child,null!==a))for(Mf(a,b,c),a=a.sibling;null!==a;)Mf(a,b,c),a=a.sibling}function Nf(a,b,c){var d=a.tag;if(5===d||6===d)a=a.stateNode,b?c.insertBefore(a,b):c.appendChild(a);
-else if(4!==d&&(a=a.child,null!==a))for(Nf(a,b,c),a=a.sibling;null!==a;)Nf(a,b,c),a=a.sibling}function jb(a,b,c){for(c=c.child;null!==c;)Di(a,b,c),c=c.sibling}function Di(a,b,c){if(Ca&&"function"===typeof Ca.onCommitFiberUnmount)try{Ca.onCommitFiberUnmount(Uc,c)}catch(h){}switch(c.tag){case 5:X||Wb(c,b);case 6:var d=T,e=za;T=null;jb(a,b,c);T=d;za=e;null!==T&&(za?(a=T,c=c.stateNode,8===a.nodeType?a.parentNode.removeChild(c):a.removeChild(c)):T.removeChild(c.stateNode));break;case 18:null!==T&&(za?
+else if(4!==d&&(a=a.child,null!==a))for(Nf(a,b,c),a=a.sibling;null!==a;)Nf(a,b,c),a=a.sibling}function jb(a,b,c){for(c=c.child;null!==c;)Di(a,b,c),c=c.sibling}function Di(a,b,c){if(Ca&&"function"===typeof Ca.onCommitFiberUnmount)try{Ca.onCommitFiberUnmount(Uc,c)}catch(h) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', h); }switch(c.tag){case 5:X||Wb(c,b);case 6:var d=T,e=za;T=null;jb(a,b,c);T=d;za=e;null!==T&&(za?(a=T,c=c.stateNode,8===a.nodeType?a.parentNode.removeChild(c):a.removeChild(c)):T.removeChild(c.stateNode));break;case 18:null!==T&&(za?
 (a=T,c=c.stateNode,8===a.nodeType?Re(a.parentNode,c):1===a.nodeType&&Re(a,c),nc(a)):Re(T,c.stateNode));break;case 4:d=T;e=za;T=c.stateNode.containerInfo;za=!0;jb(a,b,c);T=d;za=e;break;case 0:case 11:case 14:case 15:if(!X&&(d=c.updateQueue,null!==d&&(d=d.lastEffect,null!==d))){e=d=d.next;do{var f=e,g=f.destroy;f=f.tag;void 0!==g&&(0!==(f&2)?If(c,b,g):0!==(f&4)&&If(c,b,g));e=e.next}while(e!==d)}jb(a,b,c);break;case 1:if(!X&&(Wb(c,b),d=c.stateNode,"function"===typeof d.componentWillUnmount))try{d.props=
 c.memoizedProps,d.state=c.memoizedState,d.componentWillUnmount()}catch(h){G(c,b,h)}jb(a,b,c);break;case 21:jb(a,b,c);break;case 22:c.mode&1?(X=(d=X)||null!==c.memoizedState,jb(a,b,c),X=d):jb(a,b,c);break;default:jb(a,b,c)}}function Ei(a){var b=a.updateQueue;if(null!==b){a.updateQueue=null;var c=a.stateNode;null===c&&(c=a.stateNode=new Fk);b.forEach(function(b){var d=Gk.bind(null,a,b);c.has(b)||(c.add(b),b.then(d,d))})}}function Aa(a,b,c){c=b.deletions;if(null!==c)for(var d=0;d<c.length;d++){var e=
 c[d];try{var f=a,g=b,h=g;a:for(;null!==h;){switch(h.tag){case 5:T=h.stateNode;za=!1;break a;case 3:T=h.stateNode.containerInfo;za=!0;break a;case 4:T=h.stateNode.containerInfo;za=!0;break a}h=h.return}if(null===T)throw Error(m(160));Di(f,g,e);T=null;za=!1;var k=e.alternate;null!==k&&(k.return=null);e.return=null}catch(n){G(e,b,n)}}if(b.subtreeFlags&12854)for(b=b.child;null!==b;)Fi(b,a),b=b.sibling}function Fi(a,b,c){var d=a.alternate;c=a.flags;switch(a.tag){case 0:case 11:case 14:case 15:Aa(b,a);
@@ -18675,7 +18739,7 @@ uj(a,f);a===O&&(H=O=null,U=0);0===(c.subtreeFlags&2064)&&0===(c.flags&2064)||Pd|
 b[c],d(e.value,{componentStack:e.stack,digest:e.digest});if(Ed)throw Ed=!1,a=xf,xf=null,a;0!==(Qd&1)&&0!==a.tag&&Xb();f=a.pendingLanes;0!==(f&1)?a===Pf?Ic++:(Ic=0,Pf=a):Ic=0;db();return null}function Xb(){if(null!==lb){var a=Eg(Qd),b=ca.transition,c=z;try{ca.transition=null;z=16>a?16:a;if(null===lb)var d=!1;else{a=lb;lb=null;Qd=0;if(0!==(p&6))throw Error(m(331));var e=p;p|=4;for(l=a.current;null!==l;){var f=l,g=f.child;if(0!==(l.flags&16)){var h=f.deletions;if(null!==h){for(var k=0;k<h.length;k++){var n=
 h[k];for(l=n;null!==l;){var q=l;switch(q.tag){case 0:case 11:case 15:Gc(8,q,f)}var u=q.child;if(null!==u)u.return=q,l=u;else for(;null!==l;){q=l;var r=q.sibling,v=q.return;Ai(q);if(q===n){l=null;break}if(null!==r){r.return=v;l=r;break}l=v}}}var x=f.alternate;if(null!==x){var y=x.child;if(null!==y){x.child=null;do{var C=y.sibling;y.sibling=null;y=C}while(null!==y)}}l=f}}if(0!==(f.subtreeFlags&2064)&&null!==g)g.return=f,l=g;else b:for(;null!==l;){f=l;if(0!==(f.flags&2048))switch(f.tag){case 0:case 11:case 15:Gc(9,
 f,f.return)}var w=f.sibling;if(null!==w){w.return=f.return;l=w;break b}l=f.return}}var A=a.current;for(l=A;null!==l;){g=l;var t=g.child;if(0!==(g.subtreeFlags&2064)&&null!==t)t.return=g,l=t;else b:for(g=A;null!==l;){h=l;if(0!==(h.flags&2048))try{switch(h.tag){case 0:case 11:case 15:Id(9,h)}}catch(ma){G(h,h.return,ma)}if(h===g){l=null;break b}var B=h.sibling;if(null!==B){B.return=h.return;l=B;break b}l=h.return}}p=e;db();if(Ca&&"function"===typeof Ca.onPostCommitFiberRoot)try{Ca.onPostCommitFiberRoot(Uc,
-a)}catch(ma){}d=!0}return d}finally{z=c,ca.transition=b}}return!1}function Si(a,b,c){b=Ub(c,b);b=gi(a,b,1);a=fb(a,b,1);b=Z();null!==a&&(ic(a,1,b),ia(a,b))}function G(a,b,c){if(3===a.tag)Si(a,a,c);else for(;null!==b;){if(3===b.tag){Si(b,a,c);break}else if(1===b.tag){var d=b.stateNode;if("function"===typeof b.type.getDerivedStateFromError||"function"===typeof d.componentDidCatch&&(null===ib||!ib.has(d))){a=Ub(c,a);a=hi(b,a,1);b=fb(b,a,1);a=Z();null!==b&&(ic(b,1,a),ia(b,a));break}}b=b.return}}function sk(a,
+a)}catch(ma) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', ma); }d=!0}return d}finally{z=c,ca.transition=b}}return!1}function Si(a,b,c){b=Ub(c,b);b=gi(a,b,1);a=fb(a,b,1);b=Z();null!==a&&(ic(a,1,b),ia(a,b))}function G(a,b,c){if(3===a.tag)Si(a,a,c);else for(;null!==b;){if(3===b.tag){Si(b,a,c);break}else if(1===b.tag){var d=b.stateNode;if("function"===typeof b.type.getDerivedStateFromError||"function"===typeof d.componentDidCatch&&(null===ib||!ib.has(d))){a=Ub(c,a);a=hi(b,a,1);b=fb(b,a,1);a=Z();null!==b&&(ic(b,1,a),ia(b,a));break}}b=b.return}}function sk(a,
 b,c){var d=a.pingCache;null!==d&&d.delete(b);b=Z();a.pingedLanes|=a.suspendedLanes&c;O===a&&(U&c)===c&&(4===L||3===L&&(U&130023424)===U&&500>P()-Of?wb(a,0):Sf|=c);ia(a,b)}function Ti(a,b){0===b&&(0===(a.mode&1)?b=1:(b=Rd,Rd<<=1,0===(Rd&130023424)&&(Rd=4194304)));var c=Z();a=Oa(a,b);null!==a&&(ic(a,b,c),ia(a,c))}function vk(a){var b=a.memoizedState,c=0;null!==b&&(c=b.retryLane);Ti(a,c)}function Gk(a,b){var c=0;switch(a.tag){case 13:var d=a.stateNode;var e=a.memoizedState;null!==e&&(c=e.retryLane);
 break;case 19:d=a.stateNode;break;default:throw Error(m(314));}null!==d&&d.delete(b);Ti(a,c)}function Mi(a,b){return xh(a,b)}function Tk(a,b,c,d){this.tag=a;this.key=c;this.sibling=this.child=this.return=this.stateNode=this.type=this.elementType=null;this.index=0;this.ref=null;this.pendingProps=b;this.dependencies=this.memoizedState=this.updateQueue=this.memoizedProps=null;this.mode=d;this.subtreeFlags=this.flags=0;this.deletions=null;this.childLanes=this.lanes=0;this.alternate=null}function yf(a){a=
 a.prototype;return!(!a||!a.isReactComponent)}function Uk(a){if("function"===typeof a)return yf(a)?1:0;if(void 0!==a&&null!==a){a=a.$$typeof;if(a===ie)return 11;if(a===je)return 14}return 2}function eb(a,b){var c=a.alternate;null===c?(c=pa(a.tag,b,a.key,a.mode),c.elementType=a.elementType,c.type=a.type,c.stateNode=a.stateNode,c.alternate=a,a.alternate=c):(c.pendingProps=b,c.type=a.type,c.flags=0,c.subtreeFlags=0,c.deletions=null);c.flags=a.flags&14680064;c.childLanes=a.childLanes;c.lanes=a.lanes;c.child=
@@ -18736,7 +18800,7 @@ Sd(a,b,null,null)};Ud.prototype.unmount=Xf.prototype.unmount=function(){var a=th
 hc(b.pendingLanes);0!==c&&(xe(b,c|1),ia(b,P()),0===(p&6)&&(Hc(),db()))}break;case 13:yb(function(){var b=Oa(a,1);if(null!==b){var c=Z();xa(b,a,1,c)}}),Wf(a,1)}};var Gg=function(a){if(13===a.tag){var b=Oa(a,134217728);if(null!==b){var c=Z();xa(b,a,134217728,c)}Wf(a,134217728)}};var xj=function(a){if(13===a.tag){var b=hb(a),c=Oa(a,b);if(null!==c){var d=Z();xa(c,a,b,d)}Wf(a,b)}};var nl=function(){return z};var wj=function(a,b){var c=z;try{return z=a,b()}finally{z=c}};se=function(a,b,c){switch(b){case "input":le(a,
 c);b=c.name;if("radio"===c.type&&null!=b){for(c=a;c.parentNode;)c=c.parentNode;c=c.querySelectorAll("input[name="+JSON.stringify(""+b)+'][type="radio"]');for(b=0;b<c.length;b++){var d=c[b];if(d!==a&&d.form===a.form){var e=Rc(d);if(!e)throw Error(m(90));jg(d);le(d,e)}}}break;case "textarea":og(a,c);break;case "select":b=c.value,null!=b&&Db(a,!!c.multiple,b,!1)}};(function(a,b,c){xg=a;yg=c})(Tf,function(a,b,c,d,e){var f=z,g=ca.transition;try{return ca.transition=null,z=1,a(b,c,d,e)}finally{z=f,ca.transition=
 g,0===p&&Hc()}},yb);var ol={usingClientEntryPoint:!1,Events:[ec,Ib,Rc,ug,vg,Tf]};(function(a){a={bundleType:a.bundleType,version:a.version,rendererPackageName:a.rendererPackageName,rendererConfig:a.rendererConfig,overrideHookState:null,overrideHookStateDeletePath:null,overrideHookStateRenamePath:null,overrideProps:null,overridePropsDeletePath:null,overridePropsRenamePath:null,setErrorHandler:null,setSuspenseHandler:null,scheduleUpdate:null,currentDispatcherRef:Sa.ReactCurrentDispatcher,findHostInstanceByFiber:Xk,
-findFiberByHostInstance:a.findFiberByHostInstance||Yk,findHostInstancesForRefresh:null,scheduleRefresh:null,scheduleRoot:null,setRefreshHandler:null,getCurrentFiber:null,reconcilerVersion:"18.3.1"};if("undefined"===typeof __REACT_DEVTOOLS_GLOBAL_HOOK__)a=!1;else{var b=__REACT_DEVTOOLS_GLOBAL_HOOK__;if(b.isDisabled||!b.supportsFiber)a=!0;else{try{Uc=b.inject(a),Ca=b}catch(c){}a=b.checkDCE?!0:!1}}return a})({findFiberByHostInstance:ob,bundleType:0,version:"18.3.1-next-f1338f8080-20240426",
+findFiberByHostInstance:a.findFiberByHostInstance||Yk,findHostInstancesForRefresh:null,scheduleRefresh:null,scheduleRoot:null,setRefreshHandler:null,getCurrentFiber:null,reconcilerVersion:"18.3.1"};if("undefined"===typeof __REACT_DEVTOOLS_GLOBAL_HOOK__)a=!1;else{var b=__REACT_DEVTOOLS_GLOBAL_HOOK__;if(b.isDisabled||!b.supportsFiber)a=!0;else{try{Uc=b.inject(a),Ca=b}catch(c) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', c); }a=b.checkDCE?!0:!1}}return a})({findFiberByHostInstance:ob,bundleType:0,version:"18.3.1-next-f1338f8080-20240426",
 rendererPackageName:"react-dom"});Q.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED=ol;Q.createPortal=function(a,b){var c=2<arguments.length&&void 0!==arguments[2]?arguments[2]:null;if(!Yf(b))throw Error(m(200));return Wk(a,b,null,c)};Q.createRoot=function(a,b){if(!Yf(a))throw Error(m(299));var c=!1,d="",e=aj;null!==b&&void 0!==b&&(!0===b.unstable_strictMode&&(c=!0),void 0!==b.identifierPrefix&&(d=b.identifierPrefix),void 0!==b.onRecoverableError&&(e=b.onRecoverableError));b=Vf(a,1,!1,null,null,
 c,!1,d,e);a[Ja]=b.current;sc(8===a.nodeType?a.parentNode:a);return new Xf(b)};Q.findDOMNode=function(a){if(null==a)return null;if(1===a.nodeType)return a;var b=a._reactInternals;if(void 0===b){if("function"===typeof a.render)throw Error(m(188));a=Object.keys(a).join(",");throw Error(m(268,a));}a=Bg(b);a=null===a?null:a.stateNode;return a};Q.flushSync=function(a){return yb(a)};Q.hydrate=function(a,b,c){if(!Vd(b))throw Error(m(200));return Wd(null,a,b,!0,c)};Q.hydrateRoot=function(a,b,c){if(!Yf(a))throw Error(m(405));
 var d=null!=c&&c.hydratedSources||null,e=!1,f="",g=aj;null!==c&&void 0!==c&&(!0===c.unstable_strictMode&&(e=!0),void 0!==c.identifierPrefix&&(f=c.identifierPrefix),void 0!==c.onRecoverableError&&(g=c.onRecoverableError));b=Wi(b,null,a,1,null!=c?c:null,e,!1,f,g);a[Ja]=b.current;sc(a);if(d)for(a=0;a<d.length;a++)c=d[a],e=c._getVersion,e=e(c._source),null==b.mutableSourceEagerHydrationData?b.mutableSourceEagerHydrationData=[c,e]:b.mutableSourceEagerHydrationData.push(c,e);return new Ud(b)};Q.render=
@@ -19276,7 +19340,7 @@ function saveCache(results) {
                 tx.objectStore('fundData').put({ url: '_scanner_cache', data: JSON.stringify(results), ts: Date.now() });
             }
         };
-    } catch (_) {}
+    } catch(_) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', _); }
     return dateStr;
   } catch (e) {
     return null;
@@ -19294,12 +19358,13 @@ function calcRSI(closes, period) {
   }
   let ag = gains / period,
     al = losses / period;
-  const out = [al === 0 ? 100 : parseFloat((100 - 100 / (1 + ag / al)).toFixed(2))];
+  const rsiOf = (g, l) => (g === 0 && l === 0) ? 50 : (l === 0 ? 100 : parseFloat((100 - 100 / (1 + g / l)).toFixed(2)));
+  const out = [rsiOf(ag, al)];
   for (let i = period + 1; i < v.length; i++) {
     const d = v[i] - v[i - 1];
     ag = (ag * (period - 1) + Math.max(d, 0)) / period;
     al = (al * (period - 1) + Math.abs(Math.min(d, 0))) / period;
-    out.push(al === 0 ? 100 : parseFloat((100 - 100 / (1 + ag / al)).toFixed(2)));
+    out.push(rsiOf(ag, al));
   }
   return out;
 }
@@ -19338,7 +19403,7 @@ function calcTSI(closes, period = 21) {
   return out;
 }
 
-// ── NPC1B: STOOQ FALLBACK FOR SCANNER ─────────────────────────────────────
+// ── NPC1E: STOOQ FALLBACK FOR SCANNER ─────────────────────────────────────
 // Stooq uses different tickers for NSE/BSE indices. This map covers the major ones.
 // Pattern for NSE indices on Stooq: lowercase, no ^ prefix, .in suffix
 const STOOQ_SYMBOL_MAP = {
@@ -19424,7 +19489,7 @@ async function fetchIdx(symbol) {
       qtD = qtR?.ok ? await qtR.json() : null;
     let wC = wkD?.chart?.result?.[0]?.indicators?.quote?.[0]?.close || [];
     const dC = dD?.chart?.result?.[0]?.indicators?.quote?.[0]?.close || [];
-    // NPC1B: Stooq fallback — if Yahoo returned no weekly closes, try Stooq
+    // NPC1E: Stooq fallback — if Yahoo returned no weekly closes, try Stooq
     if (wC.filter(x => x != null && !isNaN(x)).length < 10) {
       try {
         const stooqCloses = await _fetchStooqWeekly(symbol);
@@ -19606,7 +19671,7 @@ function LDScanner() {
     dir: "asc"
   });
   const [baRes, setBaRes] = useState({});
-  const [retrying, setRetrying] = useState(false); // NPC1B: retry failed fetches
+  const [retrying, setRetrying] = useState(false); // NPC1E: retry failed fetches
   const [gemKey, setGemKey] = useState(() => {
     try {
       return localStorage.getItem("ld_scn_gem_key") || localStorage.getItem("ld_gemini_api_key") || "";
@@ -19687,7 +19752,7 @@ function LDScanner() {
     try {
       localStorage.setItem("ld_scn_gem_key", k);
       localStorage.setItem("ld_gemini_api_key", k);
-    } catch (e) {}
+    } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
     setGemKey(k);
     setKeyIn("");
     setKeySt("Saved");
@@ -19778,7 +19843,7 @@ function LDScanner() {
       });
     }
   }
-  // NPC1B: Retry only failed / empty rows — no full re-scan needed
+  // NPC1E: Retry only failed / empty rows — no full re-scan needed
   async function doRetry() {
     const failedSymbols = ALL_INDICES.filter(i => {
       if (!i.symbol) return false;
@@ -19870,7 +19935,7 @@ function LDScanner() {
   }, [results, regF, phaseF, vix, sortCfg, baRes]);
   const pct = progress.total > 0 ? Math.round(progress.done / progress.total * 100) : 0;
   const hasData = rows.length > 0 && Object.keys(results).length > 0;
-  // NPC1B fix: count only rows that actually render (have wRsi data or error)
+  // NPC1E fix: count only rows that actually render (have wRsi data or error)
   const displayedRows = rows.filter(r => r.wRsi || r.error);
   const thS = {
     position: "sticky",
@@ -20445,7 +20510,7 @@ window.LDScannerComponent = LDScanner;
         function esc(s) { return (s||'').replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
 
         function getFaKeys() { try { return JSON.parse(localStorage.getItem(FA_KEY_STORE)||'{}'); } catch(e) { return {}; } }
-        function saveFaKeysToLS(k) { try { localStorage.setItem(FA_KEY_STORE, JSON.stringify(k)); } catch(e) {} }
+        function saveFaKeysToLS(k) { try { localStorage.setItem(FA_KEY_STORE, JSON.stringify(k)); } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); } }
 
         window.saveFaApiKey = function() {
             var k = (document.getElementById('faApiKey').value||'').trim();
@@ -20503,7 +20568,7 @@ window.LDScannerComponent = LDScanner;
                         return cached.data.map(function(d){ return { nav: parseFloat(d.nav), date: d.date }; })
                             .filter(function(d){ return Number.isFinite(d.nav) && d.nav > 0; });
                     }
-                } catch(e2) {}
+                } catch(e2) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e2); }
                 return [];
             }
         }
@@ -20594,7 +20659,7 @@ window.LDScannerComponent = LDScanner;
                         }
                     }
                     if (html) return html;
-                } catch(e) {}
+                } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
             }
             var lines = raw.split('\n');
             var section = null, body = [];
@@ -20753,7 +20818,7 @@ window.LDScannerComponent = LDScanner;
                             data.candidates[0].content.parts && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text;
                         if (text) { finalResult = text; usedModel = models[m]; break; }
                     }
-                } catch(e) {}
+                } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
             }
 
             if (loadingEl) loadingEl.classList.remove('show');
@@ -20813,7 +20878,7 @@ window.LDScannerComponent = LDScanner;
         loadFaKeys();
     })();
     </script>
-    <!-- ═══════════════ NPC1B: SERVICE WORKER + PWA INSTALL HANDLER ═══════════════ -->
+    <!-- ═══════════════ NPC1E: SERVICE WORKER + PWA INSTALL HANDLER ═══════════════ -->
     <script>
     (function() {
         // ── Service Worker ──
@@ -20870,7 +20935,7 @@ window.LDScannerComponent = LDScanner;
     <!-- L. UI — Landscape chart for landscape phone orientation -->
     <div id="landscapeChartView">
         <div class="lcv-header">
-            <span class="lcv-title" id="lcvTitle">NPS Clues_1B — LANDSCAPE CHART</span>
+            <span class="lcv-title" id="lcvTitle">NPS Clues_1F — LANDSCAPE CHART</span>
             <span class="lcv-close" onclick="exitLandscapeChart()">[ X ] PORTRAIT</span>
         </div>
         <div class="lcv-body" id="lcvBody">
@@ -20931,7 +20996,7 @@ window.LDScannerComponent = LDScanner;
             </div>
         </div>
     </div>
-    <!-- ── NPC1B: LOCAL DATA MODAL ───────────────────────────────── -->
+    <!-- ── NPC1E: LOCAL DATA MODAL ───────────────────────────────── -->
     <div id="localDataModal" class="modal-overlay" style="z-index:700;align-items:center;padding-top:3vh;">
         <div class="ldm-wrap">
             <div class="ldm-head">
@@ -20944,7 +21009,7 @@ window.LDScannerComponent = LDScanner;
         </div>
     </div>
     <script>
-    // ── NPC1B: Landscape Chart View ──────────────────────────
+    // ── NPC1E: Landscape Chart View ──────────────────────────
     let _lcvActive = false;
     let _lcvMode = null;
     function enterLandscapeChart(mode) {
@@ -20980,7 +21045,7 @@ window.LDScannerComponent = LDScanner;
             if (screen.orientation && screen.orientation.unlock) {
                 screen.orientation.unlock();
             }
-        } catch(e) {}
+        } catch(e) { if (window.DEBUG_SILENT_CATCHES) console.warn('[silent-catch]', e); }
     }
     function _lcvSyncFromModal(modalId, prefix) {
         var mainBox = document.getElementById('lcvMainCanvas');
@@ -21053,7 +21118,7 @@ window.LDScannerComponent = LDScanner;
     document.addEventListener('webkitfullscreenchange', function() {
         if (!document.webkitFullscreenElement && _lcvActive) exitLandscapeChart();
     });
-    // ── NPC1B: LOCAL DATA VIEW / ANALYSIS ────────────────────────
+    // ── NPC1E: LOCAL DATA VIEW / ANALYSIS ────────────────────────
     window._localDataEntries = null;
     function openLocalDataModal() {
         var modal = document.getElementById('localDataModal');
@@ -21436,7 +21501,7 @@ window.LDScannerComponent = LDScanner;
         }
     }
     </script>
-    <!-- NPC1B: PWA Install Banner (shown when Brave fires beforeinstallprompt) -->
+    <!-- NPC1E: PWA Install Banner (shown when Brave fires beforeinstallprompt) -->
     <div id="ld-pwa-install-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#0d0d0d;border-top:1px solid #00c896;padding:10px 16px;align-items:center;justify-content:space-between;font-family:'Space Mono',monospace;font-size:0.65rem;color:#00c896;">
         <span>📡 Install <strong>LDNPS</strong> as an app for offline access</span>
         <div style="display:flex;gap:8px;">
@@ -21444,4 +21509,4 @@ window.LDScannerComponent = LDScanner;
             <button onclick="document.getElementById('ld-pwa-install-banner').style.display='none'" style="background:transparent;color:#888;border:1px solid #444;padding:5px 10px;font-family:inherit;font-size:0.65rem;cursor:pointer;border-radius:3px;">✕</button>
         </div>
     </div>
-    <!-- ═══════════════ END NPC1B PWA BLOCK ═══════════════ -->
+    <!-- ═══════════════ END NPC1E PWA BLOCK ═══════════════ -->
