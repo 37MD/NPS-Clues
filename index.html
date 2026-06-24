@@ -1470,7 +1470,7 @@
                 #hmRangeReturn { font-size: 0.95rem !important; }
                 #hmInfoRow { grid-template-columns: repeat(5, 1fr) !important; }
                 .hm-input-row { gap: 4px; }
-                .hm-input-group { min-width: 60px; flex: 1 1 45%; }
+                .hm-input-group { min-width: 0; flex: 1 1 0; }
                 .hm-input-group label { font-size: 0.46rem; }
                 .hm-input-group input { font-size: 0.58rem; padding: 5px 4px; }
                 #hmTfRow .hm-tf-btn { font-size: 0.50rem; padding: 5px 6px; }
@@ -3511,10 +3511,6 @@
                     <div class="hm-input-group">
                         <label>EMA Length</label>
                         <input type="number" id="hmEmaLen" value="3" min="2" max="50" onchange="drawHilegaMilega()">
-                    </div>
-                    <div class="hm-input-group">
-                        <label>Middle Line</label>
-                        <input type="number" id="hmMidLine" value="50" min="0" max="100" onchange="drawHilegaMilega()">
                     </div>
                     <div class="hm-input-group" style="justify-content:flex-end;">
                         <button onclick="drawHilegaMilega()" style="background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);padding:4px 10px;font-family:var(--mono);font-size:0.58rem;font-weight:700;cursor:pointer;letter-spacing:0.06em;">GO</button>
@@ -12581,7 +12577,8 @@ WMA20: ₹${d.wma20 ? d.wma20.toFixed(2) : '--'}
                     const rsiLen = parseInt(document.getElementById('hmRsiLen').value) || 9;
                     const wmaLen = parseInt(document.getElementById('hmWmaLen').value) || 21;
                     const emaLen = parseInt(document.getElementById('hmEmaLen').value) || 3;
-                    const midLine = parseFloat(document.getElementById('hmMidLine').value) || 50;
+                    const midLineEl = document.getElementById('hmMidLine');
+                    const midLine = midLineEl ? parseFloat(midLineEl.value) || 50 : 50;
                     const tfDays = window._hmTfDays || 1825;
                     const rsi = hmCalcRSI(viewData.map(d => d.nav), rsiLen);
                     const wma = hmCalcWMA(rsi, wmaLen);
