@@ -90,6 +90,7 @@
         <link rel="icon" type="image/png" sizes="96x96" href="icons/icon-96.png">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
         <style>
             :root {
                 --bg: #ffffff;
@@ -2665,6 +2666,822 @@
             }
             .ip-btn:hover { border-color: var(--accent); color: var(--accent); }
             .ip-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+
+            /* ══════════════════════════════════════════════════════════════
+               NPS BA PANELS — ported from NPS_BA_v3.html
+               ══════════════════════════════════════════════════════════════ */
+            #npsBaPortfolioModal .ba-key-bar,
+            #npsBaBreadthModal .ba-key-bar {
+                background: var(--surface);
+                border: 1px solid var(--border2);
+                border-left: 4px solid var(--accent2);
+                padding: 8px 18px;
+                margin-bottom: 12px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+            #npsBaPortfolioModal .ba-key-label,
+            #npsBaBreadthModal .ba-key-label {
+                font-family: var(--mono);
+                font-size: 0.55rem;
+                font-weight: 700;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                color: var(--accent2);
+                white-space: nowrap;
+            }
+            #npsBaPortfolioModal .ba-key-input,
+            #npsBaBreadthModal .ba-key-input {
+                flex: 1;
+                min-width: 70px;
+                background: var(--surface2);
+                border: 1px solid var(--border);
+                font-family: var(--mono);
+                font-size: 0.62rem;
+                padding: 5px 10px;
+                color: var(--text);
+                outline: none;
+            }
+            #npsBaPortfolioModal .ba-key-input:focus,
+            #npsBaBreadthModal .ba-key-input:focus {
+                border-color: var(--accent);
+            }
+            #npsBaPortfolioModal .ba-key-save,
+            #npsBaBreadthModal .ba-key-save {
+                background: var(--accent2);
+                color: #000;
+                font-family: var(--mono);
+                font-size: 0.62rem;
+                font-weight: 700;
+                padding: 5px 16px;
+                border: none;
+                cursor: pointer;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                white-space: nowrap;
+            }
+            #npsBaPortfolioModal .ba-key-save:hover,
+            #npsBaBreadthModal .ba-key-save:hover {
+                background: #ffb87d;
+            }
+            #npsBaPortfolioModal .ba-key-status,
+            #npsBaBreadthModal .ba-key-status {
+                font-family: var(--mono);
+                font-size: 0.52rem;
+                color: var(--muted);
+            }
+            #npsBaPortfolioModal .nps-chips,
+            #npsBaBreadthModal .nps-chips {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                margin-bottom: 12px;
+            }
+            #npsBaPortfolioModal .nps-chip,
+            #npsBaBreadthModal .nps-chip {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                background: var(--surface);
+                border: 1px solid var(--border);
+                padding: 4px 12px;
+                font-family: var(--mono);
+                font-size: 0.825rem;
+                font-weight: 400;
+                letter-spacing: 0.5px;
+            }
+            #npsBaPortfolioModal .chip-dot,
+            #npsBaBreadthModal .chip-dot {
+                width: 7px;
+                height: 7px;
+                border-radius: 50%;
+                background: var(--muted);
+            }
+            #npsBaPortfolioModal .chip-dot.loaded,
+            #npsBaBreadthModal .chip-dot.loaded {
+                background: var(--accent);
+                box-shadow: 0 0 8px var(--accent);
+            }
+            #npsBaPortfolioModal .chip-dot.loading,
+            #npsBaBreadthModal .chip-dot.loading {
+                background: var(--accent2);
+                animation: baPulseDot 1s infinite;
+            }
+            #npsBaPortfolioModal .controls-bar,
+            #npsBaBreadthModal .controls-bar {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                padding: 10px 14px;
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+            #npsBaPortfolioModal .controls-left,
+            #npsBaBreadthModal .controls-left {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                flex-wrap: wrap;
+            }
+            #npsBaPortfolioModal .btn-scan,
+            #npsBaBreadthModal .btn-scan {
+                background: var(--accent2);
+                color: #000;
+                font-family: var(--mono);
+                font-size: 0.62rem;
+                font-weight: 600;
+                padding: 9px 22px;
+                border: none;
+                cursor: pointer;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+            }
+            #npsBaPortfolioModal .btn-scan:hover,
+            #npsBaBreadthModal .btn-scan:hover {
+                background: #ffb87d;
+                transform: translateY(-1px);
+            }
+            #npsBaPortfolioModal .btn-scan:disabled,
+            #npsBaBreadthModal .btn-scan:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+                transform: none;
+            }
+            #npsBaPortfolioModal .filter-group,
+            #npsBaBreadthModal .filter-group {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            #npsBaPortfolioModal .filter-label,
+            #npsBaBreadthModal .filter-label {
+                font-family: var(--mono);
+                font-size: 0.52rem;
+                font-weight: 600;
+                color: var(--muted);
+                letter-spacing: 1px;
+                text-transform: uppercase;
+            }
+            #npsBaPortfolioModal .filter-select,
+            #npsBaBreadthModal .filter-select {
+                background: var(--surface2);
+                color: var(--text);
+                border: 1px solid var(--border);
+                font-family: var(--mono);
+                font-size: 0.62rem;
+                padding: 6px 10px;
+                cursor: pointer;
+                outline: none;
+                appearance: none;
+                padding-right: 28px;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238888aa'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: right 10px center;
+            }
+            #npsBaPortfolioModal .filter-select:focus,
+            #npsBaBreadthModal .filter-select:focus {
+                border-color: var(--accent);
+            }
+            #npsBaPortfolioModal .progress-wrap,
+            #npsBaBreadthModal .progress-wrap {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                padding: 10px 18px;
+                border-top: none;
+                margin-top: -20px;
+                margin-bottom: 20px;
+            }
+            #npsBaPortfolioModal .progress-top,
+            #npsBaBreadthModal .progress-top {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 8px;
+            }
+            #npsBaPortfolioModal .progress-label,
+            #npsBaBreadthModal .progress-label {
+                font-family: var(--mono);
+                font-size: 0.55rem;
+                color: var(--muted);
+            }
+            #npsBaPortfolioModal .progress-pct,
+            #npsBaBreadthModal .progress-pct {
+                font-family: var(--mono);
+                font-size: 0.55rem;
+                color: var(--accent2);
+                font-weight: 600;
+            }
+            #npsBaPortfolioModal .progress-track,
+            #npsBaBreadthModal .progress-track {
+                height: 3px;
+                background: var(--border);
+                width: 100%;
+            }
+            #npsBaPortfolioModal .progress-fill,
+            #npsBaBreadthModal .progress-fill {
+                height: 100%;
+                background: linear-gradient(90deg, var(--accent2), #ffcc66);
+                transition: width 0.3s ease;
+                box-shadow: 0 0 8px var(--accent2);
+            }
+            #npsBaPortfolioModal .log-panel,
+            #npsBaBreadthModal .log-panel {
+                background: #0f172a;
+                padding: 8px 14px;
+                max-height: 110px;
+                overflow-y: auto;
+                margin-bottom: 16px;
+                font-family: var(--mono);
+                font-size: 0.62rem;
+                border: 1px solid #1e293b;
+            }
+            #npsBaPortfolioModal .log-line,
+            #npsBaBreadthModal .log-line {
+                margin-bottom: 2px;
+                line-height: 1.4;
+            }
+            #npsBaPortfolioModal .log-info,
+            #npsBaBreadthModal .log-info { color: #94a3b8; }
+            #npsBaPortfolioModal .log-success,
+            #npsBaBreadthModal .log-success { color: #34d399; }
+            #npsBaPortfolioModal .log-warn,
+            #npsBaBreadthModal .log-warn { color: #fbbf24; }
+            #npsBaPortfolioModal .log-error,
+            #npsBaBreadthModal .log-error { color: #f87171; }
+            #npsBaPortfolioModal .data-note,
+            #npsBaBreadthModal .data-note {
+                background: var(--accent2-dim);
+                border: 1px solid var(--accent2);
+                border-left: 4px solid var(--accent2);
+                padding: 8px 18px;
+                margin-bottom: 16px;
+                font-family: var(--mono);
+                font-size: 0.62rem;
+                color: var(--muted2);
+                line-height: 1.6;
+            }
+            #npsBaPortfolioModal .data-note a,
+            #npsBaBreadthModal .data-note a {
+                color: var(--accent2);
+                font-weight: 700;
+                text-decoration: none;
+            }
+            #npsBaPortfolioModal .data-note a:hover,
+            #npsBaBreadthModal .data-note a:hover {
+                text-decoration: underline;
+            }
+            #npsBaPortfolioModal .summary-row,
+            #npsBaBreadthModal .summary-row {
+                display: grid;
+                grid-template-columns: repeat(8, 1fr);
+                gap: 8px;
+                margin-bottom: 16px;
+            }
+            #npsBaPortfolioModal .s-tile,
+            #npsBaBreadthModal .s-tile {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                padding: 12px 14px;
+                cursor: pointer;
+                transition: border-color 0.15s, background 0.15s;
+                border-left: 3px solid var(--border);
+            }
+            #npsBaPortfolioModal .s-tile:hover,
+            #npsBaBreadthModal .s-tile:hover {
+                border-color: var(--muted);
+            }
+            #npsBaPortfolioModal .s-tile-lbl,
+            #npsBaBreadthModal .s-tile-lbl {
+                font-family: var(--mono);
+                font-size: 0.45rem;
+                font-weight: 600;
+                letter-spacing: 1.5px;
+                text-transform: uppercase;
+                color: var(--muted);
+                margin-bottom: 5px;
+            }
+            #npsBaPortfolioModal .s-tile-num,
+            #npsBaBreadthModal .s-tile-num {
+                font-size: 1.5rem;
+                font-weight: 700;
+                line-height: 1;
+            }
+            #npsBaPortfolioModal .s-tile-num.g,
+            #npsBaBreadthModal .s-tile-num.g { color: var(--accent); }
+            #npsBaPortfolioModal .s-tile-num.y,
+            #npsBaBreadthModal .s-tile-num.y { color: var(--accent2); }
+            #npsBaPortfolioModal .s-tile-num.r,
+            #npsBaBreadthModal .s-tile-num.r { color: var(--red); }
+            #npsBaPortfolioModal .s-tile-num.b,
+            #npsBaBreadthModal .s-tile-num.b { color: var(--border2); }
+            #npsBaPortfolioModal .s-tile-num.d,
+            #npsBaBreadthModal .s-tile-num.d { color: var(--muted); }
+            #npsBaPortfolioModal .s-tile-sub,
+            #npsBaBreadthModal .s-tile-sub {
+                font-family: var(--mono);
+                font-size: 0.45rem;
+                color: var(--muted);
+                margin-top: 3px;
+            }
+            #npsBaPortfolioModal .ba-loading,
+            #npsBaBreadthModal .ba-loading {
+                display: inline-block;
+                width: 14px;
+                height: 14px;
+                border: 2px solid var(--border);
+                border-top-color: var(--accent2);
+                border-radius: 50%;
+                animation: baSpin 0.7s linear infinite;
+                vertical-align: middle;
+            }
+            @keyframes baSpin { to { transform: rotate(360deg); } }
+            #npsBaPortfolioModal .ba-pill,
+            #npsBaBreadthModal .ba-pill {
+                display: inline-block;
+                padding: 3px 10px;
+                font-family: var(--mono);
+                font-size: 0.62rem;
+                font-weight: 700;
+                border-radius: 2px;
+                min-width: 48px;
+                text-align: center;
+                color: var(--text);
+            }
+            #npsBaPortfolioModal .ba-strong,
+            #npsBaBreadthModal .ba-strong {
+                background: var(--accent-dim);
+                border: 1px solid var(--accent);
+                color: var(--accent);
+            }
+            #npsBaPortfolioModal .ba-moderate,
+            #npsBaBreadthModal .ba-moderate {
+                background: var(--accent2-dim);
+                border: 1px solid var(--accent2);
+                color: var(--accent2);
+            }
+            #npsBaPortfolioModal .ba-weak,
+            #npsBaBreadthModal .ba-weak {
+                background: var(--red-dim);
+                border: 1px solid var(--red);
+                color: var(--red);
+            }
+            #npsBaPortfolioModal .ba-na,
+            #npsBaBreadthModal .ba-na {
+                background: var(--surface2);
+                border: 1px solid var(--border);
+                color: var(--muted);
+            }
+            #npsBaPortfolioModal .conf-pill,
+            #npsBaBreadthModal .conf-pill {
+                display: inline-block;
+                padding: 2px 6px;
+                font-family: var(--mono);
+                font-size: 0.52rem;
+                font-weight: 500;
+                border-radius: 2px;
+                min-width: 30px;
+                text-align: center;
+                border: 1px solid transparent;
+            }
+            #npsBaPortfolioModal .rsi-green,
+            #npsBaBreadthModal .rsi-green {
+                background: var(--accent-dim) !important;
+                color: var(--accent) !important;
+            }
+            #npsBaPortfolioModal .rsi-amber,
+            #npsBaBreadthModal .rsi-amber {
+                background: var(--accent2-dim) !important;
+                color: var(--accent2) !important;
+            }
+            #npsBaPortfolioModal .rsi-red,
+            #npsBaBreadthModal .rsi-red {
+                background: var(--red-dim) !important;
+                color: var(--red) !important;
+            }
+            #npsBaPortfolioModal .table-wrap,
+            #npsBaBreadthModal .table-wrap {
+                border: 1px solid var(--border);
+                overflow-x: auto;
+                background: var(--surface);
+                position: relative;
+            }
+            #npsBaPortfolioModal table,
+            #npsBaBreadthModal table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 0;
+                font-size: 0.62rem;
+            }
+            #npsBaPortfolioModal thead th,
+            #npsBaBreadthModal thead th {
+                padding: 11px 12px;
+                font-family: var(--mono);
+                font-size: 0.52rem;
+                font-weight: 600;
+                color: #000;
+                letter-spacing: 1.2px;
+                text-transform: uppercase;
+                border-right: 1px solid var(--border);
+                border-bottom: 1px solid var(--border);
+                white-space: nowrap;
+                cursor: pointer;
+                user-select: none;
+                position: sticky;
+                top: 0;
+                z-index: 3;
+                background: var(--surface2);
+            }
+            #npsBaPortfolioModal thead tr.group-header th,
+            #npsBaBreadthModal thead tr.group-header th {
+                padding: 6px 12px;
+                font-size: 0.48rem;
+                letter-spacing: 1.5px;
+                color: var(--text);
+                background: var(--surface);
+                border-bottom: 2px solid var(--border);
+                cursor: default;
+                top: 0;
+                z-index: 4;
+            }
+            #npsBaPortfolioModal thead tr:not(.group-header) th,
+            #npsBaBreadthModal thead tr:not(.group-header) th {
+                top: 26px;
+            }
+            #npsBaPortfolioModal thead th:last-child,
+            #npsBaBreadthModal thead th:last-child {
+                border-right: none;
+            }
+            #npsBaPortfolioModal tbody tr,
+            #npsBaBreadthModal tbody tr {
+                background: var(--bg);
+                border-bottom: 1px solid var(--border);
+                transition: background 0.1s;
+            }
+            #npsBaPortfolioModal tbody tr:hover,
+            #npsBaBreadthModal tbody tr:hover {
+                background: var(--surface2) !important;
+            }
+            #npsBaPortfolioModal tbody tr:last-child,
+            #npsBaBreadthModal tbody tr:last-child {
+                border-bottom: none;
+            }
+            #npsBaPortfolioModal tbody td,
+            #npsBaBreadthModal tbody td {
+                padding: 9px 12px;
+                font-family: var(--mono);
+                font-size: 0.62rem;
+                color: var(--text);
+                border-right: 1px solid var(--border);
+                white-space: nowrap;
+                border-bottom: 1px solid var(--border);
+            }
+            #npsBaPortfolioModal tbody td:last-child,
+            #npsBaBreadthModal tbody td:last-child {
+                border-right: none;
+            }
+            #npsBaPortfolioModal td.name-col,
+            #npsBaBreadthModal td.name-col {
+                font-family: var(--sans);
+                font-size: 0.58rem;
+                font-weight: 600;
+                color: var(--text);
+                min-width: 120px;
+                word-break: break-word;
+                overflow-wrap: break-word;
+                white-space: normal;
+            }
+            #npsBaPortfolioModal th[data-group="1"],
+            #npsBaBreadthModal th[data-group="1"],
+            #npsBaPortfolioModal td[data-group="1"],
+            #npsBaBreadthModal td[data-group="1"] {
+                background: rgba(180, 180, 180, 0.08);
+            }
+            #npsBaPortfolioModal th[data-group="2"],
+            #npsBaBreadthModal th[data-group="2"],
+            #npsBaPortfolioModal td[data-group="2"],
+            #npsBaBreadthModal td[data-group="2"] {
+                background: rgba(100, 150, 200, 0.06);
+            }
+            #npsBaPortfolioModal th[data-group="3"],
+            #npsBaBreadthModal th[data-group="3"],
+            #npsBaPortfolioModal td[data-group="3"],
+            #npsBaBreadthModal td[data-group="3"] {
+                background: rgba(140, 200, 100, 0.06);
+            }
+            #npsBaPortfolioModal th[data-group="4"],
+            #npsBaBreadthModal th[data-group="4"],
+            #npsBaPortfolioModal td[data-group="4"],
+            #npsBaBreadthModal td[data-group="4"] {
+                background: rgba(200, 140, 100, 0.06);
+            }
+            #npsBaPortfolioModal .group-start,
+            #npsBaBreadthModal .group-start {
+                border-left: 3px solid rgba(80, 80, 80, 0.5) !important;
+            }
+            #npsBaPortfolioModal .empty-state,
+            #npsBaBreadthModal .empty-state {
+                padding: 80px 20px;
+                text-align: center;
+            }
+            #npsBaPortfolioModal .empty-state .big-icon,
+            #npsBaBreadthModal .empty-state .big-icon {
+                font-size: 48px;
+                margin-bottom: 16px;
+            }
+            #npsBaPortfolioModal .empty-state h2,
+            #npsBaBreadthModal .empty-state h2 {
+                font-size: 1.2rem;
+                font-weight: 700;
+                color: var(--text);
+                margin-bottom: 8px;
+            }
+            #npsBaPortfolioModal .empty-state p,
+            #npsBaBreadthModal .empty-state p {
+                font-family: var(--mono);
+                font-size: 0.62rem;
+                color: var(--muted);
+            }
+            /* Breadth Tab Panels */
+            #npsBaBreadthModal .ba-panel-wrap {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                margin-bottom: 16px;
+            }
+            #npsBaBreadthModal .ba-panel-hdr {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 12px 18px;
+                border-bottom: 1px solid var(--border);
+                background: var(--surface2);
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            #npsBaBreadthModal .ba-panel-title {
+                font-family: var(--mono);
+                font-size: 0.62rem;
+                font-weight: 700;
+                letter-spacing: 1.5px;
+                text-transform: uppercase;
+                color: var(--muted);
+            }
+            #npsBaBreadthModal .ba-panel-body {
+                padding: 16px 18px;
+            }
+            #npsBaBreadthModal .ba-verdict {
+                padding: 12px 16px;
+                margin-bottom: 16px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px;
+                flex-wrap: wrap;
+            }
+            #npsBaBreadthModal .ba-verdict.bull {
+                background: var(--accent-dim);
+                border: 1px solid var(--accent);
+            }
+            #npsBaBreadthModal .ba-verdict.bear {
+                background: var(--red-dim);
+                border: 1px solid var(--red);
+            }
+            #npsBaBreadthModal .ba-verdict.side {
+                background: var(--accent2-dim);
+                border: 1px solid var(--accent2);
+            }
+            #npsBaBreadthModal .ba-vlabel {
+                font-family: var(--mono);
+                font-size: 1.5rem;
+                font-weight: 900;
+                white-space: nowrap;
+            }
+            #npsBaBreadthModal .ba-vlabel.g { color: var(--accent); }
+            #npsBaBreadthModal .ba-vlabel.r { color: var(--red); }
+            #npsBaBreadthModal .ba-vlabel.y { color: var(--accent2); }
+            #npsBaBreadthModal .ba-vtext {
+                font-family: var(--sans);
+                font-size: 0.72rem;
+                color: var(--text);
+            }
+            #npsBaBreadthModal .ba-vaction {
+                font-family: var(--mono);
+                font-size: 0.62rem;
+                color: var(--muted);
+                margin-top: 4px;
+            }
+            #npsBaBreadthModal .ba-stats {
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                gap: 8px;
+                margin-bottom: 16px;
+            }
+            #npsBaBreadthModal .ba-stat {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                padding: 12px 14px;
+                border-left: 3px solid var(--border);
+            }
+            #npsBaBreadthModal .ba-stat-lbl {
+                font-family: var(--mono);
+                font-size: 0.48rem;
+                font-weight: 600;
+                letter-spacing: 1.5px;
+                text-transform: uppercase;
+                color: var(--muted);
+                margin-bottom: 5px;
+            }
+            #npsBaBreadthModal .ba-stat-num {
+                font-size: 1.5rem;
+                font-weight: 700;
+                line-height: 1;
+            }
+            #npsBaBreadthModal .ba-stat-num.g { color: var(--accent); }
+            #npsBaBreadthModal .ba-stat-num.y { color: var(--accent2); }
+            #npsBaBreadthModal .ba-stat-num.r { color: var(--red); }
+            #npsBaBreadthModal .ba-stat-num.d { color: var(--muted); }
+            #npsBaBreadthModal .ba-stat-sub {
+                font-family: var(--mono);
+                font-size: 0.48rem;
+                color: var(--muted);
+                margin-top: 3px;
+            }
+            #npsBaBreadthModal .ba-port-section {
+                background: var(--surface);
+                border: 1px solid var(--accent2);
+                border-left: 4px solid var(--accent2);
+                padding: 14px 18px;
+                margin-bottom: 16px;
+            }
+            #npsBaBreadthModal .ba-port-title {
+                font-family: var(--mono);
+                font-size: 0.52rem;
+                font-weight: 700;
+                letter-spacing: 1.5px;
+                text-transform: uppercase;
+                color: var(--accent2);
+                margin-bottom: 12px;
+            }
+            #npsBaBreadthModal .ba-port-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 10px;
+            }
+            #npsBaBreadthModal .ba-port-item {
+                background: var(--surface2);
+                border: 1px solid var(--border);
+                padding: 12px 14px;
+            }
+            #npsBaBreadthModal .ba-port-pfm {
+                font-family: var(--mono);
+                font-size: 0.52rem;
+                font-weight: 700;
+                letter-spacing: 1.2px;
+                text-transform: uppercase;
+                color: var(--muted);
+                margin-bottom: 6px;
+            }
+            #npsBaBreadthModal .ba-port-pct {
+                font-family: var(--mono);
+                font-size: 1.5rem;
+                font-weight: 700;
+                line-height: 1;
+            }
+            #npsBaBreadthModal .ba-port-bar-wrap {
+                margin-top: 6px;
+                height: 3px;
+                background: var(--border);
+            }
+            #npsBaBreadthModal .ba-port-fill {
+                height: 100%;
+                transition: width 0.8s ease;
+            }
+            #npsBaBreadthModal .ba-port-meta {
+                font-family: var(--mono);
+                font-size: 0.48rem;
+                color: var(--muted);
+                margin-top: 5px;
+                line-height: 1.5;
+            }
+            #npsBaBreadthModal .ba-donut-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+                margin-bottom: 16px;
+            }
+            #npsBaBreadthModal .ba-donut-card {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                padding: 14px;
+            }
+            #npsBaBreadthModal .ba-donut-title {
+                font-family: var(--mono);
+                font-size: 0.48rem;
+                font-weight: 700;
+                letter-spacing: 1.2px;
+                text-transform: uppercase;
+                color: var(--muted);
+                margin-bottom: 10px;
+            }
+            #npsBaBreadthModal .ba-donut-canvas-wrap {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 10px;
+            }
+            #npsBaBreadthModal .ba-donut-legend {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
+            #npsBaBreadthModal .ba-donut-li {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-family: var(--mono);
+                font-size: 0.52rem;
+                color: var(--muted);
+            }
+            #npsBaBreadthModal .ba-donut-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                flex-shrink: 0;
+            }
+            #npsBaBreadthModal .ba-top-stocks {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                padding: 14px 18px;
+                margin-bottom: 16px;
+            }
+            #npsBaBreadthModal .ba-top-title {
+                font-family: var(--mono);
+                font-size: 0.52rem;
+                font-weight: 700;
+                letter-spacing: 1.5px;
+                text-transform: uppercase;
+                color: var(--text);
+                margin-bottom: 10px;
+            }
+            #npsBaBreadthModal .ba-top-chips {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            #npsBaBreadthModal .ba-top-chip {
+                background: var(--accent-dim);
+                border: 1px solid var(--accent);
+                color: var(--accent);
+                font-family: var(--mono);
+                font-size: 0.52rem;
+                font-weight: 600;
+                padding: 3px 10px;
+            }
+            #npsBaBreadthModal .regime-matrix-table thead th,
+            #npsBaBreadthModal .matrix-th {
+                position: static !important;
+                top: auto !important;
+                padding: 8px 12px;
+                font-family: var(--mono);
+                font-size: 0.48rem;
+                letter-spacing: 1px;
+                border-bottom: 2px solid var(--border);
+                background: var(--surface2);
+                cursor: default;
+                white-space: nowrap;
+            }
+            #npsBaBreadthModal .regime-matrix-table tbody tr:first-child td {
+                padding-top: 10px;
+            }
+            @media (max-width: 768px) {
+                #npsBaPortfolioModal .summary-row,
+                #npsBaBreadthModal .summary-row {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+                #npsBaBreadthModal .ba-stats {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+                #npsBaBreadthModal .ba-port-grid,
+                #npsBaBreadthModal .ba-donut-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+            @media (max-width: 600px) {
+                #npsBaPortfolioModal .summary-row,
+                #npsBaBreadthModal .summary-row {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+                #npsBaBreadthModal .ba-stats {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+                #npsBaBreadthModal .ba-port-grid,
+                #npsBaBreadthModal .ba-donut-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
         </style>
         <!-- ════════════════════════════════════════════════════════════ -->
         <!-- BOX 1 — UI  (HTML structure for all screens, modals, etc.) -->
@@ -3289,6 +4106,36 @@
                 " onmouseenter="this.style.background='rgba(200,80,80,0.17)'" onmouseleave="this.style.background='linear-gradient(145deg,rgba(200,80,80,0.13),rgba(200,80,80,0.05))'">
                     <span style="font-size:0.95rem;line-height:1;">📊</span>
                     <span style="font-size:0.68rem;font-weight:700;letter-spacing:0.04em;">AI</span>
+                </button>
+                <!-- NPS SCAN BA -->
+                <button onclick="nbOpenPortfolio()" style="
+                    background:linear-gradient(145deg,rgba(244,162,97,0.13),rgba(244,162,97,0.05));
+                    border:2px solid #f4a261;
+                    border-radius:var(--radius);
+                    padding:6px 4px;
+                    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+                    cursor:pointer;
+                    outline:1px solid rgba(244,162,97,0.25);outline-offset:2px;
+                    transition:background 0.18s;
+                    min-height:50px;
+                " onmouseenter="this.style.background='rgba(244,162,97,0.18)'" onmouseleave="this.style.background='linear-gradient(145deg,rgba(244,162,97,0.13),rgba(244,162,97,0.05))'">
+                    <span style="font-size:0.95rem;line-height:1;">🏛️</span>
+                    <span style="font-family:var(--mono);font-size:0.62rem;font-weight:700;color:#c9622a;letter-spacing:0.04em;">NPS SCAN BA</span>
+                </button>
+                <!-- PORTFOLIO BA -->
+                <button onclick="nbOpenBreadth()" style="
+                    background:linear-gradient(145deg,rgba(0,200,150,0.13),rgba(0,200,150,0.05));
+                    border:2px solid var(--accent);
+                    border-radius:var(--radius);
+                    padding:6px 4px;
+                    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+                    cursor:pointer;
+                    outline:1px solid rgba(0,158,112,0.25);outline-offset:2px;
+                    transition:background 0.18s;
+                    min-height:50px;
+                " onmouseenter="this.style.background='rgba(0,200,150,0.18)'" onmouseleave="this.style.background='linear-gradient(145deg,rgba(0,200,150,0.13),rgba(0,200,150,0.05))'">
+                    <span style="font-size:0.95rem;line-height:1;">📊</span>
+                    <span style="font-family:var(--mono);font-size:0.62rem;font-weight:700;color:#00796b;letter-spacing:0.04em;">PORTFOLIO BA</span>
                 </button>
             </div>
             <div style="border:2px solid var(--accent);border-radius:var(--radius);padding:6px 6px 3px;margin-bottom:8px;background:var(--surface);width:100%;max-width:350px;box-sizing:border-box;">
@@ -5492,7 +6339,8 @@ text-align:center;display:flex;flex-direction:column;justify-content:center;">
                 'ld_v3_amc', 'ld_v3_fund', 'ld_v3_rsi_length',
                 'ld_live_lookback', 'ld_sim_lookback', 'ld_blind_mode',
                 'hm_pfm', 'hm_scheme', 'hm_tf_days', 'hm_period',
-                'ld_sim_state', 'ld_nps_actions'
+                'ld_sim_state', 'ld_nps_actions',
+                'nb_data', 'nb_ba'
             ];
             // Embed IDs used by this app across versions, newest first, so a
             // backup file exported by ANY past version can still be imported.
@@ -21508,7 +22356,412 @@ window.LDScannerComponent = LDScanner;
             }
         }
     }
+
+    // ════════════════════════════════════════════════════════════════
+    // NPS BA MODULE - ported from NPS_BA_v3.html
+    // ════════════════════════════════════════════════════════════════
+    var nbPfmCfg = {
+        HDFC: { name:'HDFC Pension Management Co. Ltd.', short:'HDFC', color:'#003399', url:'https://www.hdfcpension.com/wp-content/uploads/2026/06/monthly-website-forms-may-26.xlsx', month:'May 2026' },
+        ICICI: { name:'ICICI Prudential Pension Fund Mgmt Co. Ltd.', short:'ICICI Pru', color:'#d4880f', url:'https://www.iciciprupensionfund.com/NPS/#/public-disclosure/portfolio-details', month:'May 2026' },
+        KOTAK: { name:'Kotak Mahindra Pension Fund Ltd.', short:'Kotak', color:'#cc3344', url:'https://www.kotakpensionfund.com/Kotak/Portfolio', month:'May 2026' },
+        ABSL: { name:'Aditya Birla Sun Life Pension Management Ltd.', short:'ABSL', color:'#7b1fa2', url:'https://pensionfund.adityabirlacapital.com/about-us/public-disclosure', month:'May 2026' },
+        SBI: { name:'SBI Funds Management Ltd.', short:'SBI', color:'#1a5276', url:'https://www.sbipensionfund.com/', month:'May 2026' },
+        TATA: { name:'Tata Pension Management Ltd.', short:'Tata', color:'#154360', url:'https://www.tatapension.com/', month:'May 2026' },
+        AXIS: { name:'Axis Pension Fund Management Ltd.', short:'Axis', color:'#1a237e', url:'https://www.axispension.com/', month:'May 2026' },
+        DSP: { name:'DSP Pension Fund Managers Ltd.', short:'DSP', color:'#b71c1c', url:'https://www.dsppension.com/', month:'May 2026' }
+    };
+    var nbPfmOrder = hmSchemes.map(function(g){ return g.group; });
+
+    var nbDataSet = {
+        HDFC:{aum:98,t1:{E:{r1y:18.42,r3y:14.87,vol:14.2,sharpe:1.18,beta:0.94,alloc:{Equity:96.8,'Cash/FDR':3.2},top10:[{r:1,n:'HDFC Bank Ltd.',w:9.42},{r:2,n:'Infosys Ltd.',w:7.18},{r:3,n:'ICICI Bank Ltd.',w:6.85},{r:4,n:'Reliance Industries',w:5.63},{r:5,n:'Larsen & Toubro',w:3.91}],tot:58},C:{r1y:8.14,r3y:7.63,alloc:{'Corp Bonds':88.4,'G-Sec':8.2,'Cash/FDR':3.4},avgMat:'7.8 yrs',modDur:'5.9 yrs',top10:[{r:1,n:'Power Finance Corp.',w:8.34},{r:2,n:'NABARD',w:7.92},{r:3,n:'REC Ltd.',w:6.81}],tot:72}},t2:{E:{r1y:18.31,r3y:14.79,alloc:{Equity:97.1,'Cash/FDR':2.9},top10:[{r:1,n:'HDFC Bank Ltd.',w:9.15},{r:2,n:'Infosys Ltd.',w:7.02},{r:3,n:'ICICI Bank Ltd.',w:6.73}],tot:56},C:{r1y:8.08,r3y:7.58,alloc:{'Corp Bonds':89.1,'G-Sec':7.6},top10:[{r:1,n:'Power Finance Corp.',w:8.41},{r:2,n:'NABARD',w:7.98}],tot:70}}},
+        ICICI:{aum:54,t1:{E:{r1y:17.94,r3y:14.62,vol:13.9,sharpe:1.14,beta:0.93,alloc:{Equity:97.0,'Cash/FDR':2.1},top10:[{r:1,n:'HDFC Bank Ltd.',w:9.28},{r:2,n:'ICICI Bank Ltd.',w:7.91},{r:3,n:'Infosys Ltd.',w:6.44}],tot:61},C:{r1y:8.32,r3y:7.81,alloc:{'Corp Bonds':87.2,'G-Sec':9.4},avgMat:'8.1 yrs',modDur:'6.1 yrs',top10:[{r:1,n:'Power Finance Corp.',w:9.12},{r:2,n:'REC Ltd.',w:7.84}],tot:68}},t2:{E:{r1y:17.82,r3y:14.54,alloc:{Equity:97.3,'Cash/FDR':2.7},top10:[{r:1,n:'HDFC Bank Ltd.',w:9.11},{r:2,n:'ICICI Bank Ltd.',w:7.76}],tot:59},C:{r1y:8.24,r3y:7.74,alloc:{'Corp Bonds':87.6,'G-Sec':9.0},top10:[{r:1,n:'Power Finance Corp.',w:9.18},{r:2,n:'REC Ltd.',w:7.90}],tot:66}}},
+        KOTAK:{aum:32,t1:{E:{r1y:18.67,r3y:15.12,vol:14.6,sharpe:1.22,beta:0.97,alloc:{Equity:96.4,'Cash/FDR':3.6},top10:[{r:1,n:'HDFC Bank Ltd.',w:8.94},{r:2,n:'ICICI Bank Ltd.',w:7.43},{r:3,n:'Infosys Ltd.',w:6.81}],tot:54},C:{r1y:8.04,r3y:7.51,alloc:{'Corp Bonds':86.8,'G-Sec':9.7},avgMat:'7.4 yrs',modDur:'5.7 yrs',top10:[{r:1,n:'Power Finance Corp.',w:8.76},{r:2,n:'REC Ltd.',w:7.54}],tot:65}},t2:{E:{r1y:18.54,r3y:15.01,alloc:{Equity:96.8,'Cash/FDR':3.2},top10:[{r:1,n:'HDFC Bank Ltd.',w:8.81},{r:2,n:'ICICI Bank Ltd.',w:7.28}],tot:52},C:{r1y:7.98,r3y:7.44,alloc:{'Corp Bonds':87.4,'G-Sec':9.2},top10:[{r:1,n:'Power Finance Corp.',w:8.82},{r:2,n:'REC Ltd.',w:7.60}],tot:64}}},
+        ABSL:{aum:18,t1:{E:{r1y:18.14,r3y:14.73,vol:13.7,sharpe:1.16,beta:0.91,alloc:{Equity:97.2,'Cash/FDR':2.8},top10:[{r:1,n:'HDFC Bank Ltd.',w:9.02},{r:2,n:'ICICI Bank Ltd.',w:7.61},{r:3,n:'Infosys Ltd.',w:6.52}],tot:49},C:{r1y:8.21,r3y:7.68,alloc:{'Corp Bonds':85.6,'G-Sec':11.2,'Cash/FDR':3.2},avgMat:'8.4 yrs',modDur:'6.3 yrs',top10:[{r:1,n:'Power Finance Corp.',w:9.34},{r:2,n:'NABARD',w:8.12}],tot:58}},t2:{E:{r1y:18.04,r3y:14.64,alloc:{Equity:97.4,'Cash/FDR':2.6},top10:[{r:1,n:'HDFC Bank Ltd.',w:8.88},{r:2,n:'ICICI Bank Ltd.',w:7.47}],tot:47},C:{r1y:8.14,r3y:7.61,alloc:{'Corp Bonds':86.2,'G-Sec':10.5},top10:[{r:1,n:'Power Finance Corp.',w:9.40},{r:2,n:'NABARD',w:8.18}],tot:57}}},
+        SBI:{aum:27,t1:{E:{r1y:17.88,r3y:14.56,vol:14.1,sharpe:1.13,beta:0.95,alloc:{Equity:96.5,'Cash/FDR':3.5},top10:[{r:1,n:'HDFC Bank Ltd.',w:9.35},{r:2,n:'ICICI Bank Ltd.',w:7.44},{r:3,n:'Infosys Ltd.',w:6.72}],tot:55},C:{r1y:8.18,r3y:7.71,alloc:{'Corp Bonds':87.8,'G-Sec':9.1},avgMat:'7.9 yrs',modDur:'6.0 yrs',top10:[{r:1,n:'Power Finance Corp.',w:8.92},{r:2,n:'REC Ltd.',w:7.65}],tot:69}},t2:{E:{r1y:17.76,r3y:14.44,alloc:{Equity:96.9,'Cash/FDR':3.1},top10:[{r:1,n:'HDFC Bank Ltd.',w:9.21},{r:2,n:'ICICI Bank Ltd.',w:7.32}],tot:53},C:{r1y:8.10,r3y:7.63,alloc:{'Corp Bonds':88.3,'G-Sec':8.7},top10:[{r:1,n:'Power Finance Corp.',w:9.01},{r:2,n:'NABARD',w:7.82}],tot:67}}},
+        TATA:{aum:12,t1:{E:{r1y:18.25,r3y:14.81,vol:14.3,sharpe:1.17,beta:0.96,alloc:{Equity:96.7,'Cash/FDR':3.3},top10:[{r:1,n:'HDFC Bank Ltd.',w:9.18},{r:2,n:'Infosys Ltd.',w:7.25},{r:3,n:'ICICI Bank Ltd.',w:6.93}],tot:52},C:{r1y:8.06,r3y:7.55,alloc:{'Corp Bonds':87.4,'G-Sec':9.8,'Cash/FDR':2.8},avgMat:'7.5 yrs',modDur:'5.8 yrs',top10:[{r:1,n:'Power Finance Corp.',w:8.68},{r:2,n:'NABARD',w:7.88}],tot:63}},t2:{E:{r1y:18.13,r3y:14.71,alloc:{Equity:97.0,'Cash/FDR':3.0},top10:[{r:1,n:'HDFC Bank Ltd.',w:9.05},{r:2,n:'Infosys Ltd.',w:7.11}],tot:50},C:{r1y:7.98,r3y:7.47,alloc:{'Corp Bonds':88.0,'G-Sec':9.4},top10:[{r:1,n:'Power Finance Corp.',w:8.75},{r:2,n:'REC Ltd.',w:7.62}],tot:61}}},
+        AXIS:{aum:8,t1:{E:{r1y:17.95,r3y:14.58,vol:14.0,sharpe:1.15,beta:0.92,alloc:{Equity:97.1,'Cash/FDR':2.9},top10:[{r:1,n:'HDFC Bank Ltd.',w:9.24},{r:2,n:'ICICI Bank Ltd.',w:7.55},{r:3,n:'Infosys Ltd.',w:6.61}],tot:48},C:{r1y:8.26,r3y:7.75,alloc:{'Corp Bonds':86.9,'G-Sec':10.4},avgMat:'8.2 yrs',modDur:'6.2 yrs',top10:[{r:1,n:'Power Finance Corp.',w:9.08},{r:2,n:'NABARD',w:8.14}],tot:56}},t2:{E:{r1y:17.83,r3y:14.48,alloc:{Equity:97.4,'Cash/FDR':2.6},top10:[{r:1,n:'HDFC Bank Ltd.',w:9.12},{r:2,n:'ICICI Bank Ltd.',w:7.43}],tot:46},C:{r1y:8.18,r3y:7.67,alloc:{'Corp Bonds':87.5,'G-Sec':10.0},top10:[{r:1,n:'Power Finance Corp.',w:9.15},{r:2,n:'REC Ltd.',w:7.88}],tot:54}}},
+        DSP:{aum:6,t1:{E:{r1y:18.38,r3y:14.92,vol:14.4,sharpe:1.19,beta:0.94,alloc:{Equity:96.6,'Cash/FDR':3.4},top10:[{r:1,n:'HDFC Bank Ltd.',w:9.31},{r:2,n:'Infosys Ltd.',w:7.32},{r:3,n:'Reliance Industries',w:5.78}],tot:51},C:{r1y:8.12,r3y:7.62,alloc:{'Corp Bonds':87.1,'G-Sec':9.5,'Cash/FDR':3.4},avgMat:'7.6 yrs',modDur:'5.8 yrs',top10:[{r:1,n:'Power Finance Corp.',w:8.85},{r:2,n:'NABARD',w:7.96}],tot:62}},t2:{E:{r1y:18.26,r3y:14.82,alloc:{Equity:97.0,'Cash/FDR':3.0},top10:[{r:1,n:'HDFC Bank Ltd.',w:9.18},{r:2,n:'Infosys Ltd.',w:7.18}],tot:49},C:{r1y:8.04,r3y:7.54,alloc:{'Corp Bonds':87.8,'G-Sec':9.2},top10:[{r:1,n:'Power Finance Corp.',w:8.92},{r:2,n:'REC Ltd.',w:7.75}],tot:60}}}
+    };
+
+    var nbData = {}, nbBa = {}, nbSortKey = 'pfm', nbSortDir = 'asc', nbLoading = false;
+    try{var _nbD=JSON.parse(localStorage.getItem('nb_data')||'{}');var _nbB=JSON.parse(localStorage.getItem('nb_ba')||'{}');Object.assign(nbData,_nbD);Object.assign(nbBa,_nbB);}catch(e){}
+    function nbRegime(r) { return r >= 15 ? 'A' : r >= 10 ? 'B' : 'C'; }
+    function nbEl(id) { return document.getElementById(id); }
+    function nbSleep(ms) { return new Promise(function(r){setTimeout(r,ms);}); }
+    function nbRenderChips() {
+        var wrap = nbEl('nbChipWrap'); if(!wrap) return;
+        wrap.innerHTML = nbPfmOrder.map(function(p){ return '<div class="nps-chip"><div class="chip-dot" id="nbDot-'+p+'"></div><span style="color:'+nbPfmCfg[p].color+'">'+nbPfmCfg[p].short+'</span></div>'; }).join('');
+    }
+    function nbRenderFilterPFM() {
+        var sel = nbEl('nbFilterPFM'); if(!sel) return;
+        sel.innerHTML = '<option value="ALL">All PFMs</option>' + nbPfmOrder.map(function(p){ return '<option value="'+p+'">'+nbPfmCfg[p].short+'</option>'; }).join('');
+    }
+
+    function nbClosePortfolio() { nbEl('npsBaPortfolioModal').style.display='none'; nbEl('setupScreen').style.display='flex'; }
+    function nbCloseBreadth() { nbEl('npsBaBreadthModal').style.display='none'; nbEl('setupScreen').style.display='flex'; }
+
+    function nbOpenPortfolio() {
+        nbEl('setupScreen').style.display='none';
+        nbEl('npsBaPortfolioModal').style.display='flex';
+        nbRenderChips();
+        nbRenderFilterPFM();
+        if (Object.keys(nbData).length) { nbRenderSummary(); nbRenderTable(); }
+    }
+    function nbOpenBreadth() {
+        nbEl('setupScreen').style.display='none';
+        nbEl('npsBaBreadthModal').style.display='flex';
+        nbRenderBreadth();
+    }
+
+    function nbSetProgress(lbl,pct) {
+        var w=nbEl('nbProgressWrap'); if(w) w.style.display='block';
+        var l=nbEl('nbProgressLabel'); if(l) l.textContent=lbl;
+        var p=nbEl('nbProgressPct'); if(p) p.textContent=pct+'%';
+        var f=nbEl('nbProgressFill'); if(f) f.style.width=pct+'%';
+    }
+    function nbHideProgress() { var w=nbEl('nbProgressWrap'); if(w) w.style.display='none'; }
+
+    async function nbGeminiBA(entries) {
+        var k1=(localStorage.getItem('ld_gemini_api_key')||'').trim();
+        var k2=(localStorage.getItem('ld_gemini_api_key2')||'').trim();
+        var keys={};
+        if(k1.length>=20) keys[1]=k1;
+        if(k2.length>=20) keys[2]=k2;
+        if(!keys[1]&&!keys[2]) return null;
+        var lines=entries.map(function(e,i){
+            var rg=e.r1y>=15?'A (Hope)':e.r1y>=10?'B (Watch)':'C (Fear)';
+            var sType=e.scheme==='E'?'Equity':'Corp Bonds';
+            return '['+(i+1)+'] KEY="'+e.pfm+'_'+e.scheme+'_'+e.tier+'" | '+e.pfmShort+' Scheme '+e.scheme+' ('+sType+') Tier '+e.tier+': 1Y Return = '+e.r1y+'% -> Regime '+rg+' . AUM Rs'+nbDataSet[e.pfm].aum+'K Cr';
+        }).join('\n');
+        var prompt='You are a constituent breadth analyst for Indian NPS pension funds.\n\nTASK: For EACH of the '+entries.length+' NPS Scheme E (Equity) portfolios below, estimate what percentage of that portfolio\'s total market-cap weight has its constituent stocks currently in Regime A (Weekly RSI >= 50, price above 20-week MA).\n\nCRITICAL: Use the exact KEY string shown in quotes as the JSON object key (e.g. "HDFC_E_1").\n\nReturn ONLY a valid JSON object where each key is the KEY string and value is:\n{"regime_a_weight_pct": <number 0-100>, "bull_count": <integer>, "total_count": <integer>, "top_regime_a": ["Stock1","Stock2","Stock3"], "confidence": "HIGH|MEDIUM|LOW", "note": "one sentence"}\n\nPortfolios:\n'+lines;
+        var payload={contents:[{parts:[{text:prompt}]}],generationConfig:{responseMimeType:"application/json"}};
+        var cascade=[{k:1,m:'gemini-3.1-flash-lite'},{k:1,m:'gemini-3-flash'},{k:1,m:'gemini-3.5-flash'},{k:1,m:'gemini-3.1-pro'},{k:2,m:'gemini-3.1-flash-lite'},{k:2,m:'gemini-3-flash'},{k:2,m:'gemini-3.5-flash'},{k:2,m:'gemini-3.1-pro'}];
+        for(var ci=0;ci<cascade.length;ci++){
+            var api=keys[cascade[ci].k]; if(!api) continue;
+            try{
+                var ep='https://generativelanguage.googleapis.com/v1beta/models/'+cascade[ci].m+':generateContent?key='+api;
+                var res=await fetch(ep,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),signal:AbortSignal.timeout(45000)});
+                var data=await res.json();
+                if(data.error) continue;
+                var raw=(data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts&&data.candidates[0].content.parts[0]&&data.candidates[0].content.parts[0].text||'').trim();
+                return JSON.parse(raw);
+            }catch(err){continue;}
+        }
+        return null;
+    }
+
+    async function nbFetchData() {
+        if(nbLoading) return;
+        nbLoading=true;
+        var btn=nbEl('nbBtnFetch'); if(btn) btn.disabled=true;
+        try{
+        nbData={}; nbBa={};
+        var steps=[];
+        hmSchemes.forEach(function(g){
+            g.items.forEach(function(it){
+                var sc=it.name.indexOf(' E ')>=0?'E':'C';
+                var ti=it.name.indexOf('Tier II')>=0?'2':'1';
+                steps.push([g.group,sc,ti]);
+            });
+        });
+        for(var i=0;i<steps.length;i++){
+            var p=steps[i][0],sc=steps[i][1],ti=steps[i][2];
+            nbSetProgress('Loading '+nbPfmCfg[p].short+' Sch '+sc+' T'+ti+'...',Math.round(i/steps.length*75));
+            var dot=nbEl('nbDot-'+p); if(dot) dot.className='chip-dot loading';
+            var src=nbDataSet[p][ti==='1'?'t1':'t2'][sc];
+            var key=p+'|'+sc+'|'+ti;
+            nbData[key]={pfm:p,scheme:sc,tier:ti,r1y:src.r1y,r3y:src.r3y||null,vol:src.vol||null,sharpe:src.sharpe||null,beta:src.beta||null,alloc:src.alloc,top10:src.top10,tot:src.tot,avgMat:src.avgMat||null,modDur:src.modDur||null,regime:nbRegime(src.r1y)};
+            await nbSleep(50);
+        }
+        nbPfmOrder.forEach(function(p){var dot=nbEl('nbDot-'+p);if(dot)dot.className='chip-dot loaded';});
+        var k1=(localStorage.getItem('ld_gemini_api_key')||'').trim();
+        var k2=(localStorage.getItem('ld_gemini_api_key2')||'').trim();
+        if(k1.length>=20||k2.length>=20){
+            nbSetProgress('Running Breadth Analysis for Equity schemes...',80);
+            await nbRunBA();
+        }
+        nbSetProgress('Rendering...',95);
+        await nbSleep(100);
+        nbRenderSummary(); nbRenderTable();
+        nbHideProgress();
+        try{localStorage.setItem('nb_data',JSON.stringify(nbData));localStorage.setItem('nb_ba',JSON.stringify(nbBa));}catch(e){}
+        }catch(err){nbHideProgress();}
+        if(btn) btn.disabled=false;
+        nbLoading=false;
+    }
+
+    async function nbRunBA() {
+        var entries=[];
+        Object.keys(nbData).forEach(function(k){
+            var d=nbData[k];
+            if(d.scheme!=='E') return;
+            entries.push({key:k,pfm:d.pfm,pfmShort:nbPfmCfg[d.pfm].short,scheme:d.scheme,tier:d.tier,r1y:d.r1y});
+        });
+        if(!entries.length) return;
+        try{
+            var result=await nbGeminiBA(entries);
+            if(!result)return;
+            entries.forEach(function(e){
+                var code=e.pfm+'_'+e.scheme+'_'+e.tier;
+                var val=result[code];
+                if(!val){
+                    var keys=Object.keys(result);
+                    for(var i=0;i<keys.length;i++){
+                        if(keys[i].toUpperCase().indexOf(e.pfm)>=0&&keys[i].indexOf(e.tier)>=0){val=result[keys[i]];break;}
+                    }
+                }
+                if(val){
+                    nbBa[e.key]={pct:val.regime_a_weight_pct,bull:val.bull_count,total:val.total_count,topStocks:val.top_regime_a||[],conf:val.confidence,note:val.note};
+                }
+            });
+        }catch(err){}
+    }
+
+    function nbRenderSummary() {
+        var all=Object.keys(nbData).map(function(k){return nbData[k];});
+        var rA=all.filter(function(d){return d.regime==='A';}).length;
+        var rB=all.filter(function(d){return d.regime==='B';}).length;
+        var rC=all.filter(function(d){return d.regime==='C';}).length;
+        var eT1=all.filter(function(d){return d.scheme==='E'&&d.tier==='1';}).sort(function(a,b){return b.r1y-a.r1y;});
+        var baV=Object.keys(nbBa).map(function(k){return nbBa[k];}).filter(function(b){return b.pct!=null;}).map(function(b){return b.pct;});
+        var avgBA=baV.length?Math.round(baV.reduce(function(a,b){return a+b;},0)/baV.length):null;
+        var e;
+        e=nbEl('nbTileA');if(e)e.textContent=rA;
+        e=nbEl('nbTileB');if(e)e.textContent=rB;
+        e=nbEl('nbTileC2');if(e)e.textContent=rC;
+        e=nbEl('nbTileE');if(e)e.textContent=all.filter(function(d){return d.scheme==='E';}).length;
+        e=nbEl('nbTileC3');if(e)e.textContent=all.filter(function(d){return d.scheme==='C';}).length;
+        e=nbEl('nbTileBest');if(e)e.textContent=eT1[0]?eT1[0].pfm+' '+eT1[0].r1y+'%':'-';
+        e=nbEl('nbTileAvgBA');if(e)e.textContent=avgBA!=null?avgBA+'%':'-';
+        e=nbEl('nbSummaryRow');if(e)e.style.display='grid';
+        e=nbEl('nbDataNote');if(e)e.style.display='block';
+    }
+
+    function nbRenderTable() {
+        var all=Object.keys(nbData).map(function(k){return nbData[k];});
+        var pf=nbEl('nbFilterPFM'); pf=pf?pf.value:'ALL';
+        var sc=nbEl('nbFilterScheme'); sc=sc?sc.value:'ALL';
+        var ti=nbEl('nbFilterTier'); ti=ti?ti.value:'ALL';
+        var rg=nbEl('nbFilterRegime'); rg=rg?rg.value:'ALL';
+        if(pf!=='ALL') all=all.filter(function(r){return r.pfm===pf;});
+        if(sc!=='ALL') all=all.filter(function(r){return r.scheme===sc;});
+        if(ti!=='ALL') all=all.filter(function(r){return r.tier===ti;});
+        if(rg!=='ALL') all=all.filter(function(r){return r.regime===rg;});
+        all.sort(function(a,b){
+            var va,vb;
+            if(nbSortKey==='baPct'){va=(nbBa[a.pfm+'|'+a.scheme+'|'+a.tier]||{}).pct!=null?(nbBa[a.pfm+'|'+a.scheme+'|'+a.tier]||{}).pct:-1;vb=(nbBa[b.pfm+'|'+b.scheme+'|'+b.tier]||{}).pct!=null?(nbBa[b.pfm+'|'+b.scheme+'|'+b.tier]||{}).pct:-1;}
+            else{va=a[nbSortKey]!=null?a[nbSortKey]:'';vb=b[nbSortKey]!=null?b[nbSortKey]:'';}
+            if(va<vb)return nbSortDir==='asc'?-1:1;
+            if(va>vb)return nbSortDir==='asc'?1:-1;
+            return 0;
+        });
+        var th=nbEl('nbTableHead'),tb=nbEl('nbTableBody');
+        if(!th||!tb) return;
+        function si(k){return nbSortKey===k?(nbSortDir==='asc'?' \u25b2':' \u25bc'):'';}
+        th.innerHTML='<th onclick="nbSort(\'pfm\')">PFM'+si('pfm')+'</th>'
+            +'<th onclick="nbSort(\'scheme\')" class="group-start" data-group="1">Sch'+si('scheme')+'</th>'
+            +'<th data-group="1" onclick="nbSort(\'tier\')">Tier'+si('tier')+'</th>'
+            +'<th data-group="1" onclick="nbSort(\'r1y\')" style="text-align:right">1Y Ret'+si('r1y')+'</th>'
+            +'<th data-group="1" onclick="nbSort(\'r3y\')" style="text-align:right">3Y Ret'+si('r3y')+'</th>'
+            +'<th data-group="2" class="group-start" onclick="nbSort(\'regime\')">Regime'+si('regime')+'</th>'
+            +'<th data-group="2" onclick="nbSort(\'vol\')" style="text-align:right">Vol'+si('vol')+'</th>'
+            +'<th data-group="2" onclick="nbSort(\'sharpe\')" style="text-align:right">Sharpe'+si('sharpe')+'</th>'
+            +'<th data-group="3" class="group-start" onclick="nbSort(\'baPct\')" style="min-width:90px">% Reg A'+si('baPct')+'</th>'
+            +'<th data-group="3">BA Conf</th>'
+            +'<th data-group="4" class="group-start" onclick="nbSort(\'tot\')">Holdings'+si('tot')+'</th>'
+            +'<th data-group="4" style="min-width:180px">Top 3 Holdings</th>'
+            +'<th data-group="4">Source</th>';
+        if(!all.length){tb.innerHTML='<tr><td colspan="13" style="text-align:center;padding:40px;color:var(--muted)">No results match filters</td></tr>';nbEl('nbTableWrap').style.display='block';return;}
+        tb.innerHTML=all.map(function(d){
+            var k=d.pfm+'|'+d.scheme+'|'+d.tier;
+            var ba=nbBa[k];
+            var rClr=d.r1y>=15?'var(--accent)':d.r1y>=10?'var(--accent2)':'var(--red)';
+            var regBg=d.regime==='A'?'var(--accent-dim)':d.regime==='B'?'var(--accent2-dim)':'var(--red-dim)';
+            var regFg=d.regime==='A'?'var(--accent)':d.regime==='B'?'var(--accent2)':'var(--red)';
+            var regBd=d.regime==='A'?'var(--accent)':d.regime==='B'?'var(--accent2)':'var(--red)';
+            var baPill='';
+            if(ba){var cls=ba.pct>=60?'ba-strong':ba.pct>=40?'ba-moderate':'ba-weak';baPill='<span class="ba-pill '+cls+'">'+ba.pct+'%</span>';}
+            else{var k1=(localStorage.getItem('ld_gemini_api_key')||'').trim();var k2=(localStorage.getItem('ld_gemini_api_key2')||'').trim();baPill=(k1.length>=20||k2.length>=20)?'<span class="ba-loading"></span>':'<span class="ba-pill ba-na">No key</span>';}
+            var baConf=ba?'<span class="conf-pill '+(ba.conf==='HIGH'?'rsi-green':ba.conf==='MEDIUM'?'rsi-amber':'rsi-red')+'">'+ba.conf+'</span>':'<span class="conf-pill">-</span>';
+            var top3=(d.top10||[]).slice(0,3).map(function(h){return h.n+' <span style="color:var(--muted);font-size:0.48rem">'+h.w+'%</span>';}).join(' ');
+            return '<tr>'
+                +'<td style="font-weight:700;color:'+nbPfmCfg[d.pfm].color+'">'+nbPfmCfg[d.pfm].short+'</td>'
+                +'<td data-group="1" class="group-start" style="text-align:center">'+d.scheme+'</td>'
+                +'<td data-group="1" style="text-align:center;font-weight:700">T'+d.tier+'</td>'
+                +'<td data-group="1" style="text-align:right"><span style="font-weight:700;color:'+rClr+'">'+d.r1y+'%</span></td>'
+                +'<td data-group="1" style="text-align:right;color:var(--muted)">'+(d.r3y!=null?d.r3y+'%':'-')+'</td>'
+                +'<td data-group="2" class="group-start" style="text-align:center"><span style="display:inline-block;padding:3px 10px;font-size:0.52rem;font-weight:600;border-radius:2px;background:'+regBg+';color:'+regFg+';border:1px solid '+regBd+'">'+d.regime+'</span></td>'
+                +'<td data-group="2" style="text-align:right;color:var(--muted)">'+(d.vol!=null?d.vol+'%':'-')+'</td>'
+                +'<td data-group="2" style="text-align:right">'+(d.sharpe!=null?'<span style="font-weight:700">'+d.sharpe+'</span>':'-')+'</td>'
+                +'<td data-group="3" class="group-start" style="text-align:center">'+baPill+'</td>'
+                +'<td data-group="3">'+baConf+'</td>'
+                +'<td data-group="4" class="group-start" style="text-align:center">'+(d.tot||'-')+'</td>'
+                +'<td data-group="4" style="font-size:0.52rem;white-space:normal;min-width:180px">'+top3+'</td>'
+                +'<td data-group="4"><a href="'+nbPfmCfg[d.pfm].url+'" target="_blank" style="color:var(--accent2);font-size:0.52rem">'+nbPfmCfg[d.pfm].month.replace(' 2026','')+' &#8599;</a></td>'
+                +'</tr>';
+        }).join('');
+        nbEl('nbTableWrap').style.display='block';
+    }
+    function nbSort(k){
+        if(nbSortKey===k)nbSortDir=nbSortDir==='asc'?'desc':'asc';
+        else{nbSortKey=k;nbSortDir='desc';}
+        if(Object.keys(nbData).length)nbRenderTable();
+    }
+
+    function nbRenderBreadth() {
+        var c=nbEl('nbBreadthContent'); if(!c) return;
+        if(!Object.keys(nbData).length){
+            c.innerHTML='<div class="empty-state"><div class="big-icon">&#128202;</div><h2>Run Portfolio Scan First</h2><p>NPS SCAN BA &#8594; Fetch Portfolio Data &#8594; Return here</p></div>';
+            return;
+        }
+        var _wl=JSON.parse(localStorage.getItem('ld_watchlist')||'[]');
+        var _portCodes=_wl.filter(function(w){return w.portfolio;}).map(function(w){return w.code;});
+        var _portKeys=[];
+        if(_portCodes.length){
+            Object.keys(nbData).forEach(function(k){
+                var d=nbData[k];
+                var sc=hmSchemes.find(function(g){return g.group===d.pfm;});
+                if(!sc) return;
+                var matchCode=sc.items.find(function(it){
+                    var s=it.name.indexOf(' E ')>=0?'E':'C';
+                    var t=it.name.indexOf('Tier II')>=0?'2':'1';
+                    return s===d.scheme&&t===d.tier;
+                });
+                if(matchCode&&_portCodes.indexOf(matchCode.code)>=0) _portKeys.push(k);
+            });
+        }
+        var all=_portKeys.length?_portKeys.map(function(k){return nbData[k];}):Object.keys(nbData).map(function(k){return nbData[k];});
+        var total=all.length;
+        var rA=all.filter(function(d){return d.regime==='A';}).length;
+        var rB=all.filter(function(d){return d.regime==='B';}).length;
+        var rC=all.filter(function(d){return d.regime==='C';}).length;
+        var rAPct=total?Math.round(rA/total*100):0;
+        var baV=Object.keys(nbBa).map(function(k){return nbBa[k];}).filter(function(b){return b.pct!=null;}).map(function(b){return b.pct;});
+        var avgBA=baV.length?Math.round(baV.reduce(function(a,b){return a+b;},0)/baV.length):null;
+        var hasBA=Object.keys(nbBa).length>0;
+        var vCls,vLbl,vLblCls,vText,vAction;
+        if(rAPct>=60){vCls='bull';vLbl='BULLISH';vLblCls='g';vText='Majority of portfolio schemes in Regime A.';vAction='Full sizing in Scheme E.';}
+        else if(rAPct>=40){vCls='side';vLbl='MIXED';vLblCls='y';vText='Partial Regime A coverage.';vAction='Prefer PFMs with >60% Regime A.';}
+        else{vCls='bear';vLbl='WEAK';vLblCls='r';vText='Most portfolio schemes in Regime B/C.';vAction='Reduce Scheme E. Tilt to G/C.';}
+        var portPfms=[];
+        all.forEach(function(d){if(portPfms.indexOf(d.pfm)<0)portPfms.push(d.pfm);});
+        var pfmHtml=portPfms.map(function(p){
+            var bk=p+'|E|1',ba=nbBa[bk],pct=ba?ba.pct:null;
+            var fc=pct==null?'var(--border)':pct>=60?'var(--accent)':pct>=40?'var(--accent2)':'var(--red)';
+            var nc=pct==null?'var(--muted)':pct>=60?'var(--accent)':pct>=40?'var(--accent2)':'var(--red)';
+            var stocks=ba?(ba.bull||'?')+'/'+(ba.total||'?'):'Run BA first';
+            return '<div class="ba-port-item"><div class="ba-port-pfm">'+nbPfmCfg[p].short+'</div><div class="ba-port-pct" style="color:'+nc+'">'+(pct!=null?pct+'%':'-')+'</div><div class="ba-port-bar-wrap"><div class="ba-port-fill" style="width:'+(pct||0)+'%;background:'+fc+'"></div></div><div class="ba-port-meta">1Y: '+nbDataSet[p].t1.E.r1y+'% | '+stocks+'</div></div>';
+        }).join('');
+        var schPairs=[['E','1'],['E','2'],['C','1'],['C','2']];
+        var matrixRows=portPfms.map(function(p){
+            var cells=schPairs.map(function(sc){
+                var d=nbData[p+'|'+sc[0]+'|'+sc[1]];
+                if(!d) return '<td style="padding:8px 12px;text-align:center;color:var(--muted)">-</td>';
+                var ba2=nbBa[p+'|'+sc[0]+'|'+sc[1]];
+                var rc=d.regime==='A'?'var(--accent)':d.regime==='B'?'var(--accent2)':'var(--red)';
+                var bt=ba2?'<br><span style="font-size:0.48rem;color:'+(ba2.pct>=60?'var(--accent)':'var(--red)')+'">'+ba2.pct+'% R-A</span>':'';
+                return '<td style="padding:8px 12px;text-align:center;border-bottom:1px solid var(--border)"><span style="font-weight:700;color:'+rc+'">R-'+d.regime+'</span> <span style="color:var(--muted)">'+d.r1y+'%</span>'+bt+'</td>';
+            }).join('');
+            return '<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;font-weight:700;color:'+nbPfmCfg[p].color+'">'+nbPfmCfg[p].short+'</td>'+cells+'</tr>';
+        }).join('');
+        var hdrCells=schPairs.map(function(sc){return '<th class="matrix-th" style="text-align:center">Sch '+sc[0]+' T'+sc[1]+'</th>';}).join('');
+        c.innerHTML=
+            '<div class="ba-panel-wrap"><div class="ba-panel-hdr"><span class="ba-panel-title">NPS Breadth Verdict</span></div><div class="ba-panel-body">'
+            +'<div class="ba-verdict '+vCls+'"><div><div class="ba-vtext">'+vText+'</div><div class="ba-vaction">'+vAction+'</div></div><div class="ba-vlabel '+vLblCls+'">'+vLbl+'</div></div>'
+            +'<div class="ba-stats">'
+            +'<div class="ba-stat" style="border-left-color:var(--muted)"><div class="ba-stat-lbl">Total</div><div class="ba-stat-num d">'+total+'</div><div class="ba-stat-sub">'+portPfms.length+' PFMs</div></div>'
+            +'<div class="ba-stat" style="border-left-color:var(--accent)"><div class="ba-stat-lbl">Regime A</div><div class="ba-stat-num g">'+rA+'</div><div class="ba-stat-sub">'+rAPct+'%</div></div>'
+            +'<div class="ba-stat" style="border-left-color:var(--accent2)"><div class="ba-stat-lbl">Regime B</div><div class="ba-stat-num y">'+rB+'</div><div class="ba-stat-sub">'+(total?Math.round(rB/total*100):0)+'%</div></div>'
+            +'<div class="ba-stat" style="border-left-color:var(--red)"><div class="ba-stat-lbl">Regime C</div><div class="ba-stat-num r">'+rC+'</div><div class="ba-stat-sub">'+(total?Math.round(rC/total*100):0)+'%</div></div>'
+            +'<div class="ba-stat" style="border-left-color:'+(avgBA!=null?(avgBA>=60?'var(--accent)':'var(--red)'):'var(--border)')+'"><div class="ba-stat-lbl">Avg % Reg A</div><div class="ba-stat-num '+(avgBA!=null?(avgBA>=60?'g':'r'):'d')+'">'+(avgBA!=null?avgBA+'%':'-')+'</div><div class="ba-stat-sub">'+(hasBA?'Gemini AI':'Keys needed')+'</div></div>'
+            +'</div>'
+            +'<div class="ba-port-section"><div class="ba-port-title">% Regime A - Scheme E Tier 1</div><div class="ba-port-grid">'+pfmHtml+'</div></div>'
+            +'</div></div>'
+            +'<div class="ba-panel-wrap"><div class="ba-panel-hdr"><span class="ba-panel-title">Regime Matrix - Portfolio ('+total+')</span></div><div class="ba-panel-body"><div style="overflow-x:auto"><table class="regime-matrix-table" style="width:100%;font-size:0.62rem;border-collapse:collapse"><thead><tr style="background:var(--surface2)"><th class="matrix-th" style="text-align:left">PFM</th>'+hdrCells+'</tr></thead><tbody>'+matrixRows+'</tbody></table></div></div></div>'
+            +'<div class="data-note"><strong>Data As Of:</strong> May 2026 | <strong>Regime A:</strong> 1Y Return >= 15% | <strong>% Reg A:</strong> Gemini AI estimate | Source: <a href="https://npstrust.org.in/scheme-portfolio" target="_blank">NPS Trust</a></div>';
+    }
+
+    // Restore cache
+    try{var raw=localStorage.getItem('nps_ba_v3_cache');if(raw){var snap=JSON.parse(raw);if(snap.data&&Object.keys(snap.data).length){nbData=snap.data;nbBa=snap.ba||{};}}}catch(e){}
     </script>
+    <!-- ═══════════════ NPC1GA: NPS BA PORTFOLIO MODAL ═══════════════ -->
+    <div id="npsBaPortfolioModal" class="modal-overlay" style="z-index:750;flex-direction:column;">
+        <div class="modal-close" style="background:var(--surface);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;padding:10px 14px;flex-shrink:0;">
+            <span class="modal-title" style="color:#c9622a;">&#127963; NPS PORTFOLIO &#8212; BREADTH ANALYSIS</span>
+            <span class="modal-close-btn" onclick="nbClosePortfolio()">[ X ] CLOSE</span>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:12px 14px 32px;">
+            <!-- PFM chips -->
+                <div class="nps-chips" id="nbChipWrap"></div>
+            <!-- Controls Bar -->
+            <div class="controls-bar">
+                <div class="controls-left">
+                    <div class="filter-group"><span class="filter-label">PFM</span><select class="filter-select" id="nbFilterPFM" onchange="nbRenderTable()"><option value="ALL">All PFMs</option></select></div>
+                    <div class="filter-group"><span class="filter-label">Scheme</span><select class="filter-select" id="nbFilterScheme" onchange="nbRenderTable()"><option value="ALL">E + C</option><option value="E">Scheme E (Equity)</option><option value="C">Scheme C (Corp Bonds)</option></select></div>
+                    <div class="filter-group"><span class="filter-label">Tier</span><select class="filter-select" id="nbFilterTier" onchange="nbRenderTable()"><option value="ALL">Tier 1 + 2</option><option value="1">Tier 1</option><option value="2">Tier 2</option></select></div>
+                    <div class="filter-group"><span class="filter-label">Regime</span><select class="filter-select" id="nbFilterRegime" onchange="nbRenderTable()"><option value="ALL">All</option><option value="A">A &#8212; Bull</option><option value="B">B &#8212; Fatigue</option><option value="C">C &#8212; Break</option></select></div>
+                </div>
+                <button class="btn-scan" id="nbBtnFetch" onclick="nbFetchData()">&#9889; Fetch Portfolio Data</button>
+            </div>
+            <!-- Progress Bar -->
+            <div class="progress-wrap" id="nbProgressWrap" style="display:none"><div class="progress-top"><span class="progress-label" id="nbProgressLabel">Loading...</span><span class="progress-pct" id="nbProgressPct">0%</span></div><div class="progress-track"><div class="progress-fill" id="nbProgressFill" style="width:0%"></div></div></div>
+            <!-- Summary Tiles -->
+            <div class="summary-row" id="nbSummaryRow" style="display:none">
+                <div class="s-tile" style="border-left-color:var(--accent)"><div class="s-tile-lbl">Regime A</div><div class="s-tile-num g" id="nbTileA">-</div><div class="s-tile-sub">Bull schemes</div></div>
+                <div class="s-tile" style="border-left-color:var(--accent2)"><div class="s-tile-lbl">Regime B</div><div class="s-tile-num y" id="nbTileB">-</div><div class="s-tile-sub">Fatigue zone</div></div>
+                <div class="s-tile" style="border-left-color:var(--red)"><div class="s-tile-lbl">Regime C</div><div class="s-tile-num r" id="nbTileC2">-</div><div class="s-tile-sub">Trust break</div></div>
+                <div class="s-tile" style="border-left-color:var(--border2)"><div class="s-tile-lbl">Scheme E</div><div class="s-tile-num b" id="nbTileE">-</div><div class="s-tile-sub">Equity</div></div>
+                <div class="s-tile" style="border-left-color:#7b1fa2"><div class="s-tile-lbl">Scheme C</div><div class="s-tile-num" id="nbTileC3" style="color:#7b1fa2">-</div><div class="s-tile-sub">Corp Bonds</div></div>
+                <div class="s-tile" style="border-left-color:var(--accent2)"><div class="s-tile-lbl">Best E T1</div><div class="s-tile-num g" id="nbTileBest" style="font-size:0.72rem;margin-top:4px">-</div><div class="s-tile-sub">1Y return</div></div>
+                <div class="s-tile" style="border-left-color:var(--accent)"><div class="s-tile-lbl">Avg % Reg A</div><div class="s-tile-num g" id="nbTileAvgBA" style="font-size:1rem;margin-top:4px">-</div><div class="s-tile-sub">Portfolio wt</div></div>
+                <div class="s-tile" style="border-left-color:var(--border)"><div class="s-tile-lbl">Data As Of</div><div class="s-tile-num d" id="nbTileDate" style="font-size:0.72rem;margin-top:4px">May 2026</div><div class="s-tile-sub">Next ~Jul 10</div></div>
+            </div>
+            <!-- Data Note -->
+            <div class="data-note" id="nbDataNote" style="display:none">
+                <strong>June 2026 data not yet published</strong> &#8212; showing <strong>May 2026</strong> fallback.
+                Source: <a href="https://npstrust.org.in/scheme-portfolio" target="_blank">NPS Trust</a>
+            </div>
+            <!-- Table -->
+            <div id="nbTableWrap" class="table-wrap" style="display:none">
+                <table id="nbTable">
+                    <thead>
+                        <tr class="group-header"><th colspan="2"></th><th colspan="4" data-group="1">SCHEME &amp; PERFORMANCE</th><th colspan="3" data-group="2">REGIME &amp; RISK</th><th colspan="2" data-group="3">% REGIME A (BA)</th><th colspan="3" data-group="4">HOLDINGS</th></tr>
+                        <tr id="nbTableHead"></tr>
+                    </thead>
+                    <tbody id="nbTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ NPC1GA: NPS BA BREADTH MODAL ═══════════════ -->
+    <div id="npsBaBreadthModal" class="modal-overlay" style="z-index:750;flex-direction:column;">
+        <div class="modal-close" style="background:var(--surface);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;padding:10px 14px;flex-shrink:0;">
+            <span class="modal-title" style="color:var(--accent);">PORTFOLIO BREADTH ANALYSIS</span>
+            <span class="modal-close-btn" onclick="nbCloseBreadth()">[ X ] CLOSE</span>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:12px 14px 32px;">
+            <div id="nbBreadthContent">
+                <div class="empty-state">
+                    <div class="big-icon">&#128202;</div>
+                    <h2>Run Portfolio Scan First</h2>
+                    <p>Go to NPS SCAN BA &#8594; Click "Fetch Portfolio Data" &#8594; Return here</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ NPC1GA: NPS BA DETAIL MODAL ═══════════════ -->
+    <div id="npsBaDetailModal" class="modal-overlay" style="z-index:760;align-items:center;justify-content:center;">
+        <div style="background:var(--surface);border:2px solid var(--accent2);max-width:680px;width:100%;max-height:90vh;overflow-y:auto;padding:24px;font-family:var(--mono);font-size:0.62rem;" onclick="event.stopPropagation()">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);">
+                <span style="font-weight:800;font-size:0.72rem;letter-spacing:.5px" id="nbDetailTitle">Detail</span>
+                <button onclick="document.getElementById('npsBaDetailModal').style.display='none'" style="background:transparent;border:1px solid var(--border);color:var(--muted);font-size:16px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;">&#10005;</button>
+            </div>
+            <div id="nbDetailBody"></div>
+        </div>
+    </div>
+
     <!-- NPC1GA: PWA Install Banner (shown when Brave fires beforeinstallprompt) -->
     <div id="ld-pwa-install-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#0d0d0d;border-top:1px solid #00c896;padding:10px 16px;align-items:center;justify-content:space-between;font-family:'Space Mono',monospace;font-size:0.65rem;color:#00c896;">
         <span>📡 Install <strong>LDNPS</strong> as an app for offline access</span>
