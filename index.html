@@ -11090,7 +11090,13 @@ function rsiRunAll(){
     var dc=win._deepWeeklyCache;
     if(dc&&dc.dailyMap&&Object.keys(dc.dailyMap).length>0){
       var idxList=npsIndexListFromRawKeys(dc.dailyMap);
-      sd={indexList:idxList,priceMap:{},dailyMap:dc.dailyMap,fundSnapshotRaw:[]};
+      // Preserve fundSnapshotRaw if it was already populated (e.g. by RS
+      // Scanner earlier in this session/Scan-All chain) — this fallback
+      // path only exists to backfill dailyMap/indexList from deep cache,
+      // it should never wipe out good fund-snapshot data that other tabs
+      // (RS Scanner) still depend on.
+      var keepSnap = (win._ldScannerData && win._ldScannerData.fundSnapshotRaw && win._ldScannerData.fundSnapshotRaw.length > 10) ? win._ldScannerData.fundSnapshotRaw : [];
+      sd={indexList:idxList,priceMap:{},dailyMap:dc.dailyMap,fundSnapshotRaw:keepSnap};
       win._ldScannerData=sd;
     } else {
       if(st)st.textContent='⚠ NPS fund data not loaded yet. Open the NPS Scanner page first.';return;
@@ -11889,7 +11895,8 @@ function BuySellTriggers() {
         window._deepWeeklyCache = dc;
       }
       if (dc && dc.dailyMap && Object.keys(dc.dailyMap).length > 0) {
-        sd = { dailyMap: dc.dailyMap, indexList: npsIndexListFromRawKeys(dc.dailyMap), priceMap: {}, fundSnapshotRaw: [] };
+        var keepSnap = (window._ldScannerData && window._ldScannerData.fundSnapshotRaw && window._ldScannerData.fundSnapshotRaw.length > 10) ? window._ldScannerData.fundSnapshotRaw : [];
+        sd = { dailyMap: dc.dailyMap, indexList: npsIndexListFromRawKeys(dc.dailyMap), priceMap: {}, fundSnapshotRaw: keepSnap };
         window._ldScannerData = sd;
       }
     }
@@ -12188,7 +12195,8 @@ async function hmPopulateIndexDropdown() {
     }
     if (dc && dc.dailyMap && Object.keys(dc.dailyMap).length > 0) {
       var idxList = npsIndexListFromRawKeys(dc.dailyMap);
-      sd = { dailyMap: dc.dailyMap, indexList: idxList, priceMap: {}, fundSnapshotRaw: [] };
+      var keepSnap = (window._ldScannerData && window._ldScannerData.fundSnapshotRaw && window._ldScannerData.fundSnapshotRaw.length > 10) ? window._ldScannerData.fundSnapshotRaw : [];
+      sd = { dailyMap: dc.dailyMap, indexList: idxList, priceMap: {}, fundSnapshotRaw: keepSnap };
       // Only write this fallback into the shared global if nothing better
       // has shown up in the meantime (the restore chain may have finished
       // between the await above and here).
@@ -12273,7 +12281,8 @@ function hmUpdateIdxDropdown() {
   var matched = [];
   sd.indexList.forEach(function(idx) {
     if ((idx.fundCategoryKey || 'Other') !== cat) return;
-    var d = dm[idx.key] || dm[idx.name.toLowerCase()];
+    var normIdxKey = (idx.key || '').replace(/^nps/, '');
+    var d = dm[idx.key] || dm['nps' + normIdxKey] || dm[normIdxKey] || dm[idx.name.toLowerCase()];
     if (!d || d.length < 10) return;
     matched.push(idx);
   });
