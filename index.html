@@ -984,6 +984,95 @@ th.ha-sep,td.ha-sep{border-left:3px solid var(--orange)!important}
   #npsLanding .n-tabbtn{min-height:44px}
 }
 </style>
+<!-- ═══ Mobile responsive fixes for Compare & Simulation tabs ═══ -->
+<style>
+/* ── Compare 2 Charts — mobile portrait (<500px) ── */
+@media(max-width:500px){
+  #cmpRoot [style*="grid-template-columns:1fr 1fr"]{
+    grid-template-columns:1fr !important;
+  }
+  #cmpRoot [style*="min-width:200px"]{
+    min-width:0 !important;flex:1 1 100% !important;
+  }
+  #cmpRoot [style*="min-width:100px"]{
+    min-width:0 !important;flex:1 1 80px !important;
+  }
+  #cmpRoot canvas{
+    max-height:none !important;
+  }
+  #cmpRoot [style*="height:28vh"]{
+    height:22vh !important;min-height:140px !important;
+  }
+  #cmpRoot [style*="height:22vh"]{
+    height:18vh !important;min-height:110px !important;
+  }
+  #cmpRoot [style*="font-size:16px"]{
+    font-size:14px !important;
+  }
+  #cmpRoot [style*="font-size:11px"]{
+    font-size:10px !important;
+  }
+  #cmpRoot [style*="font-size:9px"]{
+    font-size:8px !important;
+  }
+}
+/* ── Simulation — mobile portrait (<500px) ── */
+@media(max-width:500px){
+  #simRoot [style*="min-width:220px"],
+  #simRoot [style*="min-width:200px"]{
+    min-width:0 !important;flex:1 1 100% !important;
+  }
+  #simRoot [style*="min-width:110px"]{
+    min-width:0 !important;flex:1 1 100px !important;
+  }
+  #simRoot [style*="min-width:90px"]{
+    min-width:0 !important;flex:1 1 70px !important;
+  }
+  #simRoot [style*="height:32vh"]{
+    height:24vh !important;min-height:160px !important;
+  }
+  #simRoot [style*="height:22vh"]{
+    height:18vh !important;min-height:110px !important;
+  }
+  #simRoot [style*="font-size:16px"]{
+    font-size:14px !important;
+  }
+  #simRoot [style*="font-size:11px"]{
+    font-size:10px !important;
+  }
+  #simRoot [style*="font-size:9px"]{
+    font-size:8px !important;
+  }
+  /* Stats grid: 2 cols on mobile */
+  #simStatsGrid{
+    grid-template-columns:repeat(2,1fr) !important;
+  }
+  /* Phase grid: stack on mobile */
+  #simPhaseGrid{
+    grid-template-columns:1fr !important;
+  }
+  /* When to buy/sell: stack */
+  #simWhenBuySell{
+    grid-template-columns:1fr !important;
+  }
+  /* Zoom bar: allow wrapping */
+  #simRoot [style*="display:flex"][style*="align-items:center"][style*="gap:6px"]{
+    flex-wrap:wrap !important;
+  }
+}
+/* ── Tiny phones (<380px) ── */
+@media(max-width:380px){
+  #cmpRoot [style*="height:22vh"]{
+    height:15vh !important;min-height:90px !important;
+  }
+  #simRoot [style*="height:24vh"]{
+    height:20vh !important;min-height:130px !important;
+  }
+  #simRoot [style*="height:18vh"]{
+    height:14vh !important;min-height:90px !important;
+  }
+}
+</style>
 </head>
 <body>
 <!-- ================================================================
@@ -1023,6 +1112,8 @@ th.ha-sep,td.ha-sep{border-left:3px solid var(--orange)!important}
     <div class="n-tabbtn" onclick="switchTab('hilega')"><span class="n-ico">📈</span><span class="n-lbl">HILEGA</span></div>
     <div class="n-tabbtn" onclick="switchTab('npsswitch')" title="Suggests Equity/Corporate Bond switch % for a chosen AMC + Tier, using the same Regime A/B/C + RSI logic as NPS Scanner"><span class="n-ico">⚖️</span><span class="n-lbl">NPS SWITCH</span></div>
     <div class="n-tabbtn" onclick="switchTab('pt')"><span class="n-ico">💹</span><span class="n-lbl">PORTFOLIO SNAPSHOT</span></div>
+    <div class="n-tabbtn" onclick="switchTab('compare')"><span class="n-ico">🆚</span><span class="n-lbl">COMPARE CHARTS</span></div>
+    <div class="n-tabbtn" onclick="switchTab('sim')" title="Backtest RSI strategies on 10 years of historical data"><span class="n-ico">🎯</span><span class="n-lbl">SIMULATION</span></div>
   </div>
 
   <!-- 3.1b Regime Change / RRG Lead-Improve / Invest-Hold-Profit main box (retained from NPS) -->
@@ -1073,7 +1164,7 @@ th.ha-sep,td.ha-sep{border-left:3px solid var(--orange)!important}
   <div class="n-group n-sg-sim">
     <div class="n-group-label">Simulation &amp; Training</div>
     <div style="display:flex;gap:5px;">
-      <button onclick="npsStartSimulation()" class="n-btn" style="flex:1;padding:14px 4px;border-color:#00684a;color:#00684a;font-weight:700;font-size:0.85rem;">▶ START</button>
+      <button onclick="switchTab('sim')" class="n-btn" style="flex:1;padding:14px 4px;border-color:#6366f1;color:#6366f1;font-weight:700;font-size:0.85rem;">⭐ BACKTEST SIM</button>
       <select id="npsSimTypeSelect" class="n-dropdown" style="flex:1;padding:4px 6px;font-size:0.65rem;margin-bottom:0;" onchange="document.getElementById('npsSimCustomDateRow').style.display=this.value==='custom_dates'?'flex':'none'">
         <option value="random">Current regular simulation</option>
         <option value="stress_covid">Stress: COVID Crash ('20)</option>
@@ -1127,7 +1218,7 @@ th.ha-sep,td.ha-sep{border-left:3px solid var(--orange)!important}
   <div class="bp-h-right">
     <div style="text-align:right;">
       <div style="font-family:'Segoe UI',Arial,sans-serif;font-size:11px;color:var(--bp-accent);">NIFTY 50</div>
-      <div style="font-family:'Segoe UI',Arial,sans-serif;font-weight:700;" id="bpNiftyVal">23,847</div>
+      <div style="font-family:'Segoe UI',Arial,sans-serif;font-weight:700;" id="bpNiftyVal" style="color:var(--bp-muted)">—</div>
     </div>
   </div>
 </div>
@@ -1143,9 +1234,9 @@ th.ha-sep,td.ha-sep{border-left:3px solid var(--orange)!important}
   </div>
 
   <div class="bp-ath">
-    <div class="bp-ath-item"><div class="bp-ath-lbl">NIFTY 50 ATH</div><div class="bp-ath-right"><div class="bp-ath-val" style="color:var(--bp-bull);">24,198</div><div class="bp-ath-bdg no">-1.45% BELOW</div></div></div>
-    <div class="bp-ath-item"><div class="bp-ath-lbl">NIFTY MIDCAP ATH</div><div class="bp-ath-right"><div class="bp-ath-val" style="color:var(--bp-mid);">53,742</div><div class="bp-ath-bdg no">-3.2% BELOW</div></div></div>
-    <div class="bp-ath-item"><div class="bp-ath-lbl">NIFTY SMALLCAP ATH</div><div class="bp-ath-right"><div class="bp-ath-val" style="color:var(--bp-small);">17,290</div><div class="bp-ath-bdg no">-8.1% BELOW</div></div></div>
+    <div class="bp-ath-item"><div class="bp-ath-lbl">NIFTY 50 ATH</div><div class="bp-ath-right"><div class="bp-ath-val" style="color:var(--bp-bull);">—</div><div class="bp-ath-bdg no">-1.45% BELOW</div></div></div>
+    <div class="bp-ath-item"><div class="bp-ath-lbl">NIFTY MIDCAP ATH</div><div class="bp-ath-right"><div class="bp-ath-val" style="color:var(--bp-mid);">—</div><div class="bp-ath-bdg no">-3.2% BELOW</div></div></div>
+    <div class="bp-ath-item"><div class="bp-ath-lbl">NIFTY SMALLCAP ATH</div><div class="bp-ath-right"><div class="bp-ath-val" style="color:var(--bp-small);">—</div><div class="bp-ath-bdg no">-8.1% BELOW</div></div></div>
     <div class="bp-ath-item"><div class="bp-ath-lbl">BULLISH TRIGGER<br><span style="font-size:9px;color:var(--bp-muted);font-family:'Segoe UI',Arial,sans-serif;">All 3 ATH + Breadth &gt;60% + Macro Green</span></div><div class="bp-ath-right"><div class="bp-ath-bdg no">NOT YET</div></div></div>
   </div>
 
@@ -2045,7 +2136,7 @@ var DD = (function() {
         raw = (raw || '').trim().replace(/^```json\s*/, '').replace(/```\s*$/, '').trim();
         if (!raw) return tryModel(i + 1);
         return responseType === 'application/json' ? JSON.parse(raw) : raw;
-      }).catch(function() { return tryModel(i + 1); });
+      }).catch(function(e) { console.warn('[DD] Gemini parse/req error:', e && e.message); return tryModel(i + 1); });
     })(0);
   }
 
@@ -2339,6 +2430,13 @@ var BB = (function() {
     return set('hm_period_v2', val);
   }
 
+  // Hilega chart display mode: 'rsi' (RSI/WMA/EMA, default) or 'price'
+  // (NAV + 8-period EMA-smoothed price line).
+  function hmChartMode(val) {
+    if (val === undefined) return get('hm_chart_mode_v1') || 'rsi';
+    return set('hm_chart_mode_v1', val);
+  }
+
   // Backup date
   function backupLastDate(val) {
     if (val === undefined) return get('ld_backup_last_date') || '';
@@ -2393,6 +2491,7 @@ var BB = (function() {
     hmIndexKey: hmIndexKey,
     hmTfDays: hmTfDays,
     hmPeriod: hmPeriod,
+    hmChartMode: hmChartMode,
     backupLastDate: backupLastDate,
     breadthHistory: breadthHistory,
     storageWarned: storageWarned
@@ -2551,6 +2650,16 @@ function npsIndexListFromRawKeys(dailyMap) {
 // live NPS containers aren't ready yet, callers get {} and should treat that
 // as "no data yet," not silently substitute the old Nifty snapshot.
 var AA = (function() {
+  // PERF_FIX: historical() used to fully re-parse every fund's entire daily
+  // OHLC history (split + parseFloat on every row) from scratch on every
+  // single call. RS Scanner alone calls it ~4x per fund across all funds
+  // (rsCurrentClose + rsCloseNDaysAgo x2, inside computeRS), which meant
+  // re-parsing years of daily data ~128 times in one synchronous pass —
+  // freezing the tab for up to ~2 minutes since nothing yields control back
+  // to the browser in between. Now the parsed result is cached and only
+  // rebuilt if the underlying dailyMap reference actually changes (e.g.
+  // after a fresh scan repopulates _deepWeeklyCache).
+  var _histCache = null, _histCacheSrc = null;
   function historical() {
     // Returns { fundKey: [closePrice, closePrice, ...] } shape, matching what
     // callers (e.g. RS Scanner's rsCloseNDaysAgo/rsCurrentClose) expect —
@@ -2565,6 +2674,7 @@ var AA = (function() {
     try {
       var deep = window._deepWeeklyCache;
       if (!deep || !deep.dailyMap) return {};
+      if (_histCache && _histCacheSrc === deep.dailyMap) return _histCache;
       var out = {};
       Object.keys(deep.dailyMap).forEach(function (key) {
         var closes = deep.dailyMap[key].map(function (row) { return parseFloat(row.split('|')[4]); });
@@ -2572,6 +2682,8 @@ var AA = (function() {
         var stripped = key.replace(/^nps/, '');
         if (stripped !== key) out[stripped] = closes;
       });
+      _histCache = out;
+      _histCacheSrc = deep.dailyMap;
       return out;
     } catch (e) { return {}; }
   }
@@ -3651,7 +3763,7 @@ Reasoning: [One-line explanation tying data to the rule]`;
     if (!tw || !ts) return;
     const inner = ts.firstElementChild;
     if (inner) inner.style.width = Math.max(tw.scrollWidth, ts.clientWidth + 1) + 'px';
-  });
+  }, [results]);
   const sortedRows = useMemo(() => {
     let list = Object.keys(results).map(k => results[k]).filter(r => r.price != null);
     if (searchQuery) {
@@ -4847,6 +4959,26 @@ Reasoning: [One-line explanation tying data to the rule]`;
     }
   }, auditModal.result))));
 };
+
+// ── Global React Error Boundary ──
+window.NPSErrorBoundary = class NPSErrorBoundary extends React.Component {
+  constructor(props) { super(props); this.state = { hasError: false, error: null }; }
+  static getDerivedStateFromError(error) { return { hasError: true, error }; }
+  componentDidCatch(error, info) { console.error('[NPS] React Error Boundary:', error, info); }
+  render() {
+    if (this.state.hasError) {
+      return React.createElement('div', { style: { display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', minHeight:'100vh', fontFamily:"'Segoe UI',Arial,sans-serif", background:'#f2f5f9', color:'#333', padding:20, textAlign:'center' } },
+        React.createElement('div', { style: { fontSize:48, marginBottom:16 } }, '\u26A0\uFE0F'),
+        React.createElement('h2', { style: { margin:'0 0 8px' } }, 'Something went wrong'),
+        React.createElement('p', { style: { color:'#666', maxWidth:400, marginBottom:20 } }, 'An unexpected error occurred. Please reload the page.'),
+        React.createElement('pre', { style: { background:'#fff', border:'1px solid #ddd', borderRadius:6, padding:12, fontSize:12, maxWidth:600, overflow:'auto', textAlign:'left', color:'#c00' } }, this.state.error && this.state.error.message),
+        React.createElement('button', { onClick: function(){ window.location.reload(); }, style: { marginTop:12, padding:'10px 24px', background:'#0055aa', color:'#fff', border:'none', borderRadius:4, fontSize:14, cursor:'pointer', fontWeight:600 } }, 'Reload Page')
+      );
+    }
+    return this.props.children;
+  }
+};
+
 // ── 4.5 React Render ──
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(Scanner, null));
 </script>
@@ -5043,7 +5175,7 @@ function npsSelectCategory(amc, el) {
 function npsSaveIndexSelection() {
   var sel = document.getElementById('npsIndexSelect');
   if (sel) window.npsSelectedFundCode = sel.value;
-  try { localStorage.setItem('nps_selected_fund', window.npsSelectedFundCode || ''); } catch (e) {}
+  try { BB.set('nps_selected_fund', window.npsSelectedFundCode || ''); } catch (e) {}
 }
 
 // Find the fund object (name + code) for a given fund code, across all AMC groups.
@@ -5210,10 +5342,67 @@ function npsShowResults(title, itemsHtml) {
   modal.style.display = 'flex';
 }
 function npsResultRow(name, right, color) {
-  return '<div style="background:#f2f5f9;border:1px solid #d6deeb;border-radius:5px;padding:8px 10px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;">' +
+  return '<div style="background:#f2f5f9;border:1px solid #d6deeb;border-radius:5px;padding:8px 10px;margin-bottom:6px;">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;">' +
     '<span style="font-size:0.72rem;width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + name + '</span>' +
-    '<span style="font-size:0.62rem;font-weight:700;color:' + (color || '#333') + ';">' + right + '</span></div>';
+    '<span style="font-size:0.62rem;font-weight:700;color:' + (color || '#333') + ';">' + right + '</span>' +
+    '</div>' +
+    '<div style="margin-top:6px;text-align:right;">' +
+      '<span onclick="npsViewInHilegaFromResults(\'' + name.replace(/'/g, "\\'") + '\')" ' +
+        'style="display:inline-block;font-size:0.6rem;font-weight:700;color:#009e70;border:1px solid #009e70;border-radius:4px;padding:3px 8px;cursor:pointer;">' +
+        '📊 VIEW IN HILEGA CHART</span>' +
+    '</div>' +
+  '</div>';
 }
+// Jump from a Regime Change / RRG Lead-Improve / Invest-Hold-Profit result
+// row straight into that fund's Hilega chart — reuses the same
+// key-derivation + BB.hmIndexKey mechanism as npsViewSelectedIndexChart.
+// Snapshots the results modal's current title/content/display state first
+// so the Hilega tab's Back button can restore this exact list afterward,
+// rather than losing the scan results the user just generated.
+function npsViewInHilegaFromResults(name) {
+  var titleEl = document.getElementById('npsResultsTitle');
+  var listEl = document.getElementById('npsResultsList');
+  var landingEl = document.getElementById('npsLanding');
+  var activePanel = document.querySelector('.tab-panel.active');
+  window._npsHilegaReturnState = {
+    title: titleEl ? titleEl.textContent : '',
+    html: listEl ? listEl.innerHTML : '',
+    // These 6 scan boxes live on the landing page, not inside a .tab-panel,
+    // so "was landing showing" has to be read from its own display style
+    // rather than inferred from .tab-panel.active (which is null while
+    // landing is up).
+    wasLanding: !!(landingEl && landingEl.style.display !== 'none'),
+    fromTabId: activePanel ? activePanel.id : null
+  };
+  var modal = document.getElementById('npsResultsModal');
+  if (modal) modal.style.display = 'none';
+  var fund = NPS_FUND_LIST.find(function (f) { return f.name.replace(/^\[NPS\]\s*/, '') === name; });
+  if (!fund) { alert('Could not find that fund.'); return; }
+  var key = fund.name.replace(/[^a-z0-9]/gi, '').toLowerCase();
+  try { if (typeof BB !== 'undefined' && BB.hmIndexKey) BB.hmIndexKey(key); } catch (e) {}
+  switchTab('hilega');
+  var backBar = document.getElementById('hmBackBar');
+  if (backBar) backBar.style.display = 'block';
+}
+// Restores the results modal exactly as it was before "View in Hilega
+// Chart" was tapped, and returns to whichever screen was showing at the
+// time (landing page in the normal case) — so this behaves like a true
+// Back action rather than just closing the chart.
+function npsHilegaBackToResults() {
+  var state = window._npsHilegaReturnState;
+  window._npsHilegaReturnState = null;
+  if (state && state.wasLanding) {
+    npsShowLanding();
+  } else if (state && state.fromTabId) {
+    switchTab(state.fromTabId.replace(/^tab-/, ''));
+  } else {
+    npsShowLanding();
+  }
+  if (state) npsShowResults(state.title, state.html);
+}
+window.npsViewInHilegaFromResults = npsViewInHilegaFromResults;
+window.npsHilegaBackToResults = npsHilegaBackToResults;
 function npsShowScanProgress(done, total) {
   npsShowResults('SCANNING…', '<div style="text-align:center;padding:20px;color:#888;font-size:0.72rem;">' + done + ' / ' + total + ' funds fetched…</div>');
 }
@@ -5537,6 +5726,15 @@ function switchTab(name) {
   // have since been restored). Kept null-safe going forward.
   var panel = document.getElementById('tab-' + name);
   if (panel) panel.classList.add('active');
+  // The "View in Hilega Chart" Back bar should only be visible immediately
+  // after arriving via that specific flow — clear it on every other tab
+  // switch (including switching away from Hilega itself) so it doesn't
+  // linger and mislead the user into thinking Back will do something once
+  // they've navigated elsewhere normally.
+  if (name !== 'hilega') {
+    var hmBackBar = document.getElementById('hmBackBar');
+    if (hmBackBar) hmBackBar.style.display = 'none';
+  }
   if (name === 'breadth' && !window._bpInited) { window._bpInited = true; M.init(); }
   if (name === 'ttf' && window.Confluence) { if (!window._ttfInited) { window._ttfInited = true; if (typeof Confluence._loadCache === 'function') Confluence._loadCache(); } if (typeof Confluence.run === 'function') Confluence.run(); }
   if (name === 'rs' && typeof window.onRSTabActivated === 'function') { window.onRSTabActivated(); }
@@ -5560,6 +5758,10 @@ function switchTab(name) {
       }
     }
   if (name === 'hilega' && typeof openHilegaTab === 'function') { openHilegaTab(); }
+  if (name === 'compare' && typeof cmpInitTab === 'function') { cmpInitTab(); }
+  else if (name === 'compare') { console.error('[switchTab] cmpInitTab not defined!'); }
+  if (name === 'sim' && typeof simInitTab === 'function') { simInitTab(); }
+  else if (name === 'sim') { console.error('[switchTab] simInitTab not defined!'); }
 }
 
 // Return to the NPS-style landing/home screen
@@ -5570,6 +5772,8 @@ function npsShowLanding() {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   if (tabsBar) tabsBar.style.display = 'none';
   if (landing) landing.style.display = 'flex';
+  var hmBackBar = document.getElementById('hmBackBar');
+  if (hmBackBar) hmBackBar.style.display = 'none';
 }
 
 // ═══ SCAN ALL: Sequential orchestration ═══
@@ -5762,6 +5966,19 @@ function runAllScans() {
                   }, 300);
                 };
                 window.RSScanner.run();
+                // STEP4_TIMEOUT_FIX: Steps 5 and 6 already have timeout
+                // guards so a stuck onComplete can't hang runAllScans
+                // forever; Step 4 (RS Scanner) had none. If RSScanner's
+                // onComplete somehow never fires, this lets the chain
+                // advance instead of leaving the top SCAN button disabled
+                // for the rest of the session.
+                setTimeout(function() {
+                  if (window._runAllActive && window.RSScanner && window.RSScanner.onComplete) {
+                    var _cbTimeout = window.RSScanner.onComplete;
+                    window.RSScanner.onComplete = null;
+                    try{_cbTimeout(S.rows||[]);}catch(e){}
+                  }
+                }, 12000);
               } else {
                 // RS not ready — skip to Paper Trade
                 setStatus('5/8 Paper Trade…');
@@ -7232,9 +7449,16 @@ function classifyIndex(n)  { var s=n.toLowerCase(); if (/g[- ]?sec|bond|aaa|t[- 
   </div>
   <div style="display:flex;flex-direction:column;height:100vh;height:100dvh;background:#fff;">
     <div id="hmCanvasWrap" style="width:100%;height:50vh;height:50dvh;min-height:220px;flex-shrink:0;position:relative;border-bottom:1px solid var(--border);background:#fff;">
+      <div id="hmBackBar" style="display:none;position:absolute;top:6px;left:6px;z-index:11;">
+        <span onclick="npsHilegaBackToResults()" style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,0.92);border:1px solid #009e70;border-radius:4px;padding:3px 8px;font-family:var(--mono);font-size:11px;font-weight:700;color:#009e70;cursor:pointer;box-shadow:1px 1px 4px rgba(0,0,0,0.1);">← Back</span>
+      </div>
+      <div id="hmModeToggle" style="position:absolute;top:6px;right:6px;z-index:11;display:flex;background:rgba(255,255,255,0.92);border:1px solid #ccc;border-radius:4px;overflow:hidden;box-shadow:1px 1px 4px rgba(0,0,0,0.1);">
+        <span onclick="hmSetChartMode('rsi')" id="hmModeBtnRsi" style="padding:3px 8px;font-family:var(--mono);font-size:10px;font-weight:700;cursor:pointer;">RSI</span>
+        <span onclick="hmSetChartMode('price')" id="hmModeBtnPrice" style="padding:3px 8px;font-family:var(--mono);font-size:10px;font-weight:700;cursor:pointer;">PRICE</span>
+      </div>
       <canvas id="hmCanvas"></canvas>
-      <div id="hmHud" style="display:none;position:absolute;pointer-events:none;background:rgba(255,255,255,0.92);border:1px solid #ccc;border-radius:4px;padding:4px 8px;font-family:monospace;font-size:10px;line-height:1.5;color:#000;box-shadow:1px 1px 6px rgba(0,0,0,0.1);z-index:10;white-space:normal;top:2px;max-width:58%;box-sizing:border-box;"></div>
-      <div id="hmHudRight" style="display:none;position:absolute;pointer-events:none;background:rgba(255,255,255,0.92);border:1px solid #ccc;border-radius:4px;padding:4px 8px;font-family:monospace;font-size:10px;line-height:1.5;color:#000;box-shadow:1px 1px 6px rgba(0,0,0,0.1);z-index:10;white-space:nowrap;top:2px;right:2px;text-align:right;max-width:40%;overflow:hidden;text-overflow:ellipsis;box-sizing:border-box;"></div>
+      <div id="hmHud" style="display:none;position:absolute;pointer-events:none;background:rgba(255,255,255,0.92);border:1px solid #ccc;border-radius:4px;padding:4px 8px;font-family:monospace;font-size:10px;line-height:1.5;color:#000;box-shadow:1px 1px 6px rgba(0,0,0,0.1);z-index:10;white-space:normal;top:30px;max-width:58%;box-sizing:border-box;"></div>
+      <div id="hmHudRight" style="display:none;position:absolute;pointer-events:none;background:rgba(255,255,255,0.92);border:1px solid #ccc;border-radius:4px;padding:4px 8px;font-family:monospace;font-size:10px;line-height:1.5;color:#000;box-shadow:1px 1px 6px rgba(0,0,0,0.1);z-index:10;white-space:nowrap;top:28px;right:2px;text-align:right;max-width:40%;overflow:hidden;text-overflow:ellipsis;box-sizing:border-box;"></div>
       <div id="hmNoDataBanner" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;flex-direction:column;gap:10px;background:#fff;text-align:center;padding:16px;">
         <div id="hmNoDataMsg" style="font-size:13px;color:#888;font-family:var(--mono);max-width:280px;white-space:pre-line;">No scanner data yet</div>
         <button onclick="switchTab('scanner')" style="background:var(--green);color:#fff;border:none;border-radius:4px;padding:6px 14px;font-family:var(--mono);font-size:12px;font-weight:700;cursor:pointer;">Go to NPS Scanner →</button>
@@ -7276,18 +7500,54 @@ function classifyIndex(n)  { var s=n.toLowerCase(); if (/g[- ]?sec|bond|aaa|t[- 
         <div class="hm-input-group" style="display:flex;flex-direction:column;gap:2px;justify-content:flex-end;">
           <button onclick="drawHilegaMilega()" style="background:var(--green);color:#fff;border:none;border-radius:4px;padding:7px 14px;font-family:var(--mono);font-size:12px;font-weight:700;cursor:pointer;letter-spacing:0.06em;">GO</button>
         </div>
+        <div class="hm-input-group" style="display:flex;flex-direction:column;gap:2px;justify-content:flex-end;">
+          <button onclick="hmOpenSimulation()" title="Open Simulation & Training tab with this fund" style="background:#6366f1;color:#fff;border:none;border-radius:4px;padding:7px 14px;font-family:var(--mono);font-size:12px;font-weight:700;cursor:pointer;letter-spacing:0.06em;">⭐ SIMULATE</button>
+        </div>
       </div>
-      <div id="hmBtnRow" style="display:flex;justify-content:center;gap:0;background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:3px 4px;flex-shrink:0;overflow-x:auto;">
-        <button class="hm-tf-btn hm-period-btn active" data-period="daily" onclick="setHmPeriod(this,'daily')" style="background:transparent;border:none;color:#888;font-family:var(--mono);font-size:12px;padding:4px 8px;cursor:pointer;border-radius:4px;font-weight:700;white-space:nowrap;border-right:1px solid var(--border);">DAILY</button>
-        <button class="hm-tf-btn hm-period-btn" data-period="weekly" onclick="setHmPeriod(this,'weekly')" style="background:transparent;border:none;color:#888;font-family:var(--mono);font-size:12px;padding:4px 8px;cursor:pointer;border-radius:4px;font-weight:700;white-space:nowrap;border-right:1px solid var(--border);">WEEKLY</button>
-        <button class="hm-tf-btn hm-period-btn" data-period="monthly" onclick="setHmPeriod(this,'monthly')" style="background:transparent;border:none;color:#888;font-family:var(--mono);font-size:12px;padding:4px 8px;cursor:pointer;border-radius:4px;font-weight:700;white-space:nowrap;border-right:1px solid var(--border);">MONTHLY</button>
-        <button class="hm-tf-btn" data-days="90" onclick="setHmTf(this,90)" style="background:transparent;border:none;color:#888;font-family:var(--mono);font-size:12px;padding:4px 8px;cursor:pointer;border-radius:4px;white-space:nowrap;">3M</button>
-        <button class="hm-tf-btn" data-days="180" onclick="setHmTf(this,180)" style="background:transparent;border:none;color:#888;font-family:var(--mono);font-size:12px;padding:4px 8px;cursor:pointer;border-radius:4px;white-space:nowrap;">6M</button>
-        <button class="hm-tf-btn" data-days="365" onclick="setHmTf(this,365)" style="background:transparent;border:none;color:#888;font-family:var(--mono);font-size:12px;padding:4px 8px;cursor:pointer;border-radius:4px;white-space:nowrap;">1Y</button>
-        <button class="hm-tf-btn" data-days="730" onclick="setHmTf(this,730)" style="background:transparent;border:none;color:#888;font-family:var(--mono);font-size:12px;padding:4px 8px;cursor:pointer;border-radius:4px;white-space:nowrap;">2Y</button>
-        <button class="hm-tf-btn" data-days="1095" onclick="setHmTf(this,1095)" style="background:transparent;border:none;color:#888;font-family:var(--mono);font-size:12px;padding:4px 8px;cursor:pointer;border-radius:4px;white-space:nowrap;">3Y</button>
-        <button class="hm-tf-btn" data-days="1825" onclick="setHmTf(this,1825)" style="background:transparent;border:none;color:#888;font-family:var(--mono);font-size:12px;padding:4px 8px;cursor:pointer;border-radius:4px;white-space:nowrap;">5Y</button>
-        <button class="hm-tf-btn" data-days="3650" onclick="setHmTf(this,3650)" style="background:transparent;border:none;color:#888;font-family:var(--mono);font-size:12px;padding:4px 8px;cursor:pointer;border-radius:4px;white-space:nowrap;">10Y</button>
+      <div id="hmBtnRow" style="display:flex;justify-content:center;gap:0;background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:3px 4px;flex-shrink:0;">
+        <select id="hmTfSelect" onchange="hmOnTfSelectChange(this.value)" style="width:100%;background:transparent;border:none;color:#000;font-family:var(--mono);font-size:13px;font-weight:700;padding:6px 4px;cursor:pointer;">
+          <option value="period:daily">DAILY</option>
+          <option value="period:2d">2 DAY</option>
+          <option value="period:3d">3 DAY</option>
+          <option value="period:4d">4 DAY</option>
+          <option value="period:weekly">WEEKLY</option>
+          <option value="period:biweekly">BIWEEKLY</option>
+          <option value="period:monthly">MONTHLY</option>
+          <option value="tf:90">3M</option>
+          <option value="tf:180">6M</option>
+          <option value="tf:365">1Y</option>
+          <option value="tf:730">2Y</option>
+          <option value="tf:1095">3Y</option>
+          <option value="tf:1825">5Y</option>
+          <option value="tf:3650">10Y</option>
+        </select>
+        <!-- Legacy buttons kept in the DOM (hidden) as the source of truth
+             for hmHighlightPeriodButton / hmHighlightTfButton /
+             hmRefreshPeriodButtonStates / hmRefreshTfButtonStates, which all
+             query #hmBtnRow .hm-tf-btn / .hm-period-btn directly. Keeping
+             them as real (if invisible) buttons — rather than rewiring
+             every one of those functions to a new data structure — avoids
+             risking subtle behavior drift in the existing availability/
+             greying logic. hmSyncTfSelectFromButtons() mirrors their
+             highlighted state into the visible dropdown above. 2D/3D/4D/
+             Biweekly have no direct legacy equivalent, so they're new
+             period buttons added to this hidden set for consistency. -->
+        <div id="hmBtnRowLegacy" style="display:none;">
+          <button class="hm-tf-btn hm-period-btn active" data-period="daily" onclick="setHmPeriod(this,'daily')">DAILY</button>
+          <button class="hm-tf-btn hm-period-btn" data-period="2d" onclick="setHmPeriod(this,'2d')">2 DAY</button>
+          <button class="hm-tf-btn hm-period-btn" data-period="3d" onclick="setHmPeriod(this,'3d')">3 DAY</button>
+          <button class="hm-tf-btn hm-period-btn" data-period="4d" onclick="setHmPeriod(this,'4d')">4 DAY</button>
+          <button class="hm-tf-btn hm-period-btn" data-period="weekly" onclick="setHmPeriod(this,'weekly')">WEEKLY</button>
+          <button class="hm-tf-btn hm-period-btn" data-period="biweekly" onclick="setHmPeriod(this,'biweekly')">BIWEEKLY</button>
+          <button class="hm-tf-btn hm-period-btn" data-period="monthly" onclick="setHmPeriod(this,'monthly')">MONTHLY</button>
+          <button class="hm-tf-btn" data-days="90" onclick="setHmTf(this,90)">3M</button>
+          <button class="hm-tf-btn" data-days="180" onclick="setHmTf(this,180)">6M</button>
+          <button class="hm-tf-btn" data-days="365" onclick="setHmTf(this,365)">1Y</button>
+          <button class="hm-tf-btn" data-days="730" onclick="setHmTf(this,730)">2Y</button>
+          <button class="hm-tf-btn" data-days="1095" onclick="setHmTf(this,1095)">3Y</button>
+          <button class="hm-tf-btn" data-days="1825" onclick="setHmTf(this,1825)">5Y</button>
+          <button class="hm-tf-btn" data-days="3650" onclick="setHmTf(this,3650)">10Y</button>
+        </div>
       </div>
       <div id="hmBtnHint" style="display:none;font-size:9px;color:#aaa;text-align:center;margin-top:-2px;"></div>
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;">
@@ -7522,6 +7782,23 @@ function classifyIndex(n)  { var s=n.toLowerCase(); if (/g[- ]?sec|bond|aaa|t[- 
   </div>
 </div>
 <!-- #tab-npsswitch -->
+
+<!-- ════════════════════════════════════════════════════════════════════
+     3.12 Compare 2 Charts Panel
+     Side-by-side Price + RSI charts with synchronized crosshair
+     ════════════════════════════════════════════════════════════════════ -->
+<div id="tab-compare" class="tab-panel">
+<div id="cmpRoot"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     3.13 Simulation & Training Panel
+     10-year backtest with Price + RSI charts and single crosshair
+     ════════════════════════════════════════════════════════════════════ -->
+<div id="tab-sim" class="tab-panel">
+<div id="simRoot"></div>
+</div>
+
 <script>
 // ── 3.8b NPS Switch logic ──
 // Reuses computeRegime()/computeAction() (already defined earlier in this
@@ -9079,7 +9356,18 @@ function renderRSTable(){
 // MAIN SCAN
 // ════════════════════════════════════════════
 async function runScan(){
-  if(S.running) return;
+  if(S.running) {
+    // RUNALL_HANG_FIX: previously this returned silently with no callback,
+    // which permanently hung runAllScans' Step 4 (RS Scanner) if runScan()
+    // was ever re-entered while already in flight (e.g. onRSTabActivated
+    // firing again from a stray tab switch) — window._runAllActive stayed
+    // true forever and the top "⚡ SCAN" button never re-enabled. Since RS
+    // Scanner has no per-step timeout unlike Steps 5/6, this was the only
+    // way out. Still honor any pending onComplete so the chain can advance
+    // using whatever results are currently available.
+    if(typeof RSScanner.onComplete==='function'){var _cbBusy=RSScanner.onComplete;RSScanner.onComplete=null;try{_cbBusy(S.rows||[]);}catch(e){}}
+    return;
+  }
   S.running=true; S.stopped=false; S.rows=[]; S.amcData={};
 
   EL.rsError.style.display='none';
@@ -9625,8 +9913,8 @@ var PState={names:[],purchases:{},cols:[],hidden:[]}; // cols kept only for back
 var updateMode=false;
 
 function psEl(id){return document.getElementById(id);}
-function psSave(){try{localStorage.setItem(PS_STORE_KEY,JSON.stringify(PState));}catch(e){}}
-function psLoad(){try{var raw=localStorage.getItem(PS_STORE_KEY);if(raw){var p=JSON.parse(raw);if(p&&typeof p==='object'){PState.names=p.names||[];PState.purchases=p.purchases||{};PState.cols=p.cols||[];PState.hidden=p.hidden||[];}}}catch(e){}}
+function psSave(){try{BB.set(PS_STORE_KEY,JSON.stringify(PState));}catch(e){}}
+function psLoad(){try{var raw=BB.get(PS_STORE_KEY);if(raw){var p=JSON.parse(raw);if(p&&typeof p==='object'){PState.names=p.names||[];PState.purchases=p.purchases||{};PState.cols=p.cols||[];PState.hidden=p.hidden||[];}}}catch(e){}}
 
 // ── RSI helper (Wilder/RMA, matches Scanner methodology) ──
 function psRSI(closes,period){
@@ -9952,7 +10240,16 @@ function renderSummary(){
   if(!theadEl||!tbEl)return;
   var baseCols=['#','Index','Price','Chg%','HM Status'];
   var extraCols=ALL_COL_KEYS.map(function(k){return {key:k,label:COL_DEFS[k].label};});
-  theadEl.innerHTML=baseCols.map(function(h){return '<th style="padding:5px 4px;text-align:left;font-size:7px;color:#0a6b0a;text-transform:uppercase;white-space:nowrap">'+h+'</th>';}).join('')+
+  // FREEZE_PANES: '#' and 'Index' are sticky (frozen) columns so they stay
+  // visible while scrolling horizontally through the many data columns —
+  // Index is also widened + given its own left offset that accounts for
+  // the '#' column's width, matching Excel's "freeze panes" behavior.
+  var NUM_COL_W=28, IDX_COL_W=150;
+  theadEl.innerHTML=baseCols.map(function(h,i){
+    if(h==='#') return '<th style="position:sticky;left:0;z-index:3;width:'+NUM_COL_W+'px;min-width:'+NUM_COL_W+'px;background:#eaffea;box-shadow:1px 0 0 #b5d9b5;padding:5px 4px;text-align:left;font-size:7px;color:#0a6b0a;text-transform:uppercase;white-space:nowrap">'+h+'</th>';
+    if(h==='Index') return '<th style="position:sticky;left:'+NUM_COL_W+'px;z-index:3;width:'+IDX_COL_W+'px;min-width:'+IDX_COL_W+'px;background:#eaffea;box-shadow:2px 0 3px rgba(0,0,0,0.15);padding:5px 8px;text-align:left;font-size:7px;color:#0a6b0a;text-transform:uppercase;white-space:nowrap">'+h+'</th>';
+    return '<th style="padding:5px 4px;text-align:left;font-size:7px;color:#0a6b0a;text-transform:uppercase;white-space:nowrap">'+h+'</th>';
+  }).join('')+
     extraCols.map(function(c){return '<th id="pt-col-'+c.key+'" style="padding:5px 4px;text-align:left;font-size:7px;color:#0a6b0a;text-transform:uppercase;white-space:nowrap;transition:background 0.4s">'+c.label+'</th>';}).join('');
   if(!PState.names.length){
     tbEl.innerHTML='<tr><td colspan="'+(baseCols.length+extraCols.length)+'" style="text-align:center;color:#666;padding:8px">No funds in Portfolio yet — use Update Portfolio to add some</td></tr>';
@@ -9971,15 +10268,15 @@ function renderSummary(){
   });
   tbEl.innerHTML=sortedNames.map(function(name,i){
     var pr=priceOf[name]||{};
-    var cells='<td style="padding:5px 4px;font-size:9px">'+(i+1)+'</td>'+
-      '<td style="font-family:\'Segoe UI\',Arial,sans-serif;padding:4px 8px;font-size:10px;font-weight:600;color:#000;word-break:break-word;white-space:normal">'+name+'</td>'+
+    var cells='<td style="position:sticky;left:0;z-index:2;width:'+NUM_COL_W+'px;min-width:'+NUM_COL_W+'px;background:#fff;box-shadow:1px 0 0 #eee;padding:5px 4px;font-size:9px">'+(i+1)+'</td>'+
+      '<td style="position:sticky;left:'+NUM_COL_W+'px;z-index:2;width:'+IDX_COL_W+'px;min-width:'+IDX_COL_W+'px;background:#fff;box-shadow:2px 0 3px rgba(0,0,0,0.08);font-family:\'Segoe UI\',Arial,sans-serif;padding:4px 8px;font-size:10px;font-weight:600;color:#000;word-break:break-word;white-space:normal">'+name+'</td>'+
       '<td style="padding:5px 4px;font-size:9px">'+ptFmtLocal(pr.price)+'</td>'+
       '<td style="padding:5px 4px;font-size:9px;color:'+((pr.change||0)>=0?'#1a8a1a':'#cc0000')+'">'+(pr.change!=null?(pr.change>=0?'+':'')+pr.change.toFixed(1)+'%':'—')+'</td>'+
       '<td style="padding:5px 4px;font-size:9px;white-space:nowrap">'+hmStatusCell(name)+'</td>';
     ALL_COL_KEYS.forEach(function(k){
       cells+='<td style="padding:5px 4px;font-size:9px;white-space:nowrap">'+COL_DEFS[k].render(name)+'</td>';
     });
-    return '<tr style="border-bottom:1px solid #eee">'+cells+'</tr>';
+    return '<tr style="border-bottom:1px solid #eee" onmouseover="this.querySelectorAll(\'td[style*=sticky]\').forEach(function(td){td.style.background=\'#f5fff5\'})" onmouseout="this.querySelectorAll(\'td[style*=sticky]\').forEach(function(td){td.style.background=\'#fff\'})">'+cells+'</tr>';
   }).join('');
 }
 
@@ -10351,7 +10648,7 @@ function _deepHideProgress() {
 // This cuts storage ~81%: ~12 MB raw → ~2.3 MB compressed.
 //
 // The synthetic format is fully backward-compatible:
-//   • toMonthlyCloses()  — groups by YYYYMM substring: ✓ still correct
+//   • toMonthlyOHLC()  — groups by YYYYMM substring: ✓ still correct
 //   • drawHilegaMilega() — sorts by date, reads p[4] as close: ✓ still correct
 //   • deepToWeeklyCloses() — weekly RSI(50) only needs recent data; old
 //     monthly stubs contribute to warmup but the 36-month real window
@@ -10985,7 +11282,7 @@ function deepToWeeklyCloses(entries){
 }
 // Monthly aggregation: proper OHLC per month
 // First day's open, max high, min low, last close
-function toMonthlyCloses(entries){
+function toMonthlyOHLC(entries){
   var map={};
   for(var i=0;i<entries.length;i++){
     var p=entries[i].split('|');
@@ -11016,7 +11313,7 @@ function rsiFillMonthly(el,name){
     var deep=win._deepWeeklyCache;
     var entries=deep&&deep.monthlyMap?deep.monthlyMap[key]:null;
     if(!entries||entries.length<20){el.cells[8].textContent='—';el.cells[9].textContent='—';el.cells[10].textContent='—';return;}
-    var mc=toMonthlyCloses(entries);
+    var mc=toMonthlyOHLC(entries);
     var mcCloses=mc.map(function(w){return w.c;});
     var r9m=rsiCalc(mcCloses,9);
     if(!r9m||r9m.length<21){el.cells[8].textContent='—';el.cells[9].textContent='—';el.cells[10].textContent='—';return;}
@@ -11047,7 +11344,7 @@ function rsiFillWeekly(el,name){
     var key=U.normalize(name);
     var we=deep&&deep.weeklyMap?deep.weeklyMap[key]:null;
     var wc, src='';
-    if(we&&we.length>=52){ wc=deepToWeeklyCloses(we); src='WEEKLY('+we.length+')'; }
+    if(we&&we.length>=52){ wc=deepToWeeklyCloses(we); src='EXACT'; }
     else { el.cells[7].textContent='—';el.cells[5].textContent='NO DATA';el._rsiSrc='FAIL';return; }
     if(!wc||wc.length<65){el.cells[7].textContent='—';el.cells[5].textContent='NEED MORE DATA';el._rsiSrc='FAIL';return;}
     var wcCloses=wc.map(function(w){return w.c;});
@@ -11724,6 +12021,7 @@ function _mfSaveCache(results) {
 // ── 12.2 RSI / WMA / EMA Computation ──
 // RSI and WMA delegate to Container U; EMA and TSI are local (no U equivalent)
 function _mfCalcEMA(data, period) {
+  if (!data || data.length < period) return new Array(data ? data.length : 0).fill(null);
   var out = new Array(data.length).fill(null);
   var k = 2 / (period + 1);
   var sum = 0;
@@ -11823,7 +12121,14 @@ function _mfRunET(r, vix) {
   if (!(r.wRsi14 >= 50 && r.wma20Price && r.price > r.wma20Price)) return { verdict: "ABORT", label: "\uD83D\uDC80 ABORT", detail: "P1: W-RSI14<50 or Price<20WMA", color: "#fde8e8", bdr: "#c8102e" };
   if (!r.dRsi4 || !r.dRsi8 || !r.dRsi14) return { verdict: "NO DATA", label: "\u26A0 NO DATA", detail: "Daily RSI unavailable", color: "#e4eaf2", bdr: "#7090b0" };
   const iz = v => v >= 40 && v <= 50, d4 = iz(r.dRsi4), d8 = iz(r.dRsi8), d14 = iz(r.dRsi14);
-  if (!d4 || !d8 || !d14) { const cnt = [d4, d8, d14].filter(Boolean).length; const det = `D-RSI 4:${r.dRsi4} 8:${r.dRsi8} 14:${r.dRsi14} \u2014 ${cnt}/3 in zone`; if (cnt >= 1) return { verdict: "NEAR MISS", label: "\uD83D\uDFE1 NEAR MISS", detail: det, color: "#fff3cd", bdr: "#c97a00" }; return { verdict: "NOT READY", label: "\u23F3 NOT READY", detail: "Not in zone. " + det, color: "#e4eaf2", bdr: "#7090b0" }; }
+  if (!d4 || !d8 || !d14) {
+    const cnt = [d4, d8, d14].filter(Boolean).length;
+    const det = `D-RSI 4:${r.dRsi4} 8:${r.dRsi8} 14:${r.dRsi14} \u2014 ${cnt}/3 in zone`;
+    // NEAR MISS: async-cooling definition (matches Scanner tab)
+    const nearMiss = d4 && d8 && !d14 && r.dRsi14 > 50 && r.dRsi14 <= 53;
+    if (nearMiss) return { verdict: "NEAR MISS", label: "\uD83D\uDFE1 NEAR MISS", detail: `D-RSI ${r.dRsi4}/${r.dRsi8}/${r.dRsi14} \u2014 4&8 in zone, 14 slightly outside (asynchronous cooling)`, color: "#fff3cd", bdr: "#c97a00" };
+    return { verdict: "NOT READY", label: "\u23F3 NOT READY", detail: "Not in zone. " + det, color: "#e4eaf2", bdr: "#7090b0" };
+  }
   const td = [];
   if (r.wRsi14 >= 50 && r.wRsi14 <= 52) td.push("TD1: W-RSI14 barely holding (" + r.wRsi14 + ")");
   if (r.wma20Price && r.price < r.wma20Price) td.push("TD2: Price<20WMA");
@@ -11878,7 +12183,7 @@ function BuySellTriggers() {
     requestAnimationFrame(syncThumb);
     window.addEventListener('resize', syncThumb);
     return () => window.removeEventListener('resize', syncThumb);
-  });
+  }, []);
   let sd = window._ldScannerData || {};
   const vix = sd.priceMap?.["indiavix"]?.price ?? results["indiavix"]?.price ?? null;
   const F = { fontFamily: "'Space Mono','Courier New',monospace", color: "#000" };
@@ -11981,7 +12286,8 @@ function BuySellTriggers() {
     setScanned(true);
     setScanning(false);
   }
-  window._mfDoScan = doScan;
+  const doScanRef = React.useRef(doScan); doScanRef.current = doScan;
+  React.useEffect(function() { window._mfDoScan = function() { return doScanRef.current(); }; return function() { delete window._mfDoScan; }; }, []);
   function reqSort(k) { setSortCfg(p => ({ key: k, dir: p.key === k && p.dir === "asc" ? "desc" : "asc" })); }
   function si(k) { return sortCfg.key !== k ? "" : sortCfg.dir === "asc" ? " \u25B2" : " \u25BC"; }
   const rows = useMemo(() => {
@@ -12000,9 +12306,14 @@ function BuySellTriggers() {
         else if (sortCfg.key === "mTrigger") { av = a.mTrigger?.rank ?? 4; bv = b.mTrigger?.rank ?? 4; }
         else { av = a[sortCfg.key]; bv = b[sortCfg.key]; }
         if (av == null) return 1; if (bv == null) return -1;
-        if (av < bv) return sortCfg.dir === "asc" ? -1 : 1;
-        if (av > bv) return sortCfg.dir === "asc" ? 1 : -1;
-        return 0;
+        if (typeof av === 'string' && typeof bv === 'string') {
+          return sortCfg.dir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+        }
+        if (typeof av === 'number' && typeof bv === 'number') {
+          return sortCfg.dir === 'asc' ? av - bv : bv - av;
+        }
+        av = String(av); bv = String(bv);
+        return sortCfg.dir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
       });
       return list;
     }
@@ -12021,7 +12332,7 @@ function BuySellTriggers() {
   // leaving the remaining columns reachable. Width is expressed as 30% of
   // viewport width (not a fixed px) so it scales sensibly across phone
   // sizes, paired with a smaller font so more of each name fits per line.
-  const FROZEN_COL_W = "45vw";
+  const FROZEN_COL_W = "min(45vw, 180px)";
   const th1S = { ...thS, position: "sticky", left: 0, top: 0, zIndex: 20, background: surf2, width: FROZEN_COL_W, maxWidth: FROZEN_COL_W, fontSize: 9 };
   const tdS = { padding: "6px 9px", borderBottom: `1px solid ${surf2}`, borderRight: `1px solid ${surf2}`, whiteSpace: "nowrap", fontFamily: "'Space Mono','Courier New',monospace", fontSize: 11, color: "#000" };
   const td1S = { ...tdS, position: "sticky", left: 0, background: "#fff", borderRight: `2px solid ${bdr}`, fontWeight: 700, width: FROZEN_COL_W, maxWidth: FROZEN_COL_W, whiteSpace: "normal", wordBreak: "break-word", lineHeight: 1.25, zIndex: 5, fontSize: 9 };
@@ -12368,11 +12679,12 @@ function hmCalcDateRange() {
 // timeframe (2W/1M/.../ALL) buttons use, so a short timeframe button can be
 // transparently raised to the nearest sensible value instead of silently
 // producing 0-1 data points.
-function hmPeriodFloor(period) { return period === 'weekly' ? 90 : period === 'monthly' ? 365 : 0; }
+function hmPeriodFloor(period) { return (period === 'weekly' || period === 'biweekly') ? 90 : period === 'monthly' ? 365 : 0; }
 // hmPeriodCeil() is the companion maximum: how far back the "ALL" button
 // (and any other timeframe value) is allowed to render for a given period.
-// Daily is capped tighter (300 days) since raw daily OHLC is dense and a
-// multi-year daily chart is unreadable; Weekly/Monthly render the full
+// Daily and the 2D/3D/4D N-day-bucketed views are capped tighter (300 days)
+// since they're all still fairly dense point counts and a multi-year chart
+// at that density is unreadable; Weekly/Biweekly/Monthly render the full
 // ~10-year deep-history window since they're already aggregated/low-density.
 // SINGLE SOURCE OF TRUTH: both the chart-slicing code (drawHilegaMilega)
 // and the button-highlighting code (setHmTf/setHmPeriod/openHilegaTab) call
@@ -12380,7 +12692,7 @@ function hmPeriodFloor(period) { return period === 'weekly' ? 90 : period === 'm
 // rendered — previously the chart silently capped Daily+ALL down to 300
 // days while the "ALL" button stayed highlighted, looking like a stale/
 // unsynced control.
-function hmPeriodCeil(period) { return period === 'daily' ? 300 : 3650; }
+function hmPeriodCeil(period) { return (period === 'daily' || period === '2d' || period === '3d' || period === '4d') ? 300 : 3650; }
 // Clamps a requested day-count into [floor, ceil] for the given period.
 function hmClampTfDays(days, period) {
     var floor = hmPeriodFloor(period), ceil = hmPeriodCeil(period);
@@ -12411,6 +12723,21 @@ function hmHighlightPeriodButton(period) {
       b.style.background = match ? '#d4880f' : 'transparent';
       b.style.color = match ? '#000' : '#888';
     });
+}
+// Switches between the RSI/WMA/EMA chart and the Price (NAV + 8-EMA) chart.
+// Persists the choice via BB.hmChartMode so it's remembered across tab
+// visits, same pattern as hmPeriod/hmTfDays.
+function hmSetChartMode(mode) {
+    window._hmChartMode = mode;
+    try { if (typeof BB !== 'undefined' && BB.hmChartMode) BB.hmChartMode(mode); } catch (e) {}
+    hmHighlightChartModeButton(mode);
+    if (typeof drawHilegaMilega === 'function') drawHilegaMilega();
+}
+function hmHighlightChartModeButton(mode) {
+    var rsiBtn = document.getElementById('hmModeBtnRsi');
+    var priceBtn = document.getElementById('hmModeBtnPrice');
+    if (rsiBtn) { rsiBtn.style.background = mode === 'rsi' ? '#d4880f' : 'transparent'; rsiBtn.style.color = mode === 'rsi' ? '#000' : '#888'; }
+    if (priceBtn) { priceBtn.style.background = mode === 'price' ? '#d4880f' : 'transparent'; priceBtn.style.color = mode === 'price' ? '#000' : '#888'; }
 }
 // Total day-span actually available for the selected index's full daily
 // history (used to grey out timeframe buttons that would just repeat the
@@ -12549,6 +12876,44 @@ function setHmPeriod(btn, period) {
     hmHighlightTfButton(effDays);
     hmRefreshTfButtonStates(hmAvailDaysFromHist(window._hmHist));
     drawHilegaMilega();
+}
+// Single unified dropdown (period + timeframe combined) — delegates straight
+// to the existing setHmPeriod/setHmTf functions so all the availability
+// greying, clamping, and persistence logic they already do stays exactly
+// as-is; this is purely a different UI surface over the same state.
+function hmOnTfSelectChange(value) {
+    var parts = value.split(':');
+    var kind = parts[0], val = parts[1];
+    if (kind === 'period') {
+      var legacyBtn = document.querySelector('#hmBtnRowLegacy button[data-period="' + val + '"]');
+      setHmPeriod(legacyBtn, val);
+    } else if (kind === 'tf') {
+      var legacyBtn2 = document.querySelector('#hmBtnRowLegacy button[data-days="' + val + '"]');
+      setHmTf(legacyBtn2, parseInt(val, 10));
+    }
+    hmSyncTfSelectFromButtons();
+}
+// Mirrors whichever legacy period/timeframe button is currently ".active"
+// into the visible dropdown's selected option — called after
+// setHmPeriod/setHmTf (which highlight the legacy buttons) and on tab open,
+// so the dropdown always reflects the actual effective state rather than
+// drifting out of sync with it.
+function hmSyncTfSelectFromButtons() {
+    var sel = document.getElementById('hmTfSelect');
+    if (!sel) return;
+    var activePeriodBtn = document.querySelector('#hmBtnRowLegacy .hm-period-btn.active');
+    if (activePeriodBtn) {
+      var periodVal = 'period:' + activePeriodBtn.dataset.period;
+      if ([].slice.call(sel.options).some(function(o) { return o.value === periodVal; })) {
+        sel.value = periodVal;
+        return;
+      }
+    }
+    var activeTfBtn = document.querySelector('#hmBtnRowLegacy .hm-tf-btn.active:not(.hm-period-btn)');
+    if (activeTfBtn) {
+      var tfVal = 'tf:' + activeTfBtn.dataset.days;
+      if ([].slice.call(sel.options).some(function(o) { return o.value === tfVal; })) sel.value = tfVal;
+    }
 }
 function hmParseDate(dateStr) { var sep = dateStr.includes('/') ? '/' : '-'; var p = dateStr.split(sep); if (p.length === 3 && p[0].length === 2 && p[2].length === 4) return new Date(p[2] + '-' + p[1] + '-' + p[0]); return new Date(dateStr); }
 // NOTE: each bucket's "date" must track the LAST trading day seen in that
@@ -12750,8 +13115,10 @@ async function drawHilegaMilega() {
         // Zero shared vars with WEEKLY_ or MONTHLY_.
         // ═══════════════════════════════════════════════════════════════════
         var DAILY_viewData = null;
+        var NDAY_PERIODS = { '2d': 2, '3d': 3, '4d': 4, 'biweekly': 10 }; // trading-day bucket sizes (biweekly ≈ 10 trading days)
+        var isNDayPeriod = NDAY_PERIODS.hasOwnProperty(window._hmPeriod);
 
-        if (window._hmPeriod === 'daily') {
+        if (window._hmPeriod === 'daily' || isNDayPeriod) {
           var DAILY_entries = DB_dailyDatabase[key] || DB_dailyDatabase['nps'+key] || DB_dailyDatabase[(key || '').toLowerCase()] || (origName ? DB_dailyDatabase[origName.toLowerCase()] : null);
           if (!DAILY_entries || DAILY_entries.length < 10) {
             hmShowCanvasMessage('No data for ' + (key || 'selected index'), '(' + (DAILY_entries ? DAILY_entries.length : 0) + ' entries)');
@@ -12768,6 +13135,24 @@ async function drawHilegaMilega() {
             var DAILY_parts = DAILY_sorted[DAILY_hi].split('|');
             var DAILY_ds = DAILY_parts[0];
             DAILY_viewData.push({ nav: parseFloat(DAILY_parts[4]), date: DAILY_ds.substring(0,2)+'/'+DAILY_ds.substring(2,4)+'/'+DAILY_ds.substring(4,8) });
+          }
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // CONTAINER 3b: NDAY_ — 2-DAY / 3-DAY / 4-DAY / BIWEEKLY BUCKETING
+        // Built from DAILY_viewData by grouping every N consecutive trading
+        // days into one bar (last trading day's NAV kept, same "last-seen
+        // wins" convention as npsResampleWeekly/Monthly) — computed on the
+        // fly rather than cached, since these are lightweight client-side
+        // regroupings of data already in memory, not new fetches.
+        // ═══════════════════════════════════════════════════════════════════
+        var NDAY_viewData = null;
+        if (isNDayPeriod && DAILY_viewData) {
+          var NDAY_size = NDAY_PERIODS[window._hmPeriod];
+          NDAY_viewData = [];
+          for (var NDAY_i = 0; NDAY_i < DAILY_viewData.length; NDAY_i += NDAY_size) {
+            var NDAY_bucket = DAILY_viewData.slice(NDAY_i, NDAY_i + NDAY_size);
+            NDAY_viewData.push(NDAY_bucket[NDAY_bucket.length - 1]); // last trading day in the bucket
           }
         }
 
@@ -12821,6 +13206,7 @@ async function drawHilegaMilega() {
         // ═══════════════════════════════════════════════════════════════════
         var viewData = null;
         if (window._hmPeriod === 'daily' && DAILY_viewData) viewData = DAILY_viewData;
+        else if (isNDayPeriod && NDAY_viewData) viewData = NDAY_viewData;
         else if (window._hmPeriod === 'weekly' && WEEKLY_viewData) viewData = WEEKLY_viewData;
         else if (window._hmPeriod === 'monthly' && MONTHLY_viewData) viewData = MONTHLY_viewData;
         if (!viewData || viewData.length < 2) {
@@ -12883,6 +13269,12 @@ async function drawHilegaMilega() {
         var rsi = hmCalcRSI(viewData.map(function(d) { return d.nav; }), rsiLen);
         var wma = hmCalcWMA(rsi, wmaLen);
         var ema = hmCalcEMA(rsi, emaLen);
+        // PRICE_CHART: 8-period EMA of the raw NAV/price series itself (not
+        // of RSI) — this is the "8 SMA with EMA smoothing" line for the
+        // Price Chart view. Computed on the full (unsliced) series so it
+        // has proper warm-up history before the visible window starts,
+        // same principle as rsi/wma/ema above.
+        var price8ema = hmCalcEMA(viewData.map(function(d) { return d.nav; }), 8);
         var now = new Date();
         var cutoffDate = new Date(now.getTime() - tfDays * 86400000);
         var slicedIdx = 0;
@@ -12901,9 +13293,11 @@ async function drawHilegaMilega() {
         var rSliced = rsi.slice(slicedIdx);
         var wSliced = wma.slice(slicedIdx);
         var eSliced = ema.slice(slicedIdx);
+        var p8Sliced = price8ema.slice(slicedIdx);
         rsi.length = 0; rsi.push.apply(rsi, rSliced);
         wma.length = 0; wma.push.apply(wma, wSliced);
         ema.length = 0; ema.push.apply(ema, eSliced);
+        price8ema.length = 0; price8ema.push.apply(price8ema, p8Sliced);
         var lastI = n - 1;
         var lastR = rsi[lastI] != null ? rsi[lastI] : 50;
         var lastW = wma[lastI] != null ? wma[lastI].toFixed(1) : '\u2014';
@@ -12946,11 +13340,55 @@ async function drawHilegaMilega() {
         ctx.scale(dpr, dpr);
         var W = rect.width, H = rect.height;
         ctx.clearRect(0, 0, W, H);
-        var pad = { t: 24, b: 20, l: 36, r: 8 };
+        var pad = { t: 24, b: 20, l: 44, r: 8 };
         var cW = W - pad.l - pad.r, cH = H - pad.t - pad.b;
-        var minY = 18, maxY = 90;
+        var chartMode = window._hmChartMode || 'rsi';
+        var toX = function(i) { return pad.l + i * (cW / Math.max(n - 1, 1)); };
         var xStep = cW / Math.max(n - 1, 1);
-        var toX = function(i) { return pad.l + i * xStep; };
+
+        if (chartMode === 'price') {
+          // ── PRICE CHART: NAV line (black) + 8-period EMA-smoothed price
+          // line, filled light green when price is above its own 8-EMA and
+          // light red when below — same visual language as the RSI chart's
+          // above/below-midline fill, just against the price's own trend
+          // line instead of a fixed 50 threshold. ──
+          var priceMin = Infinity, priceMax = -Infinity;
+          for (var pmI = 0; pmI < n; pmI++) {
+            if (navs[pmI] != null) { if (navs[pmI] < priceMin) priceMin = navs[pmI]; if (navs[pmI] > priceMax) priceMax = navs[pmI]; }
+            if (price8ema[pmI] != null) { if (price8ema[pmI] < priceMin) priceMin = price8ema[pmI]; if (price8ema[pmI] > priceMax) priceMax = price8ema[pmI]; }
+          }
+          if (!isFinite(priceMin) || !isFinite(priceMax)) { priceMin = 0; priceMax = 1; }
+          var priceRange = priceMax - priceMin || 1;
+          var pPad = priceRange * 0.08; // 8% headroom top/bottom so the line isn't flush against the edges
+          var minY = priceMin - pPad, maxY = priceMax + pPad;
+          var toY = function(v) { return pad.t + cH - ((v - minY) / (maxY - minY)) * cH; };
+          ctx.strokeStyle = '#e5e7eb'; ctx.lineWidth = 0.5;
+          var gridSteps = 5;
+          for (var gi = 0; gi <= gridSteps; gi++) {
+            var gv = minY + (maxY - minY) * (gi / gridSteps);
+            ctx.beginPath(); ctx.moveTo(pad.l, toY(gv)); ctx.lineTo(W - pad.r, toY(gv)); ctx.stroke();
+            ctx.fillStyle = '#9ca3af'; ctx.font = '9px monospace'; ctx.textAlign = 'right';
+            ctx.fillText(gv.toFixed(1), pad.l - 4, toY(gv) + 3);
+          }
+          // Fill above/below the 8-EMA trend line, light green/light red —
+          // same fillSeries technique as the RSI chart, but against price8ema
+          // instead of a fixed midline.
+          var fillPrice = function(seriesA, seriesB, color) { ctx.fillStyle = color; for (var fi = 1; fi < n; fi++) { var a1v = seriesA[fi - 1], a2v = seriesA[fi], b1v = seriesB[fi - 1], b2v = seriesB[fi]; if (a1v == null || a2v == null || b1v == null || b2v == null) continue; ctx.beginPath(); ctx.moveTo(toX(fi - 1), toY(a1v)); ctx.lineTo(toX(fi), toY(a2v)); ctx.lineTo(toX(fi), toY(b2v)); ctx.lineTo(toX(fi - 1), toY(b1v)); ctx.closePath(); ctx.fill(); } };
+          var navAboveEma = navs.map(function(v, i) { return (v != null && price8ema[i] != null && v > price8ema[i]) ? v : (price8ema[i] != null ? price8ema[i] : v); });
+          var navBelowEma = navs.map(function(v, i) { return (v != null && price8ema[i] != null && v < price8ema[i]) ? v : (price8ema[i] != null ? price8ema[i] : v); });
+          fillPrice(navAboveEma, price8ema, 'rgba(47,231,63,0.35)');
+          fillPrice(navBelowEma, price8ema, 'rgba(241,24,24,0.35)');
+          var plotPriceLine = function(data, color, width) { ctx.strokeStyle = color; ctx.lineWidth = width; ctx.lineJoin = 'round'; ctx.beginPath(); var started = false; for (var pi = 0; pi < n; pi++) { if (data[pi] == null) continue; var x = toX(pi), y = toY(data[pi]); if (!started) { ctx.moveTo(x, y); started = true; } else ctx.lineTo(x, y); } ctx.stroke(); };
+          plotPriceLine(navs, '#000000', 1.5); // price line in black, per spec
+          plotPriceLine(price8ema, '#e11d48', 1.5); // 8-EMA trend line
+          window._hmChart = { rsi: rsi, wma: wma, ema: ema, price8ema: price8ema, dates: dates, pad: pad, cW: cW, cH: cH, n: n, W: W, H: H, midLine: midLine, xStep: xStep, toX: toX, toY: toY, navs: navs, dpr: dpr, mode: 'price' };
+          try { window._hmCleanCanvas = ctx.getImageData(0, 0, canvas.width, canvas.height); } catch(_e) { window._hmCleanCanvas = null; }
+          var lastNavForHud = navs[n - 1], last8emaForHud = price8ema[n - 1];
+          var hudRPrice = document.getElementById('hmHudRight');
+          if (hudRPrice) { hudRPrice.innerHTML = '<span style="color:#000000">NAV: ' + (lastNavForHud != null ? lastNavForHud.toFixed(2) : '\u2014') + '</span><br><span style="color:#e11d48">8-EMA: ' + (last8emaForHud != null ? last8emaForHud.toFixed(2) : '\u2014') + '</span>'; hudRPrice.style.display = 'block'; }
+        } else {
+        // ── RSI CHART (existing behaviour, unchanged) ──
+        var minY = 18, maxY = 90;
         var toY = function(v) { return pad.t + cH - ((v - minY) / (maxY - minY)) * cH; };
         ctx.strokeStyle = '#e5e7eb'; ctx.lineWidth = 0.5;
         for (var v = 20; v <= 90; v += 10) { ctx.beginPath(); ctx.moveTo(pad.l, toY(v)); ctx.lineTo(W - pad.r, toY(v)); ctx.stroke(); ctx.fillStyle = '#9ca3af'; ctx.font = '9px monospace'; ctx.textAlign = 'right'; ctx.fillText(v, pad.l - 4, toY(v) + 3); }
@@ -12967,12 +13405,15 @@ async function drawHilegaMilega() {
         plotLine(wma, '#e11d48', 2);
         plotLine(ema, '#16a34a', 1);
         for (var ci = 1; ci < n; ci++) { var prev = rsi[ci - 1], cur = rsi[ci]; if (prev == null || cur == null) continue; if (prev >= 20 && cur < 20) { var lowest = cur, lowestIdx = ci; for (var lj = ci; lj < Math.min(ci + 5, n); lj++) { if (rsi[lj] != null && rsi[lj] < lowest) { lowest = rsi[lj]; lowestIdx = lj; } } ctx.save(); ctx.beginPath(); ctx.arc(toX(lowestIdx), toY(lowest), 7, 0, Math.PI * 2); ctx.fillStyle = 'rgba(34,197,94,0.25)'; ctx.fill(); ctx.beginPath(); ctx.arc(toX(lowestIdx), toY(lowest), 4.5, 0, Math.PI * 2); ctx.fillStyle = '#16a34a'; ctx.fill(); ctx.restore(); } if (prev <= 88 && cur > 88) { var highest = cur, highestIdx = ci; for (var hj = ci; hj < Math.min(ci + 5, n); hj++) { if (rsi[hj] != null && rsi[hj] > highest) { highest = rsi[hj]; highestIdx = hj; } } ctx.save(); ctx.beginPath(); ctx.arc(toX(highestIdx), toY(highest), 7, 0, Math.PI * 2); ctx.fillStyle = 'rgba(239,68,68,0.25)'; ctx.fill(); ctx.beginPath(); ctx.arc(toX(highestIdx), toY(highest), 4.5, 0, Math.PI * 2); ctx.fillStyle = '#ef4444'; ctx.fill(); ctx.restore(); } }
-        window._hmChart = { rsi: rsi, wma: wma, ema: ema, dates: dates, pad: pad, cW: cW, cH: cH, n: n, W: W, H: H, midLine: midLine, xStep: xStep, toX: toX, toY: toY, navs: navs, dpr: dpr };
+        window._hmChart = { rsi: rsi, wma: wma, ema: ema, price8ema: price8ema, dates: dates, pad: pad, cW: cW, cH: cH, n: n, W: W, H: H, midLine: midLine, xStep: xStep, toX: toX, toY: toY, navs: navs, dpr: dpr, mode: 'rsi' };
         try { window._hmCleanCanvas = ctx.getImageData(0, 0, canvas.width, canvas.height); } catch(_e) { window._hmCleanCanvas = null; }
+        } // end RSI/Price mode branch
         ctx.fillStyle = 'rgba(255,255,255,0.92)'; ctx.fillRect(pad.l, 2, 180, 18);
         ctx.font = 'bold 10px monospace'; ctx.fillStyle = '#000'; ctx.textAlign = 'left';
-        var hudR = document.getElementById('hmHudRight');
-        if (hudR) { hudR.innerHTML = '<span style="color:#000000">RSI: ' + lastR.toFixed(1) + '</span><br><span style="color:#e11d48">WMA: ' + lastW + '</span><br><span style="color:#16a34a">EMA: ' + lastE + '</span>'; hudR.style.display = 'block'; }
+        if (chartMode !== 'price') {
+          var hudR = document.getElementById('hmHudRight');
+          if (hudR) { hudR.innerHTML = '<span style="color:#000000">RSI: ' + lastR.toFixed(1) + '</span><br><span style="color:#e11d48">WMA: ' + lastW + '</span><br><span style="color:#16a34a">EMA: ' + lastE + '</span>'; hudR.style.display = 'block'; }
+        }
         var hudEl = document.getElementById('hmHud');
         canvas.onmousemove = function(e) {
           var chart = window._hmChart;
@@ -12988,8 +13429,13 @@ async function drawHilegaMilega() {
           ctx.save(); ctx.strokeStyle = '#888'; ctx.lineWidth = 1; ctx.setLineDash([3,3]);
           ctx.beginPath(); ctx.moveTo(chart.toX(idx), chart.pad.t); ctx.lineTo(chart.toX(idx), chart.H - chart.pad.b); ctx.stroke(); ctx.restore();
           if (hudEl) {
-            var rv = chart.rsi[idx], wv = chart.wma[idx], ev = chart.ema[idx], nv = chart.navs[idx], dt = chart.dates[idx];
-            hudEl.innerHTML = '<b>' + dt + '</b><br>NAV: ' + (nv != null ? nv.toFixed(2) : '-') + ' &nbsp; RSI: ' + (rv != null ? rv.toFixed(1) : '-') + ' &nbsp; WMA: ' + (wv != null ? wv.toFixed(1) : '-') + ' &nbsp; EMA: ' + (ev != null ? ev.toFixed(1) : '-');
+            if (chart.mode === 'price') {
+              var nvP = chart.navs[idx], e8 = chart.price8ema[idx], dtP = chart.dates[idx];
+              hudEl.innerHTML = '<b>' + dtP + '</b><br>NAV: ' + (nvP != null ? nvP.toFixed(2) : '-') + ' &nbsp; 8-EMA: ' + (e8 != null ? e8.toFixed(2) : '-');
+            } else {
+              var rv = chart.rsi[idx], wv = chart.wma[idx], ev = chart.ema[idx], nv = chart.navs[idx], dt = chart.dates[idx];
+              hudEl.innerHTML = '<b>' + dt + '</b><br>NAV: ' + (nv != null ? nv.toFixed(2) : '-') + ' &nbsp; RSI: ' + (rv != null ? rv.toFixed(1) : '-') + ' &nbsp; WMA: ' + (wv != null ? wv.toFixed(1) : '-') + ' &nbsp; EMA: ' + (ev != null ? ev.toFixed(1) : '-');
+            }
             hudEl.style.left = chart.pad.l + 'px'; hudEl.style.display = 'block';
           }
         };
@@ -13006,6 +13452,8 @@ function openHilegaTab() {
   hmPopulateIndexDropdown().then(function(){
   window._hmTfDays = BB.hmTfDays();
   window._hmPeriod = BB.hmPeriod();
+  window._hmChartMode = BB.hmChartMode();
+  hmHighlightChartModeButton(window._hmChartMode);
   // Re-apply the period floor AND ceiling on every tab open too — the two
   // values are stored independently, so a saved combo like period=monthly
   // + tf=14 (too short — floor) or period=daily + tf=99999 (too long for
@@ -13016,6 +13464,7 @@ function openHilegaTab() {
   BB.hmTfDays(window._hmTfDays);
   hmHighlightPeriodButton(window._hmPeriod);
   hmHighlightTfButton(window._hmTfDays);
+  hmSyncTfSelectFromButtons();
   var savedKey = BB.hmIndexKey();
   if (savedKey) {
     var idxSel = document.getElementById('hmIndexSelect');
@@ -13074,6 +13523,9 @@ window.openHilegaTab = openHilegaTab;
 window.drawHilegaMilega = drawHilegaMilega;
 window.setHmTf = setHmTf;
 window.setHmPeriod = setHmPeriod;
+window.hmSetChartMode = hmSetChartMode;
+window.hmOnTfSelectChange = hmOnTfSelectChange;
+window.hmSyncTfSelectFromButtons = hmSyncTfSelectFromButtons;
 // HTML_ONCHANGE_EXPORT_FIX: these are called directly from inline
 // onchange="..." attributes on the category/index dropdowns and the
 // date-range inputs, but were never exported from this IIFE — every
@@ -13087,6 +13539,2151 @@ window.hmUpdateIdxDropdown = hmUpdateIdxDropdown;
 window.HilegaMilega = { open: openHilegaTab, draw: drawHilegaMilega };
 return { open: openHilegaTab, draw: drawHilegaMilega };
 })(); // end Container HM
+
+
+// ── Bridge: Open Simulation from Hilega ──
+// Reads the currently selected fund from Hilega's dropdown and
+// passes it to the Simulation tab via window._simPreselectFund.
+function hmOpenSimulation() {
+  try {
+    var idxSel = document.getElementById('hmIndexSelect');
+    var fundKey = idxSel ? idxSel.value : '';
+    if (!fundKey) {
+      // Try BB fallback
+      try { fundKey = (typeof BB !== 'undefined' && BB.hmIndexKey) ? BB.hmIndexKey() : ''; } catch(_) {}
+    }
+    if (fundKey) {
+      window._simPreselectFund = fundKey;
+      console.log('[HILEGA] Opening Simulation for fund:', fundKey);
+    } else {
+      console.log('[HILEGA] No fund selected, opening Simulation without preselect');
+    }
+    switchTab('sim');
+  } catch(e) {
+    console.error('[HILEGA] Error opening simulation:', e);
+    switchTab('sim');
+  }
+}
+
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  SECTION: Compare 2 Charts — Synchronized Crosshair           ║
+// ║  4 Chart.js charts (2 Price + 2 RSI) with linked crosshair     ║
+// ╚══════════════════════════════════════════════════════════════════╝
+(function() {
+'use strict';
+try {
+
+var CHARTS = []; // {chart, type:'price'|'rsi', idx}
+var SYNC_LOCK = false;
+
+// ── Synchronized Crosshair Plugin ──
+var syncCrosshairPlugin = {
+  id: 'cmpSyncCrosshair',
+  afterEvent(chart, args) {
+    var evt = args.event;
+    if (evt.type !== 'mousemove' && evt.type !== 'mouseout') return;
+    if (SYNC_LOCK) return;
+    SYNC_LOCK = true;
+    try {
+      if (evt.type === 'mouseout') {
+        // Clear all crosshairs
+        CHARTS.forEach(function(c) {
+          c.chart.options.plugins.cmpSyncCrosshair.xIndex = -1;
+          c.chart.update('none');
+        });
+        // Hide tooltip overlay
+        var tip = document.getElementById('cmpTooltip');
+        if (tip) tip.style.display = 'none';
+        return;
+      }
+      // Find nearest data index
+      var elements = chart.getElementsAtEventForMode(evt, 'index', { intersect: false }, true);
+      if (!elements.length) { SYNC_LOCK = false; return; }
+      var idx = elements[0].index;
+      // Sync to all other charts
+      CHARTS.forEach(function(c) {
+        if (c.chart === chart) {
+          c.chart.options.plugins.cmpSyncCrosshair.xIndex = idx;
+        } else {
+          c.chart.options.plugins.cmpSyncCrosshair.xIndex = idx;
+          c.chart.update('none');
+        }
+      });
+      // Show tooltip overlay
+      cmpShowTooltip(idx);
+    } finally { SYNC_LOCK = false; }
+  },
+  afterDraw(chart) {
+    var xi = chart.options.plugins.cmpSyncCrosshair.xIndex;
+    if (xi == null || xi < 0) return;
+    var xScale = chart.scales.x;
+    if (!xScale || xi >= xScale.ticks.length) return;
+    var x = xScale.getPixelForValue(xi);
+    var ctx = chart.ctx;
+    var area = chart.chartArea;
+    ctx.save();
+    ctx.beginPath();
+    ctx.setLineDash([4, 3]);
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(0,0,0,0.35)';
+    ctx.moveTo(x, area.top);
+    ctx.lineTo(x, area.bottom);
+    ctx.stroke();
+    // Draw dot on the line
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.arc(x, area.bottom - 2, 3, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,0,0,0.5)';
+    ctx.fill();
+    ctx.restore();
+  },
+  defaults: { xIndex: -1 }
+};
+
+// Plugin will be registered lazily in cmpInitTab
+
+// ── State ──
+var _cmpInited = false;
+var _cmpPluginRegistered = false;
+var _cmpState = {
+  fundA: '',
+  fundB: '',
+  tf: 'daily', // daily | weekly | monthly
+};
+
+// ── Public: Initialize Compare Tab ──
+window.cmpInitTab = function() {
+  try {
+    if (!_cmpPluginRegistered && typeof Chart !== 'undefined') {
+      Chart.register(syncCrosshairPlugin);
+      _cmpPluginRegistered = true;
+    }
+    if (!_cmpInited) {
+      _cmpInited = true;
+      cmpRender();
+    } else {
+      // Re-run to pick up newly loaded data or strategy change
+      var goBtn = document.getElementById('cmpGoBtn');
+      if (goBtn) cmpRun();
+    }
+  } catch(e) {
+    console.error('[CMP] Error in cmpInitTab:', e);
+    var root = document.getElementById('cmpRoot');
+    if (root) root.innerHTML = '<div style="padding:20px;color:red;font-family:monospace;">Error loading Compare tab: ' + e.message + '</div>';
+  }
+};
+
+// ── Parse dailyMap entries into closes + dates ──
+function cmpParseEntries(entries) {
+  var closes = [], dates = [];
+  for (var i = 0; i < entries.length; i++) {
+    var p = entries[i].split('|');
+    if (p.length < 5) continue;
+    var ds = p[0]; // DDMMYYYY
+    var dd = parseInt(ds.substring(0,2),10);
+    var mm = parseInt(ds.substring(2,4),10) - 1;
+    var yy = parseInt(ds.substring(4,8),10);
+    var d = new Date(yy, mm, dd);
+    var c = parseFloat(p[4]);
+    if (!isNaN(c) && d.getTime()) { closes.push(c); dates.push(d); }
+  }
+  // Sort by date
+  var idx = Array.from({length:dates.length}, function(_,i){return i;});
+  idx.sort(function(a,b){return dates[a]-dates[b];});
+  return { closes: idx.map(function(i){return closes[i];}), dates: idx.map(function(i){return dates[i];}) };
+}
+
+// ── Wilder RSI (matches U.calcRSI) ──
+function cmpCalcRSI(closes, period) {
+  var v = closes.filter(function(x){return x!=null&&!isNaN(x);});
+  if (v.length < period+1) return [];
+  var rsis=[], gains=0, losses=0;
+  for (var i=1;i<=period;i++){var d=v[i]-v[i-1];if(d>0)gains+=d;else losses-=d;}
+  var ag=gains/period, al=losses/period;
+  rsis.push(al===0?100:100-100/(1+ag/al));
+  for (var i2=period+1;i2<v.length;i2++){
+    var d2=v[i2]-v[i2-1];
+    ag=(ag*(period-1)+Math.max(d2,0))/period;
+    al=(al*(period-1)+Math.abs(Math.min(d2,0)))/period;
+    rsis.push(al===0?100:100-100/(1+ag/al));
+  }
+  return rsis;
+}
+
+// ── EMA ──
+function cmpCalcEMA(data, period) {
+  if (!data || data.length < period) return [];
+  var out = new Array(data.length).fill(null);
+  var k = 2/(period+1), sum = 0;
+  for (var i=0;i<period;i++) sum += data[i];
+  out[period-1] = sum/period;
+  for (var i=period;i<data.length;i++) out[i] = data[i]*k + out[i-1]*(1-k);
+  return out;
+}
+
+// ── Simple Moving Average ──
+function cmpCalcSMA(data, period) {
+  if (!data || data.length < period) return new Array(data?data.length:0).fill(null);
+  var out = new Array(data.length).fill(null);
+  for (var i = period - 1; i < data.length; i++) {
+    var sum = 0;
+    for (var j = i - period + 1; j <= i; j++) sum += (data[j] || 0);
+    out[i] = sum / period;
+  }
+  return out;
+}
+
+// ── Weighted Moving Average (linear weights) ──
+function cmpCalcWMA(data, period) {
+  if (!data || data.length < period) return new Array(data?data.length:0).fill(null);
+  var out = new Array(data.length).fill(null);
+  var wSum = period * (period + 1) / 2;
+  for (var i = period - 1; i < data.length; i++) {
+    var wTotal = 0, wVal = 0;
+    for (var j = 0; j < period; j++) {
+      var w = j + 1;
+      var v = data[i - period + 1 + j];
+      if (v != null && !isNaN(v)) { wVal += v * w; wTotal += w; }
+    }
+    out[i] = wTotal > 0 ? wVal / wTotal : null;
+  }
+  return out;
+}
+
+var _cmpStrategy = 'rsi14';
+
+// ── Resample to weekly closes ──
+function cmpToWeekly(closes, dates) {
+  var map = {};
+  for (var i=0;i<dates.length;i++){
+    var d=dates[i], day=d.getDay();
+    var mon=new Date(d); mon.setDate(d.getDate()+(day===0?-6:1-day));
+    var key=mon.getFullYear()+'-'+String(mon.getMonth()+1).padStart(2,'0')+'-'+String(mon.getDate()).padStart(2,'0');
+    map[key] = {c: closes[i], d: d};
+  }
+  var keys = Object.keys(map).sort();
+  return { closes: keys.map(function(k){return map[k].c;}), dates: keys.map(function(k){return map[k].d;}) };
+}
+
+// ── Resample to monthly closes ──
+function cmpToMonthly(closes, dates) {
+  var map = {};
+  for (var i=0;i<dates.length;i++){
+    var d=dates[i];
+    var key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+    map[key] = {c: closes[i], d: d};
+  }
+  var keys = Object.keys(map).sort();
+  return { closes: keys.map(function(k){return map[k].c;}), dates: keys.map(function(k){return map[k].d;}) };
+}
+
+// ── Get data for a fund key ──
+function cmpGetFundData(fundKey) {
+  var dm = (window._ldScannerData && window._ldScannerData.dailyMap) ||
+           (window._deepWeeklyCache && window._deepWeeklyCache.dailyMap) || {};
+  var raw = dm[fundKey];
+  if (!raw || !raw.length) return null;
+  return cmpParseEntries(raw);
+}
+
+// ── Get fund list ──
+function cmpGetFundList() {
+  var list = [];
+  try { list = NPS_FUND_LIST || []; } catch(e) {}
+  if (!list.length && typeof amcFunds !== 'undefined') {
+    list = Object.values(amcFunds).flat();
+  }
+  return list;
+}
+
+// ── Fund display name ──
+function cmpFundName(fund) {
+  if (!fund) return '';
+  return (fund.name || fund.schemeName || fund.key || 'Unknown');
+}
+
+// ── Fund key ──
+function cmpFundKey(fund) {
+  if (!fund) return '';
+  return (fund.key || fund.name.replace(/[^a-zA-Z0-9]/g,'').toLowerCase());
+}
+
+// ── Format date for chart labels ──
+function cmpFmtDate(d, tf) {
+  if (!d) return '';
+  var dd = d.getDate(), mm = d.getMonth()+1, yy = d.getFullYear();
+  if (tf === 'monthly') return String(mm)+'/'+String(yy);
+  if (tf === 'weekly') return String(dd)+'/'+String(mm);
+  return String(dd)+'/'+String(mm)+'/'+String(yy);
+}
+
+// ── Build chart data for one fund ──
+function cmpBuildChartData(fundKey, tf, strategy) {
+  var raw = cmpGetFundData(fundKey);
+  if (!raw) return null;
+
+  var closes = raw.closes, dates = raw.dates;
+
+  // Resample if needed
+  var label = 'Daily';
+  if (tf === 'weekly') { var w = cmpToWeekly(closes, dates); closes = w.closes; dates = w.dates; label = 'Weekly'; }
+  if (tf === 'monthly') { var m = cmpToMonthly(closes, dates); closes = m.closes; dates = m.dates; label = 'Monthly'; }
+
+  // Compute RSI(14)
+  var rsiRaw14 = cmpCalcRSI(closes, 14);
+  var rsi14 = new Array(closes.length).fill(null);
+  for (var i = 0; i < rsiRaw14.length; i++) rsi14[i + 14] = rsiRaw14[i];
+
+  // Compute EMA(8) on price
+  var ema8 = cmpCalcEMA(closes, 8);
+
+  // Compute SMA(8)
+  var sma8 = cmpCalcSMA(closes, 8);
+
+  // Compute Hilega indicators: RSI(9) + WMA(21) of RSI9 + EMA(3) of RSI9
+  var rsiRaw9 = cmpCalcRSI(closes, 9);
+  var rsi9 = new Array(closes.length).fill(null);
+  for (var j = 0; j < rsiRaw9.length; j++) rsi9[j + 9] = rsiRaw9[j];
+  var wma21 = cmpCalcWMA(rsi9, 21);
+  var ema3Rsi = cmpCalcEMA(rsi9, 3);
+
+  // Labels
+  var labels = dates.map(function(d){ return cmpFmtDate(d, tf); });
+
+  return { closes: closes, dates: dates, rsi14: rsi14, ema8: ema8, sma8: sma8, rsi9: rsi9, wma21: wma21, ema3Rsi: ema3Rsi, labels: labels, tfLabel: label };
+}
+
+// ── Chart color palettes ──
+var CMP_COLORS = {
+  priceA: '#0055aa', priceALine: '#003d7a',
+  priceB: '#a855f7', priceBLine: '#7c3aed',
+  rsiLine: '#1a1a1a',
+  emaLine: '#e11d48',
+  crosshair: 'rgba(0,0,0,0.4)',
+  gridColor: 'rgba(200,200,200,0.4)',
+  rsiZoneGreen: 'rgba(0,158,112,0.08)',
+  rsiZoneRed: 'rgba(200,16,46,0.08)',
+  rsi50Line: 'rgba(0,0,0,0.2)',
+};
+
+// ── Create a single Chart.js chart ──
+function cmpCreateChart(canvasId, data, type, fundLabel, strategy) {
+  var ctx = document.getElementById(canvasId);
+  if (!ctx) return null;
+  // Destroy existing
+  var existing = Chart.getChart(ctx);
+  if (existing) existing.destroy();
+
+  var datasets, yConfig, annotationPlugin;
+  var strat = strategy || _cmpStrategy || 'rsi14';
+
+  if (type === 'price') {
+    // ── PRICE CHART (always shows NAV + overlay line) ──
+    var overlayData, overlayLabel, overlayColor;
+    if (strat === 'sma8') {
+      overlayData = data.sma8; overlayLabel = 'SMA(8)'; overlayColor = '#f59e0b';
+    } else {
+      overlayData = data.ema8; overlayLabel = 'EMA(8)'; overlayColor = '#e11d48';
+    }
+    datasets = [
+      {
+        label: fundLabel + ' NAV',
+        data: data.closes,
+        borderColor: (fundLabel.indexOf('A') >= 0 || fundLabel.indexOf('1') >= 0) ? CMP_COLORS.priceA : CMP_COLORS.priceB,
+        backgroundColor: 'transparent',
+        borderWidth: 1.5,
+        pointRadius: 0,
+        pointHoverRadius: 3,
+        tension: 0.1,
+        order: 2,
+      },
+      {
+        label: overlayLabel,
+        data: overlayData,
+        borderColor: overlayColor,
+        borderWidth: strat === 'sma8' ? 1.5 : 1,
+        borderDash: strat === 'sma8' ? [] : [4, 2],
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        tension: 0.2,
+        order: 3,
+      }
+    ];
+    yConfig = {
+      position: 'right',
+      grid: { color: CMP_COLORS.gridColor, drawBorder: false },
+      ticks: { font: { family: "'Space Mono','Courier New',monospace", size: 9 }, color: '#555', maxTicksLimit: 5, callback: function(v) { return v.toFixed(1); } },
+      border: { display: false }
+    };
+    annotationPlugin = null;
+
+  } else if (strat === 'sma8') {
+    // ── SMA(8) LOWER CHART: Price vs SMA(8) Distance % ──
+    var smaDist = new Array(data.closes.length).fill(null);
+    for (var si = 0; si < data.closes.length; si++) {
+      if (data.closes[si] != null && data.sma8[si] != null)
+        smaDist[si] = parseFloat(((data.closes[si] - data.sma8[si]) / data.sma8[si] * 100).toFixed(3));
+    }
+    var smaColor = (fundLabel.indexOf('A') >= 0 || fundLabel.indexOf('1') >= 0) ? CMP_COLORS.priceA : CMP_COLORS.priceB;
+    datasets = [
+      { label: 'Price vs SMA(8) %', data: smaDist, borderColor: smaColor, backgroundColor: smaColor.replace(')', ',0.08)').replace('rgb', 'rgba'), borderWidth: 1.5, pointRadius: 0, tension: 0.1, fill: true }
+    ];
+    yConfig = {
+      position: 'right',
+      grid: { color: CMP_COLORS.gridColor, drawBorder: false },
+      ticks: { font: { family: "'Space Mono','Courier New',monospace", size: 9 }, color: '#555', maxTicksLimit: 5, callback: function(v) { return v.toFixed(1) + '%'; } },
+      border: { display: false }
+    };
+    annotationPlugin = {
+      id: 'cmpSmaZero_' + canvasId,
+      beforeDraw: function(chart) {
+        var area = chart.chartArea, yScale = chart.scales.y;
+        if (!yScale) return;
+        var y0 = yScale.getPixelForValue(0);
+        var ctx2 = chart.ctx; ctx2.save();
+        ctx2.beginPath(); ctx2.setLineDash([4, 4]); ctx2.lineWidth = 1;
+        ctx2.strokeStyle = 'rgba(0,0,0,0.3)';
+        ctx2.moveTo(area.left, y0); ctx2.lineTo(area.right, y0); ctx2.stroke();
+        ctx2.restore();
+      }
+    };
+
+  } else if (strat === 'hilega') {
+    // ── HILEGA LOWER CHART: RSI(9) + WMA(21) + EMA(3) ──
+    datasets = [
+      { label: 'RSI(9)', data: data.rsi9, borderColor: '#1a1a1a', backgroundColor: 'transparent', borderWidth: 1.5, pointRadius: 0, tension: 0.1, order: 2, spanGaps: false },
+      { label: 'WMA(21)', data: data.wma21, borderColor: '#e11d48', borderWidth: 1, borderDash: [6, 3], pointRadius: 0, tension: 0.2, order: 3 },
+      { label: 'EMA(3)', data: data.ema3Rsi, borderColor: '#16a34a', borderWidth: 1, pointRadius: 0, tension: 0.3, order: 3 }
+    ];
+    yConfig = {
+      position: 'right', min: 0, max: 100,
+      grid: { color: CMP_COLORS.gridColor, drawBorder: false },
+      ticks: { font: { family: "'Space Mono','Courier New',monospace", size: 9 }, color: '#555', stepSize: 20, maxTicksLimit: 6 },
+      border: { display: false }
+    };
+    annotationPlugin = {
+      id: 'cmpHilegaRef_' + canvasId,
+      beforeDraw: function(chart) {
+        var area = chart.chartArea, yScale = chart.scales.y;
+        if (!yScale) return;
+        var ctx2 = chart.ctx; ctx2.save();
+        var y50 = yScale.getPixelForValue(50);
+        ctx2.fillStyle = 'rgba(0,158,112,0.06)';
+        ctx2.fillRect(area.left, y50, area.width, area.top + area.height - y50);
+        ctx2.fillStyle = 'rgba(200,16,46,0.06)';
+        ctx2.fillRect(area.left, area.top, area.width, yScale.getPixelForValue(40) - area.top);
+        ctx2.beginPath(); ctx2.setLineDash([4,4]); ctx2.lineWidth = 0.8; ctx2.strokeStyle = 'rgba(0,0,0,0.2)';
+        ctx2.moveTo(area.left, y50); ctx2.lineTo(area.right, y50); ctx2.stroke();
+        ctx2.restore();
+      }
+    };
+
+  } else {
+    // ── RSI(14) LOWER CHART (default) ──
+    datasets = [
+      {
+        label: 'RSI(14)',
+        data: data.rsi14,
+        borderColor: CMP_COLORS.rsiLine,
+        backgroundColor: 'transparent',
+        borderWidth: 1.5,
+        pointRadius: 0,
+        pointHoverRadius: 3,
+        tension: 0.1,
+        order: 2,
+        spanGaps: false,
+      }
+    ];
+    yConfig = {
+      position: 'right',
+      min: 0, max: 100,
+      grid: { color: CMP_COLORS.gridColor, drawBorder: false },
+      ticks: { font: { family: "'Space Mono','Courier New',monospace", size: 9 }, color: '#555', stepSize: 20, maxTicksLimit: 6 },
+      border: { display: false }
+    };
+    annotationPlugin = {
+      id: 'cmpRsiRef_' + canvasId,
+      beforeDraw: function(chart) {
+        var area = chart.chartArea;
+        var yScale = chart.scales.y;
+        var ctx2 = chart.ctx;
+        var y50 = yScale.getPixelForValue(50);
+        var y100 = yScale.getPixelForValue(100);
+        ctx2.save();
+        ctx2.fillStyle = CMP_COLORS.rsiZoneGreen;
+        ctx2.fillRect(area.left, y50, area.width, y100 - y50);
+        var y40 = yScale.getPixelForValue(40);
+        var y0 = yScale.getPixelForValue(0);
+        ctx2.fillStyle = CMP_COLORS.rsiZoneRed;
+        ctx2.fillRect(area.left, y0, area.width, y40 - y0);
+        ctx2.beginPath(); ctx2.setLineDash([6, 3]); ctx2.strokeStyle = CMP_COLORS.rsi50Line; ctx2.lineWidth = 1;
+        ctx2.moveTo(area.left, y50); ctx2.lineTo(area.right, y50); ctx2.stroke();
+        var y40px = yScale.getPixelForValue(40);
+        ctx2.beginPath(); ctx2.setLineDash([2, 2]); ctx2.strokeStyle = 'rgba(200,16,46,0.3)';
+        ctx2.moveTo(area.left, y40px); ctx2.lineTo(area.right, y40px); ctx2.stroke();
+        ctx2.restore();
+      }
+    };
+  }
+
+  var plugins = [];
+  if (annotationPlugin) plugins.push(annotationPlugin);
+
+  var chart = new Chart(ctx, {
+    type: 'line',
+    data: { labels: data.labels, datasets: datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 600, easing: 'easeOutQuart' },
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false },
+        cmpSyncCrosshair: { xIndex: -1 }
+      },
+      scales: {
+        x: {
+          grid: { color: CMP_COLORS.gridColor, drawBorder: false },
+          ticks: { font: { family: "'Space Mono','Courier New',monospace", size: 8 }, color: '#888', maxTicksLimit: 8, maxRotation: 0, autoSkip: true },
+          border: { display: false }
+        },
+        y: yConfig
+      },
+      layout: { padding: { top: 4, right: 2, bottom: 0, left: 0 } }
+    },
+    plugins: plugins
+  });
+
+  return chart;
+}
+
+// ── Show tooltip overlay with values from all 4 charts ──
+function cmpShowTooltip(idx) {
+  var tip = document.getElementById('cmpTooltip');
+  if (!tip) return;
+  if (idx < 0 || !CHARTS.length) { tip.style.display = 'none'; return; }
+
+  var lines = [];
+  CHARTS.forEach(function(c) {
+    var ds = c.chart.data.datasets[0];
+    var label = c.chart.data.labels[idx];
+    var val = ds.data[idx];
+    var color = ds.borderColor;
+    var fundLbl = c.chart.options.plugins.cmpSyncCrosshair.fundLabel || '';
+    if (c.type === 'price') {
+      lines.push('<span style="color:'+color+';font-weight:700">'+fundLbl+'</span> '+label+' <b>'+(val!=null?val.toFixed(2):'\u2014')+'</b>');
+    } else {
+      var suffix = _cmpStrategy === 'sma8' ? ' %' : '';
+      var dec = _cmpStrategy === 'sma8' ? 2 : 1;
+      lines.push('<span style="color:'+color+';font-weight:700">'+fundLbl+'</span> '+label+' <b>'+(val!=null?val.toFixed(dec):'\u2014')+'</b>'+suffix);
+    }
+  });
+  tip.innerHTML = lines.join('<br>');
+  tip.style.display = 'block';
+}
+
+// ── Main render ──
+function cmpRender() {
+  var funds = cmpGetFundList();
+  var fundOpts = funds.map(function(f, i) {
+    var k = cmpFundKey(f);
+    var n = cmpFundName(f);
+    return '<option value="'+k+'">'+n+'</option>';
+  }).join('');
+
+  var root = document.getElementById('cmpRoot');
+  if (!root) return;
+
+  root.innerHTML = '' +
+  '<div style="max-width:1000px;margin:0 auto;padding:8px;font-family:Segoe UI,Arial,sans-serif;">' +
+    // Header
+    '<div style="text-align:center;margin-bottom:8px;">' +
+      '<div style="font-size:10px;color:#009e70;letter-spacing:0.18em;text-transform:uppercase;opacity:0.75;">Chart Comparison</div>' +
+      '<div style="font-size:16px;font-weight:700;">Compare 2 Charts</div>' +
+      '<div id="cmpSubtitle" style="font-size:11px;color:#888;margin-top:2px;">Price + RSI(14) with synchronized crosshair</div>' +
+    '</div>' +
+    // Controls Row 1: Funds + Timeframe + Strategy
+    '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;align-items:flex-end;">' +
+      '<div style="flex:1;min-width:200px;">' +
+        '<div style="font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">Fund A</div>' +
+        '<select id="cmpFundA" style="width:100%;padding:5px 6px;border:2px solid #0055aa;border-radius:4px;font-size:11px;font-family:Space Mono,Courier New,monospace;background:#fff;">' + fundOpts + '</select>' +
+      '</div>' +
+      '<div style="flex:1;min-width:200px;">' +
+        '<div style="font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">Fund B</div>' +
+        '<select id="cmpFundB" style="width:100%;padding:5px 6px;border:2px solid #a855f7;border-radius:4px;font-size:11px;font-family:Space Mono,Courier New,monospace;background:#fff;">' + fundOpts + '</select>' +
+      '</div>' +
+      '<div style="min-width:100px;">' +
+        '<div style="font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">Timeframe</div>' +
+        '<select id="cmpTf" style="width:100%;padding:5px 6px;border:1px solid #ccc;border-radius:4px;font-size:11px;font-family:Space Mono,Courier New,monospace;background:#fff;">' +
+          '<option value="daily">Daily</option>' +
+          '<option value="weekly" selected>Weekly</option>' +
+          '<option value="monthly">Monthly</option>' +
+        '</select>' +
+      '</div>' +
+      '<div style="min-width:200px;">' +
+        '<div style="font-size:9px;color:#6366f1;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;font-weight:700;">Strategy (Lower Chart)</div>' +
+        '<select id="cmpStrategy" style="width:100%;padding:5px 6px;border:2px solid #6366f1;border-radius:4px;font-size:11px;font-family:Space Mono,Courier New,monospace;background:#fff;color:#333;">' +
+          '<option value="rsi14" selected>RSI(14) Zones</option>' +
+          '<option value="sma8">SMA(8) Crossover</option>' +
+          '<option value="hilega">Hilega (RSI9+WMA21+EMA3)</option>' +
+        '</select>' +
+      '</div>' +
+      '<div style="align-self:flex-end;">' +
+        '<button id="cmpGoBtn" style="padding:5px 16px;background:#009e70;color:#fff;border:none;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;font-family:Space Mono,Courier New,monospace;">COMPARE</button>' +
+      '</div>' +
+    '</div>' +
+    // Status
+    '<div id="cmpStatus" style="font-size:10px;color:#888;font-family:Space Mono,Courier New,monospace;margin-bottom:6px;min-height:14px;"></div>' +
+    // Chart grid: 2x2
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">' +
+      // Fund A Price
+      '<div style="border:1px solid #0055aa;border-radius:6px;overflow:hidden;background:#fff;">' +
+        '<div id="cmpLabelAPrice" style="font-size:9px;font-weight:700;padding:3px 6px;background:#0055aa;color:#fff;font-family:Space Mono,Courier New,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Fund A — Price</div>' +
+        '<div style="position:relative;height:28vh;min-height:180px;padding:2px;"><canvas id="cmpCanvasAPrice"></canvas></div>' +
+      '</div>' +
+      // Fund B Price
+      '<div style="border:1px solid #a855f7;border-radius:6px;overflow:hidden;background:#fff;">' +
+        '<div id="cmpLabelBPrice" style="font-size:9px;font-weight:700;padding:3px 6px;background:#a855f7;color:#fff;font-family:Space Mono,Courier New,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Fund B — Price</div>' +
+        '<div style="position:relative;height:28vh;min-height:180px;padding:2px;"><canvas id="cmpCanvasBPrice"></canvas></div>' +
+      '</div>' +
+      // Fund A Lower
+      '<div style="border:1px solid #0055aa;border-radius:6px;overflow:hidden;background:#fff;">' +
+        '<div id="cmpLabelARsi" style="font-size:9px;font-weight:700;padding:3px 6px;background:#0055aa;color:#fff;font-family:Space Mono,Courier New,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Fund A — RSI(14)</div>' +
+        '<div style="position:relative;height:22vh;min-height:140px;padding:2px;"><canvas id="cmpCanvasARsi"></canvas></div>' +
+      '</div>' +
+      // Fund B Lower
+      '<div style="border:1px solid #a855f7;border-radius:6px;overflow:hidden;background:#fff;">' +
+        '<div id="cmpLabelBRsi" style="font-size:9px;font-weight:700;padding:3px 6px;background:#a855f7;color:#fff;font-family:Space Mono,Courier New,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Fund B — RSI(14)</div>' +
+        '<div style="position:relative;height:22vh;min-height:140px;padding:2px;"><canvas id="cmpCanvasBRsi"></canvas></div>' +
+      '</div>' +
+    '</div>' +
+    // Floating tooltip
+    '<div id="cmpTooltip" style="display:none;position:fixed;z-index:9999;background:rgba(255,255,255,0.95);border:1px solid #bbb;border-radius:4px;padding:4px 8px;font-family:Space Mono,Courier New,monospace;font-size:10px;line-height:1.6;color:#000;box-shadow:0 2px 12px rgba(0,0,0,0.12);pointer-events:none;max-width:420px;"></div>' +
+    // Legend
+    '<div id="cmpLegend" style="display:flex;gap:12px;justify-content:center;margin-top:6px;font-size:10px;color:#666;font-family:Space Mono,Courier New,monospace;flex-wrap:wrap;">' +
+      '<span><span style="display:inline-block;width:18px;height:2px;background:#1a1a1a;vertical-align:middle;margin-right:4px;border-radius:1px;"></span>RSI(14)</span>' +
+      '<span><span style="display:inline-block;width:18px;height:2px;background:#e11d48;vertical-align:middle;margin-right:4px;border-radius:1px;border-top:1px dashed #e11d48;"></span>EMA(8)</span>' +
+      '<span style="color:#009e70;">Green zone: RSI &gt; 50</span>' +
+      '<span style="color:#c8102e;">Red zone: RSI &lt; 40</span>' +
+    '</div>' +
+  '</div>';
+
+  // Wire events
+  document.getElementById('cmpGoBtn').addEventListener('click', cmpRun);
+  document.getElementById('cmpFundA').addEventListener('change', cmpRun);
+  document.getElementById('cmpFundB').addEventListener('change', cmpRun);
+  document.getElementById('cmpTf').addEventListener('change', cmpRun);
+  document.getElementById('cmpStrategy').addEventListener('change', cmpRun);
+
+  // Auto-select first two different funds
+  var selA = document.getElementById('cmpFundA');
+  var selB = document.getElementById('cmpFundB');
+  if (funds.length >= 2) {
+    selA.value = cmpFundKey(funds[0]);
+    selB.value = cmpFundKey(funds[1]);
+    cmpRun();
+  } else if (funds.length === 1) {
+    selA.value = cmpFundKey(funds[0]);
+    document.getElementById('cmpStatus').textContent = 'Need at least 2 funds to compare.';
+  } else {
+    document.getElementById('cmpStatus').textContent = 'No fund data available. Run NPS Scanner first.';
+  }
+}
+
+// ── Run comparison ──
+function cmpRun() {
+  var keyA = document.getElementById('cmpFundA').value;
+  var keyB = document.getElementById('cmpFundB').value;
+  var tf = document.getElementById('cmpTf').value;
+  var stratSel = document.getElementById('cmpStrategy');
+  var strategy = stratSel ? stratSel.value : 'rsi14';
+  _cmpStrategy = strategy;
+  var status = document.getElementById('cmpStatus');
+
+  if (!keyA || !keyB) { status.textContent = 'Select both funds.'; return; }
+  if (keyA === keyB) { status.textContent = 'Select two different funds.'; return; }
+
+  status.textContent = 'Loading\u2026';
+  status.style.color = '#888';
+
+  // Destroy old charts
+  CHARTS.forEach(function(c) { try { c.chart.destroy(); } catch(e){} });
+  CHARTS = [];
+
+  // Get fund names for labels
+  var funds = cmpGetFundList();
+  var nameA = keyA, nameB = keyB;
+  for (var i = 0; i < funds.length; i++) {
+    if (cmpFundKey(funds[i]) === keyA) nameA = cmpFundName(funds[i]);
+    if (cmpFundKey(funds[i]) === keyB) nameB = cmpFundName(funds[i]);
+  }
+
+  // Build data (strategy-aware)
+  var dataA = cmpBuildChartData(keyA, tf, strategy);
+  var dataB = cmpBuildChartData(keyB, tf, strategy);
+
+  if (!dataA || !dataA.closes.length) { status.textContent = 'No data for Fund A. Run NPS Scanner first.'; status.style.color = '#c8102e'; return; }
+  if (!dataB || !dataB.closes.length) { status.textContent = 'No data for Fund B. Run NPS Scanner first.'; status.style.color = '#c8102e'; return; }
+
+  var ptsA = dataA.closes.length, ptsB = dataB.closes.length;
+  var stratLabel = strategy==='rsi14'?'RSI(14)':strategy==='sma8'?'SMA(8)':'HILEGA';
+  status.textContent = nameA + ' (' + ptsA + ' ' + dataA.tfLabel.toLowerCase() + ' pts) vs ' + nameB + ' (' + ptsB + ' ' + dataB.tfLabel.toLowerCase() + ' pts) [' + stratLabel + ']';
+  status.style.color = '#333';
+
+  // Update header subtitle
+  var subtitle = document.getElementById('cmpSubtitle');
+  if (subtitle) {
+    if (strategy==='sma8') subtitle.textContent = 'Price + SMA(8) Crossover with synchronized crosshair';
+    else if (strategy==='hilega') subtitle.textContent = 'Price + Hilega Charts (RSI9+WMA21+EMA3) with synchronized crosshair';
+    else subtitle.textContent = 'Price + RSI(14) with synchronized crosshair';
+  }
+
+  // Update chart labels
+  var lowerLabel = strategy==='rsi14'?'RSI(14)':strategy==='sma8'?'Price vs SMA(8) %':'Hilega (RSI9+WMA21+EMA3)';
+  document.getElementById('cmpLabelAPrice').textContent = nameA + ' \u2014 Price';
+  document.getElementById('cmpLabelBPrice').textContent = nameB + ' \u2014 Price';
+  document.getElementById('cmpLabelARsi').textContent = nameA + ' \u2014 ' + lowerLabel;
+  document.getElementById('cmpLabelBRsi').textContent = nameB + ' \u2014 ' + lowerLabel;
+
+  // Update legend
+  var legend = document.getElementById('cmpLegend');
+  if (legend) {
+    if (strategy === 'sma8') {
+      legend.innerHTML = '<span><span style="display:inline-block;width:18px;height:2px;background:#f59e0b;vertical-align:middle;margin-right:4px;border-radius:1px;"></span>SMA(8)</span>'
+        + '<span><span style="display:inline-block;width:18px;height:2px;background:#0055aa;vertical-align:middle;margin-right:4px;border-radius:1px;"></span>NAV</span>'
+        + '<span style="color:#888;">Lower: Price vs SMA(8) distance %</span>';
+    } else if (strategy === 'hilega') {
+      legend.innerHTML = '<span><span style="display:inline-block;width:18px;height:2px;background:#1a1a1a;vertical-align:middle;margin-right:4px;border-radius:1px;"></span>RSI(9)</span>'
+        + '<span><span style="display:inline-block;width:18px;height:2px;background:#e11d48;vertical-align:middle;margin-right:4px;border-top:1px dashed #e11d48;"></span>WMA(21)</span>'
+        + '<span><span style="display:inline-block;width:18px;height:2px;background:#16a34a;vertical-align:middle;margin-right:4px;"></span>EMA(3)</span>'
+        + '<span style="color:#009e70;">Green: RSI &gt; 50</span>';
+    } else {
+      legend.innerHTML = '<span><span style="display:inline-block;width:18px;height:2px;background:#1a1a1a;vertical-align:middle;margin-right:4px;border-radius:1px;"></span>RSI(14)</span>'
+        + '<span><span style="display:inline-block;width:18px;height:2px;background:#e11d48;vertical-align:middle;margin-right:4px;border-radius:1px;border-top:1px dashed #e11d48;"></span>EMA(8)</span>'
+        + '<span style="color:#009e70;">Green zone: RSI &gt; 50</span>'
+        + '<span style="color:#c8102e;">Red zone: RSI &lt; 40</span>';
+    }
+  }
+
+  // Set fund labels on crosshair plugin config for tooltip
+  var pA = { xIndex: -1, fundLabel: nameA };
+  var pB = { xIndex: -1, fundLabel: nameB };
+
+  // Create 4 charts (strategy-aware)
+  var cAP = cmpCreateChart('cmpCanvasAPrice', dataA, 'price', 'A', strategy);
+  var cBP = cmpCreateChart('cmpCanvasBPrice', dataB, 'price', 'B', strategy);
+  var cAR = cmpCreateChart('cmpCanvasARsi', dataA, 'lower', 'A', strategy);
+  var cBR = cmpCreateChart('cmpCanvasBRsi', dataB, 'lower', 'B', strategy);
+
+  if (cAP) { cAP.options.plugins.cmpSyncCrosshair = pA; CHARTS.push({chart:cAP, type:'price', idx:0}); }
+  if (cBP) { cBP.options.plugins.cmpSyncCrosshair = pB; CHARTS.push({chart:cBP, type:'price', idx:1}); }
+  if (cAR) { cAR.options.plugins.cmpSyncCrosshair = pA; CHARTS.push({chart:cAR, type:'lower', idx:2}); }
+  if (cBR) { cBR.options.plugins.cmpSyncCrosshair = pB; CHARTS.push({chart:cBR, type:'lower', idx:3}); }
+
+  // Position tooltip near mouse
+  var tooltip = document.getElementById('cmpTooltip');
+  if (tooltip && !tooltip._cmpMouseListener) {
+    tooltip._cmpMouseListener = true;
+    document.addEventListener('mousemove', function(e) {
+      if (tooltip.style.display === 'none') return;
+      var x = e.clientX + 14, y = e.clientY + 14;
+      if (x + 300 > window.innerWidth) x = e.clientX - 300;
+      if (y + 80 > window.innerHeight) y = e.clientY - 80;
+      tooltip.style.left = x + 'px';
+      tooltip.style.top = y + 'px';
+    });
+  }
+}
+
+} catch(e) {
+  console.error('[CMP] Compare IIFE error:', e);
+  if (!window.cmpInitTab) {
+    window.cmpInitTab = function() {
+      var root = document.getElementById('cmpRoot');
+      if (root) root.innerHTML = '<div style="padding:20px;color:red;font-family:monospace;">Compare module failed to load. Check console.</div>';
+    };
+  }
+}
+
+})();
+
+
+// ╔══════════════════════════════════════════════════════════════════════════╗
+// ║  SECTION: Simulation & Training — 10-Year Backtest Engine             ║
+// ║  Price + RSI on same page, single crosshair, buy/sell simulation      ║
+// ╚══════════════════════════════════════════════════════════════════════════╝
+(function(){
+'use strict';
+try {
+
+var _simInited = false;
+var _priceChart = null, _rsiChart = null;
+var _simData = null; // current simulation data
+
+// ── Zoom state & functions for Simulation charts ──
+var _simZoom = { start: 0, end: -1, total: 0 };
+
+function simApplyZoom() {
+  if (!_priceChart || !_rsiChart) return;
+  var info = document.getElementById('simZoomInfo');
+  if (_simZoom.end < 0 || _simZoom.end >= _simZoom.total) {
+    _priceChart.options.scales.x.min = undefined;
+    _priceChart.options.scales.x.max = undefined;
+    _rsiChart.options.scales.x.min = undefined;
+    _rsiChart.options.scales.x.max = undefined;
+    if (info) info.textContent = 'ALL (' + _simZoom.total + ')';
+  } else {
+    var s = Math.max(0, _simZoom.start);
+    var e = Math.min(_simZoom.end, _simZoom.total - 1);
+    _priceChart.options.scales.x.min = s;
+    _priceChart.options.scales.x.max = e;
+    _rsiChart.options.scales.x.min = s;
+    _rsiChart.options.scales.x.max = e;
+    if (info) info.textContent = (e - s + 1) + ' / ' + _simZoom.total;
+  }
+  _priceChart.update('none');
+  _rsiChart.update('none');
+  var slider = document.getElementById('simZoomSlider');
+  if (slider && _simZoom.total > 0) {
+    slider.max = Math.max(0, _simZoom.total - 1);
+    var visEnd = _simZoom.end < 0 ? _simZoom.total - 1 : _simZoom.end;
+    var visRange = visEnd - _simZoom.start + 1;
+    slider.value = _simZoom.start;
+    slider.disabled = (visRange >= _simZoom.total);
+  }
+}
+
+function simZoomWheel(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  if (!_simZoom.total) return;
+  var delta = e.deltaY > 0 ? 1 : -1;
+  var curRange = _simZoom.end - _simZoom.start;
+  if (curRange < 0) curRange = _simZoom.total - 1;
+  var zoomStep = Math.max(5, Math.floor(curRange * 0.1));
+  var newRange = curRange - delta * zoomStep;
+  if (newRange < 20) newRange = 20;
+  if (newRange >= _simZoom.total) { simZoomReset(); return; }
+  var center = (_simZoom.end >= 0) ? _simZoom.start + Math.floor(curRange / 2) : Math.floor(_simZoom.total / 2);
+  _simZoom.start = Math.max(0, Math.min(center - Math.floor(newRange / 2), _simZoom.total - newRange));
+  _simZoom.end = _simZoom.start + newRange - 1;
+  simApplyZoom();
+}
+
+function simZoomBtn(dir) {
+  if (!_simZoom.total) return;
+  var curRange = _simZoom.end - _simZoom.start;
+  if (curRange < 0) curRange = _simZoom.total - 1;
+  var zoomStep = Math.max(5, Math.floor(curRange * 0.15));
+  var newRange = curRange - dir * zoomStep;
+  if (newRange < 20) newRange = 20;
+  if (newRange >= _simZoom.total) newRange = _simZoom.total - 1;
+  var center = (_simZoom.end >= 0) ? _simZoom.start + Math.floor(curRange / 2) : Math.floor(_simZoom.total / 2);
+  _simZoom.start = Math.max(0, Math.min(center - Math.floor(newRange / 2), _simZoom.total - newRange));
+  _simZoom.end = _simZoom.start + newRange - 1;
+  simApplyZoom();
+}
+
+function simZoomReset() {
+  if (!_simZoom.total) return;
+  _simZoom.start = 0;
+  _simZoom.end = -1;
+  simApplyZoom();
+}
+
+function simZoomSliderInput() {
+  var slider = document.getElementById('simZoomSlider');
+  if (!slider || !_simZoom.total) return;
+  var pos = parseInt(slider.value, 10);
+  var curRange = _simZoom.end - _simZoom.start;
+  if (curRange < 20) { simZoomReset(); return; }
+  if (curRange < 0) curRange = _simZoom.total - 1;
+  _simZoom.start = Math.max(0, Math.min(pos, _simZoom.total - curRange));
+  _simZoom.end = _simZoom.start + curRange - 1;
+  simApplyZoom();
+}
+
+function simInitZoom(totalPoints) {
+  _simZoom.total = totalPoints;
+  _simZoom.start = 0;
+  _simZoom.end = -1;
+  var pWrap = document.getElementById('simPriceWrap');
+  var rWrap = document.getElementById('simRsiWrap');
+  if (pWrap) { pWrap.removeEventListener('wheel', simZoomWheel); pWrap.addEventListener('wheel', simZoomWheel, {passive: false}); }
+  if (rWrap) { rWrap.removeEventListener('wheel', simZoomWheel); rWrap.addEventListener('wheel', simZoomWheel, {passive: false}); }
+  var slider = document.getElementById('simZoomSlider');
+  if (slider) { slider.max = Math.max(0, totalPoints - 1); slider.value = 0; slider.disabled = true; }
+  var info = document.getElementById('simZoomInfo');
+  if (info) info.textContent = 'ALL (' + totalPoints + ')';
+}
+
+// Expose to global scope for inline HTML onclick/oninput handlers
+window.simZoomReset = simZoomReset;
+window.simZoomBtn = simZoomBtn;
+window.simZoomSliderInput = simZoomSliderInput;
+
+// ── Single Crosshair Plugin (spans both charts) ──
+var simCrosshair = {
+  id: 'simCrosshair',
+  afterEvent: function(chart, args) {
+    var evt = args.event;
+    if (evt.type !== 'mousemove' && evt.type !== 'mouseout') return;
+    if (evt.type === 'mouseout') {
+      if (_priceChart) { _priceChart.options.plugins.simCrosshair.xIdx = -1; _priceChart.update('none'); }
+      if (_rsiChart) { _rsiChart.options.plugins.simCrosshair.xIdx = -1; _rsiChart.update('none'); }
+      var tip = document.getElementById('simTooltip');
+      if (tip) tip.style.display = 'none';
+      return;
+    }
+    var els = chart.getElementsAtEventForMode(evt, 'index', {intersect:false}, true);
+    if (!els.length) return;
+    var idx = els[0].index;
+    if (_priceChart) { _priceChart.options.plugins.simCrosshair.xIdx = idx; if (_priceChart !== chart) _priceChart.update('none'); else _priceChart.draw(); }
+    if (_rsiChart) { _rsiChart.options.plugins.simCrosshair.xIdx = idx; if (_rsiChart !== chart) _rsiChart.update('none'); else _rsiChart.draw(); }
+    simShowTooltip(idx);
+  },
+  afterDraw: function(chart) {
+    var xi = chart.options.plugins.simCrosshair.xIdx;
+    if (xi == null || xi < 0) return;
+    var xs = chart.scales.x;
+    if (!xs || xi >= (xs.ticks ? xs.ticks.length : 9999)) return;
+    var x = xs.getPixelForValue(xi);
+    var area = chart.chartArea;
+    var ctx = chart.ctx;
+    ctx.save();
+    ctx.beginPath();
+    ctx.setLineDash([4,3]);
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(0,0,0,0.45)';
+    ctx.moveTo(x, area.top);
+    ctx.lineTo(x, area.bottom);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.arc(x, area.bottom - 3, 3, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(0,0,0,0.5)';
+    ctx.fill();
+    ctx.restore();
+  },
+  defaults: { xIdx: -1 }
+};
+// Plugin will be registered lazily in simInitTab
+
+// ── Tooltip ──
+function simShowTooltip(idx) {
+  var tip = document.getElementById('simTooltip');
+  if (!tip || !_simData || idx < 0) { if (tip) tip.style.display='none'; return; }
+  var d = _simData;
+  var label = d.labels[idx] || '';
+  var price = d.closes[idx];
+  var rsi = d.rsi[idx];
+  var ema = d.ema8[idx];
+  var sig = d.signals ? d.signals[idx] : null;
+  var html = '<b>'+label+'</b><br>NAV: '+(price!=null?price.toFixed(2):'\u2014')+' &nbsp; EMA8: '+(ema!=null?ema.toFixed(2):'\u2014')+' &nbsp; RSI(14): '+(rsi!=null?rsi.toFixed(1):'\u2014');
+  if (sig) html += '<br><span style="color:'+(sig==='BUY'?'#16a34a':'#ef4444')+';font-weight:700">'+sig+'</span>';
+  if (d.trades) {
+    for (var t=0;t<d.trades.length;t++) {
+      var tr = d.trades[t];
+      if (tr.buyIdx === idx) html += '<br><span style="color:#16a34a;font-weight:700">\u25B2 BUY @ '+d.closes[idx].toFixed(2)+'</span>';
+      if (tr.sellIdx === idx) html += '<br><span style="color:#ef4444;font-weight:700">\u25BC SELL @ '+d.closes[idx].toFixed(2)+'</span>';
+    }
+  }
+  tip.innerHTML = html;
+  tip.style.display = 'block';
+}
+
+// ── Parse entries ──
+function simParseEntries(entries) {
+  var closes=[], dates=[];
+  for (var i=0;i<entries.length;i++){
+    var p=entries[i].split('|');
+    if(p.length<5)continue;
+    var ds=p[0], dd=+ds.substring(0,2), mm=+ds.substring(2,4)-1, yy=+ds.substring(4,8);
+    var d=new Date(yy,mm,dd);
+    var c=parseFloat(p[4]);
+    if(!isNaN(c)&&d.getTime()){closes.push(c);dates.push(d);}
+  }
+  var idx=Array.from({length:dates.length},function(_,i){return i;});
+  idx.sort(function(a,b){return dates[a]-dates[b];});
+  return {closes:idx.map(function(i){return closes[i];}),dates:idx.map(function(i){return dates[i];})};
+}
+
+// ── Wilder RSI (full-length, null-prefilled like hmCalcRSI) ──
+function simCalcRSI(closes, period) {
+  var rsi = new Array(closes.length).fill(null);
+  var v = [];
+  for (var i=0;i<closes.length;i++){if(closes[i]!=null&&!isNaN(closes[i]))v.push(closes[i]);else v.push(null);}
+  // Find first valid stretch
+  var start = -1, count = 0;
+  for (var i=0;i<v.length;i++){
+    if(v[i]!=null){if(start<0)start=i;count++;}
+    else{start=-1;count=0;}
+    if(count>=period+1)break;
+  }
+  if(count<period+1) return rsi;
+  var base = start;
+  var gains=0, losses=0;
+  for(var i=base+1;i<=base+period;i++){var d=v[i]-v[i-1];if(d>0)gains+=d;else losses-=d;}
+  var ag=gains/period, al=losses/period;
+  rsi[base+period] = al===0?100:ag===0?0:100-100/(1+ag/al);
+  for(var i=base+period+1;i<v.length;i++){
+    if(v[i]==null||v[i-1]==null)continue;
+    var d2=v[i]-v[i-1];
+    ag=(ag*(period-1)+(d2>0?d2:0))/period;
+    al=(al*(period-1)+(d2<0?-d2:0))/period;
+    rsi[i]=ag===0&&al===0?50:al===0?100:ag===0?0:100-100/(1+ag/al);
+  }
+  return rsi;
+}
+
+// ── EMA ──
+function simCalcEMA(data, period) {
+  if(!data||data.length<period) return new Array(data?data.length:0).fill(null);
+  var out=new Array(data.length).fill(null), k=2/(period+1), sum=0;
+  for(var i=0;i<period;i++) sum+=data[i];
+  out[period-1]=sum/period;
+  for(var i=period;i<data.length;i++) out[i]=data[i]*k+out[i-1]*(1-k);
+  return out;
+}
+
+// ── Simple Moving Average (full series) ──
+function simCalcSMA(data, period) {
+  if(!data||data.length<period) return new Array(data?data.length:0).fill(null);
+  var out=new Array(data.length).fill(null), sum=0;
+  for(var i=0;i<period;i++) sum+=data[i];
+  out[period-1]=sum/period;
+  for(var i=period;i<data.length;i++) {
+    sum += data[i] - data[i-period];
+    out[i] = sum/period;
+  }
+  return out;
+}
+
+// ── Weighted Moving Average (full series, linear weights) ──
+function simCalcWMASeries(data, period) {
+  if(!data||data.length<period) return new Array(data?data.length:0).fill(null);
+  var out=new Array(data.length).fill(null);
+  var weightSum = period*(period+1)/2;
+  for(var i=period-1;i<data.length;i++) {
+    var num=0;
+    for(var j=0;j<period;j++) num+=data[i-j]*(period-j);
+    out[i]=num/weightSum;
+  }
+  return out;
+}
+
+// ── Resample ──
+function simToWeekly(closes, dates) {
+  var map={};
+  for(var i=0;i<dates.length;i++){
+    var d=dates[i],day=d.getDay(),mon=new Date(d);
+    mon.setDate(d.getDate()-(day===0?6:day-1));
+    var key=mon.getFullYear()+'-'+String(mon.getMonth()+1).padStart(2,'0')+'-'+String(mon.getDate()).padStart(2,'0');
+    map[key]={c:closes[i],d:d};
+  }
+  var keys=Object.keys(map).sort();
+  return {closes:keys.map(function(k){return map[k].c;}),dates:keys.map(function(k){return map[k].d;})};
+}
+function simToMonthly(closes, dates) {
+  var map={};
+  for(var i=0;i<dates.length;i++){
+    var d=dates[i];
+    var key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+    map[key]={c:closes[i],d:d};
+  }
+  var keys=Object.keys(map).sort();
+  return {closes:keys.map(function(k){return map[k].c;}),dates:keys.map(function(k){return map[k].d;})};
+}
+
+// ── Get data from cache ──
+function simGetData(fundKey, tf) {
+  var dm=(window._ldScannerData&&window._ldScannerData.dailyMap)||(window._deepWeeklyCache&&window._deepWeeklyCache.dailyMap)||{};
+  var wm=(window._deepWeeklyCache&&window._deepWeeklyCache.weeklyMap)||{};
+  var mm=(window._deepWeeklyCache&&window._deepWeeklyCache.monthlyMap)||{};
+
+  var raw = null;
+  if (tf==='daily') raw = dm[fundKey];
+  else if (tf==='weekly') raw = wm[fundKey] || dm[fundKey];
+  else raw = mm[fundKey] || dm[fundKey];
+
+  if (!raw||!raw.length) return null;
+  var parsed = simParseEntries(raw);
+
+  if (tf==='weekly' && raw===dm[fundKey]) { var w=simToWeekly(parsed.closes,parsed.dates); parsed.closes=w.closes; parsed.dates=w.dates; }
+  if (tf==='monthly' && raw===dm[fundKey]) { var m=simToMonthly(parsed.closes,parsed.dates); parsed.closes=m.closes; parsed.dates=m.dates; }
+
+  return parsed;
+}
+
+// ── Format date ──
+function simFmtDate(d, tf) {
+  if(!d)return '';
+  var dd=d.getDate(),mm=d.getMonth()+1,yy=d.getFullYear();
+  if(tf==='monthly') return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][mm-1]+' '+yy;
+  if(tf==='weekly') return dd+'/'+mm;
+  return dd+'/'+mm+'/'+yy;
+}
+
+// ── SIMULATION ENGINE ──
+function simRunEngine(closes, rsi, ema8, capital, buyRsiLow, buyRsiHigh, sellRsiLow, sellRsiHigh) {
+  // Strategy: BUY when RSI enters [buyRsiLow, buyRsiHigh] zone (oversold/cooling in bull)
+  // SELL when RSI exits above sellRsiHigh (overbought) or drops below sellRsiLow (bear trap)
+  var trades = [];
+  var inTrade = false;
+  var buyPrice = 0, buyIdx = 0, buyDate = '';
+  var rsiPeriod = 14;
+
+  for (var i = rsiPeriod + 1; i < closes.length; i++) {
+    var r = rsi[i], p = closes[i];
+    if (r == null || p == null) continue;
+
+    if (!inTrade) {
+      // LOOK FOR BUY: RSI crosses UP into buy zone
+      var inBuyZone = r >= buyRsiLow && r <= buyRsiHigh;
+      var prevR = rsi[i-1];
+      var wasBelow = prevR != null && prevR < buyRsiLow;
+      if (inBuyZone && (wasBelow || i === rsiPeriod + 1)) {
+        inTrade = true;
+        buyPrice = p;
+        buyIdx = i;
+        buyDate = '';
+      }
+    } else {
+      // LOOK FOR SELL: RSI exits above sellRsiHigh (take profit) or drops below sellRsiLow (stop loss / regime break)
+      if (r >= sellRsiHigh || r <= sellRsiLow) {
+        var sellPrice = p;
+        var pnl = sellPrice - buyPrice;
+        var pnlPct = (pnl / buyPrice) * 100;
+        var units = capital / buyPrice;
+        trades.push({
+          buyIdx: buyIdx, sellIdx: i,
+          buyPrice: buyPrice, sellPrice: sellPrice,
+          pnl: pnl, pnlPct: pnlPct,
+          units: units, invested: capital,
+          returnAmt: units * sellPrice,
+          holdBars: i - buyIdx,
+          sellReason: r >= sellRsiHigh ? 'RSI overbought (' + r.toFixed(1) + ')' : 'RSI breakdown (' + r.toFixed(1) + ')'
+        });
+        inTrade = false;
+      }
+    }
+  }
+  // Force-close last open trade
+  if (inTrade) {
+    var lastP = closes[closes.length-1], lastR = rsi[closes.length-1], lastI = closes.length-1;
+    var pnl2 = lastP - buyPrice;
+    var pnlPct2 = (pnl2/buyPrice)*100;
+    var units2 = capital/buyPrice;
+    trades.push({
+      buyIdx: buyIdx, sellIdx: lastI,
+      buyPrice: buyPrice, sellPrice: lastP,
+      pnl: pnl2, pnlPct: pnlPct2,
+      units: units2, invested: capital,
+      returnAmt: units2*lastP,
+      holdBars: lastI - buyIdx,
+      sellReason: 'End of data (RSI '+(lastR!=null?lastR.toFixed(1):'?')+')'
+    });
+  }
+  return trades;
+}
+
+// ── ENGINE 2: SMA(8) Crossover ──
+// BUY: Price crosses ABOVE SMA(8)  |  SELL: Price crosses BELOW SMA(8)
+function simRunEngineSMA(closes, sma, capital) {
+  var trades = [];
+  var inTrade = false;
+  var buyPrice = 0, buyIdx = 0;
+  var smaPeriod = 8;
+
+  for (var i = smaPeriod; i < closes.length; i++) {
+    var p = closes[i], s = sma[i];
+    if (p == null || s == null) continue;
+    var prevP = closes[i-1], prevS = sma[i-1];
+
+    if (!inTrade) {
+      // BUY: price crosses above SMA (prev below or at, now above)
+      if (prevP != null && prevS != null && prevP <= prevS && p > s) {
+        inTrade = true;
+        buyPrice = p;
+        buyIdx = i;
+      }
+    } else {
+      // SELL: price crosses below SMA
+      if (prevP != null && prevS != null && prevP >= prevS && p < s) {
+        var pnl = p - buyPrice;
+        var pnlPct = (pnl / buyPrice) * 100;
+        var units = capital / buyPrice;
+        trades.push({
+          buyIdx: buyIdx, sellIdx: i,
+          buyPrice: buyPrice, sellPrice: p,
+          pnl: pnl, pnlPct: pnlPct,
+          units: units, invested: capital,
+          returnAmt: units * p,
+          holdBars: i - buyIdx,
+          sellReason: 'SMA(8) bearish cross (' + p.toFixed(2) + ' < ' + s.toFixed(2) + ')'
+        });
+        inTrade = false;
+      }
+    }
+  }
+  if (inTrade) {
+    var lastP = closes[closes.length-1], lastI = closes.length-1;
+    var pnl2 = lastP - buyPrice;
+    var pnlPct2 = (pnl2/buyPrice)*100;
+    var units2 = capital/buyPrice;
+    trades.push({
+      buyIdx: buyIdx, sellIdx: lastI,
+      buyPrice: buyPrice, sellPrice: lastP,
+      pnl: pnl2, pnlPct: pnlPct2,
+      units: units2, invested: capital,
+      returnAmt: units2*lastP,
+      holdBars: lastI - buyIdx,
+      sellReason: 'End of data'
+    });
+  }
+  return trades;
+}
+
+// ── ENGINE 3: Hilega Charts — RSI(9) + WMA(21) + EMA(3) ──
+// Mirrors the Hilega tab's visual crossover system:
+//   BUY  when RSI(9) crosses UP through WMA(21) or EMA(3) while RSI was below both
+//   SELL when RSI(9) crosses DOWN through WMA(21) or EMA(3) while RSI was above both
+function simRunEngineHilega(closes, rsi9, wma21, ema3, capital) {
+  var trades = [];
+  var inTrade = false;
+  var buyPrice = 0, buyIdx = 0;
+  var minStart = 25;
+
+  for (var i = minStart; i < closes.length; i++) {
+    var r = rsi9[i], w = wma21[i], e = ema3[i], p = closes[i];
+    if (r == null || p == null) continue;
+    var prevR = rsi9[i-1], prevW = wma21[i-1], prevE = ema3[i-1];
+
+    if (!inTrade) {
+      if (prevR != null) {
+        var rsiBelow = (prevW != null && prevR < prevW) || (prevE != null && prevR < prevE);
+        var crossedUpW = (w != null && prevW != null && prevR <= prevW && r > w);
+        var crossedUpE = (e != null && prevE != null && prevR <= prevE && r > e);
+        if (rsiBelow && (crossedUpW || crossedUpE)) {
+          inTrade = true;
+          buyPrice = p;
+          buyIdx = i;
+        }
+      }
+    } else {
+      if (prevR != null) {
+        var rsiAbove = (prevW != null && prevR > prevW) || (prevE != null && prevR > prevE);
+        var crossedDownW = (w != null && prevW != null && prevR >= prevW && r < w);
+        var crossedDownE = (e != null && prevE != null && prevR >= prevE && r < e);
+        if (rsiAbove && (crossedDownW || crossedDownE)) {
+          var pnl = p - buyPrice;
+          var pnlPct = (pnl / buyPrice) * 100;
+          var units = capital / buyPrice;
+          var reason = crossedDownW
+            ? 'RSI(9) crossed below WMA(21) [' + r.toFixed(1) + ' < ' + w.toFixed(1) + ']'
+            : 'RSI(9) crossed below EMA(3) [' + r.toFixed(1) + ' < ' + e.toFixed(1) + ']';
+          trades.push({
+            buyIdx: buyIdx, sellIdx: i,
+            buyPrice: buyPrice, sellPrice: p,
+            pnl: pnl, pnlPct: pnlPct,
+            units: units, invested: capital,
+            returnAmt: units * p,
+            holdBars: i - buyIdx,
+            sellReason: reason
+          });
+          inTrade = false;
+        }
+      }
+    }
+  }
+  if (inTrade) {
+    var lastP = closes[closes.length-1], lastI = closes.length-1;
+    var pnl2 = lastP - buyPrice;
+    var pnlPct2 = (pnl2/buyPrice)*100;
+    var units2 = capital/buyPrice;
+    trades.push({
+      buyIdx: buyIdx, sellIdx: lastI,
+      buyPrice: buyPrice, sellPrice: lastP,
+      pnl: pnl2, pnlPct: pnlPct2,
+      units: units2, invested: capital,
+      returnAmt: units2*lastP,
+      holdBars: lastI - buyIdx,
+      sellReason: 'End of data'
+    });
+  }
+  return trades;
+}
+
+// ── Unified engine dispatcher ──
+function simRunEngineDispatch(strategy, closes, rsi14, ema8, sma8, rsi9, wma21, ema3Rsi, capital, buyLow, buyHigh, sellLow, sellHigh) {
+  if (strategy === 'sma8') {
+    return simRunEngineSMA(closes, sma8, capital);
+  } else if (strategy === 'hilega') {
+    return simRunEngineHilega(closes, rsi9, wma21, ema3Rsi, capital);
+  } else {
+    return simRunEngine(closes, rsi14, ema8, capital, buyLow, buyHigh, sellLow, sellHigh);
+  }
+}
+
+// ── Compute signals array for chart markers ──
+function simBuildSignals(closes, rsi, trades) {
+  var sigs = new Array(closes.length).fill(null);
+  for (var t=0; t<trades.length; t++) {
+    sigs[trades[t].buyIdx] = 'BUY';
+    sigs[trades[t].sellIdx] = 'SELL';
+  }
+  return sigs;
+}
+
+// ── Phase detection: classify each bar as BULL / BEAR / SIDEWAYS ──
+function simDetectPhases(rsi, ema8, closes) {
+  var phases = new Array(rsi.length).fill('SIDEWAYS');
+  for (var i=1; i<rsi.length; i++) {
+    var r = rsi[i], e = ema8[i], p = closes[i];
+    if (r == null) continue;
+    if (r >= 55 && e != null && p > e) phases[i] = 'BULL';
+    else if (r < 40) phases[i] = 'BEAR';
+    else phases[i] = 'SIDEWAYS';
+  }
+  return phases;
+}
+
+// ── Find contiguous phase regions ──
+function simFindPhaseRegions(phases, dates) {
+  var regions = [], cur = null;
+  for (var i=0; i<phases.length; i++) {
+    var ph = phases[i];
+    if (!cur || cur.phase !== ph) {
+      if (cur && cur.count >= 10) regions.push(cur);
+      cur = { phase: ph, startIdx: i, endIdx: i, startDate: dates[i], endDate: dates[i], count: 1 };
+    } else {
+      cur.endIdx = i;
+      cur.endDate = dates[i];
+      cur.count++;
+    }
+  }
+  if (cur && cur.count >= 10) regions.push(cur);
+  return regions;
+}
+
+// ── Compute results statistics ──
+function simComputeStats(trades, capital) {
+  if (!trades.length) return null;
+  var wins=0, losses=0, totalPnl=0, totalReturn=0, maxDD=0, peak=capital, sumHold=0;
+  var bestTrade=null, worstTrade=null;
+  for (var i=0;i<trades.length;i++){
+    var t=trades[i];
+    totalPnl += t.pnl * t.units;
+    totalReturn += t.returnAmt;
+    sumHold += t.holdBars;
+    var equity = capital + totalPnl;
+    if (equity > peak) peak = equity;
+    var dd = peak - equity;
+    if (dd > maxDD) maxDD = dd;
+    if (t.pnl > 0) wins++; else losses++;
+    if (!bestTrade || t.pnlPct > bestTrade.pnlPct) bestTrade = t;
+    if (!worstTrade || t.pnlPct < worstTrade.pnlPct) worstTrade = t;
+  }
+  var winRate = trades.length ? (wins/trades.length*100) : 0;
+  var avgHold = trades.length ? (sumHold/trades.length) : 0;
+  var roi = ((totalPnl/capital)*100);
+  var finalEquity = capital + totalPnl;
+
+  // Improvement suggestions
+  var tips = [];
+  if (winRate < 50) tips.push('Win rate below 50%. Consider widening the SELL zone or tightening the BUY zone to filter false signals.');
+  if (maxDD/capital > 0.15) tips.push('Max drawdown exceeds 15%. Add a hard stop-loss (e.g., sell if price drops 8% below buy price).');
+  if (avgHold < 5 && trades.length > 10) tips.push('Average hold is very short ('+avgHold.toFixed(0)+' bars). You may be overtrading. Increase the buy zone width or switch to a higher timeframe.');
+  if (roi < 0) tips.push('Overall negative ROI. The RSI zone parameters may not suit this fund. Try Buy RSI 35-45, Sell RSI 60+/35- for bear markets.');
+  if (trades.length > 2 && losses > wins) {
+    var avgWin = wins ? trades.filter(function(t){return t.pnl>0;}).reduce(function(s,t){return s+t.pnlPct;},0)/wins : 0;
+    var avgLoss = losses ? trades.filter(function(t){return t.pnl<=0;}).reduce(function(s,t){return s+t.pnlPct;},0)/losses : 0;
+    if (avgWin > Math.abs(avgLoss)*2) tips.push('Your winners are much larger than losers. Consider a wider stop-loss to avoid being shaken out early.');
+  }
+  if (tips.length === 0) tips.push('Strategy looks reasonable. Monitor live performance and re-simulate quarterly.');
+
+  // When to BUY / SELL summary (strategy-aware)
+  var strategy = (typeof _simCurrentStrategy !== 'undefined') ? _simCurrentStrategy : 'rsi14';
+  var whenBuy, whenSell;
+  if (strategy === 'sma8') {
+    whenBuy = 'Buy when the NAV price crosses ABOVE the SMA(8) line from below. This signals the short-term trend has turned bullish — the price is gaining momentum relative to its 8-period average.';
+    whenSell = 'Sell when the NAV price crosses BELOW the SMA(8) line from above. This signals the short-term trend has turned bearish — exit to protect capital from a declining move.';
+  } else if (strategy === 'hilega') {
+    whenBuy = 'Buy when RSI(9) crosses UP through WMA(21) or EMA(3) while RSI was below both. This is the Hilega STRIKE signal — RSI momentum turning up from oversold, confirmed by weighted and exponential moving averages.';
+    whenSell = 'Sell when RSI(9) crosses DOWN through WMA(21) or EMA(3) while RSI was above both. This signals RSI momentum is rolling over from overbought — time to take profits or cut losses.';
+  } else {
+    whenBuy = 'Buy when RSI(14) enters the configured zone from below, confirming the oversold/cooling setup in an uptrend. The RSI must cross UP into the buy zone (not already be sitting inside it).';
+    whenSell = 'Sell when RSI(14) either: (a) rises above the overbought threshold (take profit), or (b) drops below the breakdown threshold (regime change / stop loss).';
+  }
+
+  return {
+    totalTrades: trades.length, wins: wins, losses: losses,
+    winRate: winRate, avgHold: avgHold,
+    totalPnl: totalPnl, roi: roi, finalEquity: finalEquity,
+    maxDD: maxDD, maxDDPct: (maxDD/capital*100),
+    bestTrade: bestTrade, worstTrade: worstTrade,
+    tips: tips, whenBuy: whenBuy, whenSell: whenSell
+  };
+}
+
+// ── Phase-specific parameter suggestions ──
+var PHASE_PRESETS = {
+  BULL:    { buyLow: 42, buyHigh: 52, sellLow: 38, sellHigh: 68, label: 'Bull Phase (RSI buy 42-52, sell >68 or <38)' },
+  BEAR:    { buyLow: 28, buyHigh: 38, sellLow: 20, sellHigh: 50, label: 'Bear Phase (RSI buy 28-38, sell >50 or <20)' },
+  SIDEWAYS:{ buyLow: 38, buyHigh: 48, sellLow: 35, sellHigh: 58, label: 'Sideways (RSI buy 38-48, sell >58 or <35)' }
+};
+
+// ═══════════════════════════════════════════════════════
+// MAIN UI
+// ═══════════════════════════════════════════════════════
+
+function simFundList() {
+  try { return NPS_FUND_LIST || []; } catch(e) {}
+  if (typeof amcFunds !== 'undefined') return Object.values(amcFunds).flat();
+  return [];
+}
+function simFKey(f){ return f.key || f.name.replace(/[^a-zA-Z0-9]/g,'').toLowerCase(); }
+function simFName(f){ return (f.name||f.schemeName||f.key||'Unknown').replace(/^\[NPS\]\s*/i,''); }
+
+var _simPluginRegistered = false;
+window.simInitTab = function() {
+  console.log('[SIM] simInitTab called, _simInited=' + _simInited);
+  try {
+    // Lazy-register the plugin on first use
+    if (!_simPluginRegistered && typeof Chart !== 'undefined') {
+      Chart.register(simCrosshair);
+      _simPluginRegistered = true;
+      console.log('[SIM] Plugin registered OK');
+    }
+    if (!_simInited) { _simInited = true; simRenderUI(); console.log('[SIM] simRenderUI completed'); }
+    // Handle pre-selected fund from Hilega
+    if (window._simPreselectFund) {
+      var sel = document.getElementById('simFund');
+      if (sel) {
+        sel.value = window._simPreselectFund;
+        console.log('[SIM] Pre-selected fund:', window._simPreselectFund);
+      }
+      window._simPreselectFund = null;
+    }
+  } catch(e) {
+    console.error('[SIM] Error in simInitTab:', e);
+    var root = document.getElementById('simRoot');
+    if (root) root.innerHTML = '<div style="padding:20px;color:red;font-family:monospace;">Error loading Simulation tab: ' + e.message + '</div>';
+  }
+};
+
+function simRenderUI() {
+  var funds = simFundList();
+  var opts = funds.map(function(f){
+    return '<option value="'+simFKey(f)+'">'+simFName(f)+'</option>';
+  }).join('');
+
+  var root = document.getElementById('simRoot');
+  if (!root) return;
+
+  root.innerHTML = ''
+  // ── Header ──
+  +'<div style="max-width:1000px;margin:0 auto;padding:8px;font-family:Segoe UI,Arial,sans-serif;color:#0a2540;">'
+  +'<div style="text-align:center;margin-bottom:6px;">'
+    +'<div style="font-size:10px;color:#009e70;letter-spacing:0.18em;text-transform:uppercase;opacity:0.75;">Strategy Backtester</div>'
+    +'<div style="font-size:16px;font-weight:700;">Simulation &amp; Training</div>'
+    +'<div style="font-size:11px;color:#888;margin-top:2px;">10-year historical data \u00B7 3 Strategies: RSI(14) / SMA(8) / Hilega Charts \u00B7 Price + Indicator charts</div>'
+  +'</div>'
+
+  // ── Controls Row 1: Fund + Timeframe + Strategy ──
+  +'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;align-items:flex-end;">'
+    +'<div style="flex:1;min-width:220px;">'
+      +'<div style="font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">Fund</div>'
+      +'<select id="simFund" style="width:100%;padding:5px 6px;border:2px solid #009e70;border-radius:4px;font-size:11px;font-family:Space Mono,Courier New,monospace;background:#fff;">'+opts+'</select>'
+    +'</div>'
+    +'<div style="min-width:100px;">'
+      +'<div style="font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">Timeframe</div>'
+      +'<select id="simTf" style="width:100%;padding:5px 6px;border:1px solid #ccc;border-radius:4px;font-size:11px;font-family:Space Mono,Courier New,monospace;background:#fff;">'
+        +'<option value="weekly" selected>Weekly</option>'
+        +'<option value="daily">Daily</option>'
+        +'<option value="monthly">Monthly</option>'
+      +'</select>'
+    +'</div>'
+    +'<div style="min-width:200px;">'
+      +'<div style="font-size:9px;color:#6366f1;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;font-weight:700;">Strategy</div>'
+      +'<select id="simStrategy" onchange="simOnStrategyChange()" style="width:100%;padding:5px 6px;border:2px solid #6366f1;border-radius:4px;font-size:11px;font-family:Space Mono,Courier New,monospace;background:#fff;color:#333;">'
+        +'<option value="rsi14" selected>RSI(14) Zones</option>'
+        +'<option value="sma8">SMA(8) Crossover</option>'
+        +'<option value="hilega">Hilega Charts (RSI9+WMA21+EMA3)</option>'
+      +'</select>'
+    +'</div>'
+  +'</div>'
+
+  // ── Controls Row 2: Capital + RSI Zones (zones hidden for non-RSI strategies) ──
+  +'<div id="simRsiZoneRow" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;align-items:flex-end;">'
+    +'<div style="min-width:110px;">'
+      +'<div style="font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">Total Capital (\u20B9)</div>'
+      +'<input id="simCapital" type="number" value="100000" min="1000" step="10000" style="width:100%;padding:5px 6px;border:1px solid #ccc;border-radius:4px;font-size:11px;font-family:Space Mono,Courier New,monospace;">'
+    +'</div>'
+    +'<div id="simRsiBuyLowWrap" style="min-width:90px;">'
+      +'<div style="font-size:9px;color:#16a34a;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">Buy RSI Low</div>'
+      +'<input id="simBuyLow" type="number" value="40" min="5" max="80" step="1" style="width:100%;padding:5px 6px;border:1px solid #16a34a;border-radius:4px;font-size:11px;font-family:Space Mono,Courier New,monospace;color:#16a34a;">'
+    +'</div>'
+    +'<div id="simRsiBuyHighWrap" style="min-width:90px;">'
+      +'<div style="font-size:9px;color:#16a34a;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">Buy RSI High</div>'
+      +'<input id="simBuyHigh" type="number" value="50" min="10" max="95" step="1" style="width:100%;padding:5px 6px;border:1px solid #16a34a;border-radius:4px;font-size:11px;font-family:Space Mono,Courier New,monospace;color:#16a34a;">'
+    +'</div>'
+    +'<div id="simRsiSellHighWrap" style="min-width:90px;">'
+      +'<div style="font-size:9px;color:#ef4444;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">Sell RSI High</div>'
+      +'<input id="simSellHigh" type="number" value="65" min="20" max="100" step="1" style="width:100%;padding:5px 6px;border:1px solid #ef4444;border-radius:4px;font-size:11px;font-family:Space Mono,Courier New,monospace;color:#ef4444;">'
+    +'</div>'
+    +'<div id="simRsiSellLowWrap" style="min-width:90px;">'
+      +'<div style="font-size:9px;color:#ef4444;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">Sell RSI Low</div>'
+      +'<input id="simSellLow" type="number" value="35" min="5" max="80" step="1" style="width:100%;padding:5px 6px;border:1px solid #ef4444;border-radius:4px;font-size:11px;font-family:Space Mono,Courier New,monospace;color:#ef4444;">'
+    +'</div>'
+  +'</div>'
+
+  // ── Controls Row 3: Buttons ──
+  +'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;align-items:flex-end;">'
+    +'<button id="simRunBtn" style="padding:6px 20px;background:#009e70;color:#fff;border:none;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;font-family:Space Mono,Courier New,monospace;">RUN SIMULATION</button>'
+    +'<div style="width:1px;height:24px;background:#ccc;margin:0 2px;"></div>'
+    +'<button class="sim-phase-btn" data-phase="BULL" style="padding:5px 12px;background:#d4edda;color:#155724;border:1px solid #28a745;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;font-family:Space Mono,Courier New,monospace;">BULL SIM</button>'
+    +'<button class="sim-phase-btn" data-phase="BEAR" style="padding:5px 12px;background:#fde8e8;color:#721c24;border:1px solid #dc3545;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;font-family:Space Mono,Courier New,monospace;">BEAR SIM</button>'
+    +'<button class="sim-phase-btn" data-phase="SIDEWAYS" style="padding:5px 12px;background:#fff3cd;color:#856404;border:1px solid #ffc107;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;font-family:Space Mono,Courier New,monospace;">SIDEWAYS SIM</button>'
+  +'</div>'
+
+  // ── Status ──
+  +'<div id="simStatus" style="font-size:10px;color:#888;font-family:Space Mono,Courier New,monospace;margin-bottom:4px;min-height:14px;"></div>'
+
+  // ── Charts Container: Price (top, taller) + RSI (bottom, shorter) ──
+  +'<div style="border:1px solid #b0bece;border-radius:6px;overflow:hidden;background:#fff;margin-bottom:6px;">'
+    +'<div id="simPriceLabel" style="font-size:9px;font-weight:700;padding:3px 8px;background:#f2f5f9;border-bottom:1px solid #ddd;font-family:Space Mono,Courier New,monospace;">PRICE (NAV) + EMA(8)</div>'
+    +'<div id="simPriceWrap" style="position:relative;height:32vh;min-height:200px;padding:0 2px 2px 2px;"><canvas id="simPriceCanvas"></canvas></div>'
+  +'</div>'
+  +'<div style="border:1px solid #b0bece;border-radius:6px;overflow:hidden;background:#fff;margin-bottom:6px;">'
+    +'<div id="simRsiLabel" style="font-size:9px;font-weight:700;padding:3px 8px;background:#f2f5f9;border-bottom:1px solid #ddd;font-family:Space Mono,Courier New,monospace;">RSI(14) — Buy/Sell Signals</div>'
+    +'<div id="simRsiWrap" style="position:relative;height:22vh;min-height:140px;padding:0 2px 2px 2px;"><canvas id="simRsiCanvas"></canvas></div>'
+  +'</div>'
+
+
+  // ── Zoom Controls Bar ──
+  +'<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-family:Space Mono,Courier New,monospace;">'
+    +'<span style="font-size:9px;color:#6366f1;font-weight:700;letter-spacing:0.05em;">ZOOM</span>'
+    +'<button onclick="simZoomReset()" style="padding:3px 10px;background:#6366f1;color:#fff;border:none;border-radius:3px;font-size:9px;cursor:pointer;font-weight:700;">RESET</button>'
+    +'<button onclick="simZoomBtn(-1)" style="padding:2px 8px;background:#e0e7ff;color:#6366f1;border:1px solid #c7d2fe;border-radius:3px;font-size:11px;cursor:pointer;font-weight:700;line-height:1.2;">−</button>'
+    +'<button onclick="simZoomBtn(1)" style="padding:2px 8px;background:#e0e7ff;color:#6366f1;border:1px solid #c7d2fe;border-radius:3px;font-size:11px;cursor:pointer;font-weight:700;line-height:1.2;">+</button>'
+    +'<input id="simZoomSlider" type="range" min="0" max="100" value="0" oninput="simZoomSliderInput()" style="flex:1;cursor:pointer;height:6px;accent-color:#6366f1;">'
+    +'<span id="simZoomInfo" style="font-size:9px;color:#888;min-width:80px;text-align:right;white-space:nowrap;">ALL</span>'
+  +'</div>'
+  +'<div style="font-size:8px;color:#aaa;margin-bottom:4px;font-family:Space Mono,Courier New,monospace;">Scroll wheel on charts to zoom in/out · Drag slider to pan</div>'
+
+  // ── Trade Markers Legend ──
+  +'<div id="simLegend" style="display:flex;gap:10px;margin-bottom:6px;font-size:10px;font-family:Space Mono,Courier New,monospace;color:#666;flex-wrap:wrap;">'
+    +'<span style="color:#16a34a;font-weight:700">\u25B2 BUY Signal</span>'
+    +'<span style="color:#ef4444;font-weight:700">\u25BC SELL Signal</span>'
+    +'<span id="simLegendOverlay"><span style="display:inline-block;width:18px;height:2px;background:#e11d48;vertical-align:middle;margin-right:3px;border-top:1px dashed #e11d48;"></span>EMA(8)</span>'
+    +'<span><span style="display:inline-block;width:18px;height:2px;background:#0055aa;vertical-align:middle;margin-right:3px;"></span>NAV</span>'
+  +'</div>'
+
+  // ── Results Panel ──
+  +'<div id="simResults" style="display:none;border:2px solid #009e70;border-radius:8px;padding:10px;background:#f2f5f9;margin-bottom:6px;font-family:Space Mono,Courier New,monospace;font-size:11px;">'
+    +'<div style="font-size:12px;font-weight:700;color:#009e70;margin-bottom:6px;">SIMULATION RESULTS</div>'
+    +'<div id="simStatsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;margin-bottom:8px;"></div>'
+    +'<div id="simTradesTable" style="max-height:200px;overflow-y:auto;border:1px solid #ddd;border-radius:4px;font-size:10px;"></div>'
+  +'</div>'
+
+  // ── Improvement & When to Buy/Sell Panel ──
+  +'<div id="simAdvice" style="display:none;border:2px solid #c97a00;border-radius:8px;padding:10px;background:#fffbeb;margin-bottom:6px;font-family:Segoe UI,Arial,sans-serif;font-size:11px;">'
+    +'<div style="font-size:12px;font-weight:700;color:#c97a00;margin-bottom:6px;">HOW TO IMPROVE &amp; WHEN TO BUY / SELL</div>'
+    +'<div id="simTips" style="margin-bottom:8px;"></div>'
+    +'<div id="simWhenBuySell" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>'
+  +'</div>'
+
+  // ── Phase Simulation Results ──
+  +'<div id="simPhaseResults" style="display:none;border:2px solid #6366f1;border-radius:8px;padding:10px;background:#eef2ff;margin-bottom:6px;font-family:Space Mono,Courier New,monospace;font-size:11px;">'
+    +'<div style="font-size:12px;font-weight:700;color:#6366f1;margin-bottom:6px;">PHASE SIMULATION RESULTS</div>'
+    +'<div id="simPhaseGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"></div>'
+  +'</div>'
+
+  // ── Floating tooltip ──
+  +'<div id="simTooltip" style="display:none;position:fixed;z-index:9999;background:rgba(255,255,255,0.96);border:1px solid #aaa;border-radius:4px;padding:5px 9px;font-family:Space Mono,Courier New,monospace;font-size:10px;line-height:1.6;color:#000;box-shadow:0 2px 12px rgba(0,0,0,0.15);pointer-events:none;max-width:380px;"></div>'
+  +'</div>';
+
+  // Wire events
+  document.getElementById('simRunBtn').addEventListener('click', simExecute);
+  document.getElementById('simFund').addEventListener('change', function(){ simExecute(); });
+  document.getElementById('simTf').addEventListener('change', function(){ simExecute(); });
+
+  var phaseBtns = document.querySelectorAll('.sim-phase-btn');
+  for (var i=0; i<phaseBtns.length; i++) {
+    phaseBtns[i].addEventListener('click', function(){ simRunPhaseSim(this.getAttribute('data-phase')); });
+  }
+
+  // Tooltip follows mouse
+  var tip = document.getElementById('simTooltip');
+  if (tip) {
+    document.addEventListener('mousemove', function(e) {
+      if (tip.style.display==='none') return;
+      var x=e.clientX+14, y=e.clientY+14;
+      if(x+300>window.innerWidth) x=e.clientX-300;
+      if(y+100>window.innerHeight) y=e.clientY-100;
+      tip.style.left=x+'px'; tip.style.top=y+'px';
+    });
+  }
+
+  // Auto-run with first fund
+  if (funds.length) {
+    document.getElementById('simFund').value = simFKey(funds[0]);
+    setTimeout(simExecute, 100);
+  } else {
+    document.getElementById('simStatus').textContent = 'No fund data. Run NPS Scanner first.';
+  }
+}
+
+// ── Execute simulation ──
+// ── Show/hide RSI zone inputs based on strategy ──
+var _simCurrentStrategy = 'rsi14';
+function simOnStrategyChange() {
+  var sel = document.getElementById('simStrategy');
+  if (!sel) return;
+  _simCurrentStrategy = sel.value;
+  var showRsi = (_simCurrentStrategy === 'rsi14');
+  var ids = ['simRsiBuyLowWrap','simRsiBuyHighWrap','simRsiSellHighWrap','simRsiSellLowWrap'];
+  for (var i=0;i<ids.length;i++){
+    var el = document.getElementById(ids[i]);
+    if (el) el.style.display = showRsi ? '' : 'none';
+  }
+}
+
+function simExecute() {
+  var fundKey = document.getElementById('simFund').value;
+  var tf = document.getElementById('simTf').value;
+  var capital = parseFloat(document.getElementById('simCapital').value) || 100000;
+  var buyLow = parseFloat(document.getElementById('simBuyLow').value) || 40;
+  var buyHigh = parseFloat(document.getElementById('simBuyHigh').value) || 50;
+  var sellHigh = parseFloat(document.getElementById('simSellHigh').value) || 65;
+  var sellLow = parseFloat(document.getElementById('simSellLow').value) || 35;
+  var strategy = (document.getElementById('simStrategy') || {}).value || 'rsi14';
+  _simCurrentStrategy = strategy;
+  var status = document.getElementById('simStatus');
+
+  if (!fundKey) { status.textContent='Select a fund.'; return; }
+
+  status.textContent = 'Loading data...';
+  status.style.color = '#888';
+
+  var data = simGetData(fundKey, tf);
+  if (!data || !data.closes.length) {
+    status.textContent = 'No data for this fund/timeframe. Run NPS Scanner first.';
+    status.style.color = '#c8102e';
+    return;
+  }
+
+  var closes = data.closes, dates = data.dates;
+  var labels = dates.map(function(d){ return simFmtDate(d, tf); });
+
+  // Compute all indicators (used selectively per strategy)
+  var rsi14 = simCalcRSI(closes, 14);
+  var ema8 = simCalcEMA(closes, 8);
+  var sma8 = simCalcSMA(closes, 8);
+  var rsi9 = simCalcRSI(closes, 9);
+  var wma21 = simCalcWMASeries(rsi9, 21);
+  var ema3Rsi = simCalcEMA(rsi9, 3);
+
+  // Run the correct engine
+  var trades = simRunEngineDispatch(strategy, closes, rsi14, ema8, sma8, rsi9, wma21, ema3Rsi, capital, buyLow, buyHigh, sellLow, sellHigh);
+  var signals = simBuildSignals(closes, rsi14, trades);
+
+  // Store for tooltip
+  _simData = { closes:closes, dates:dates, rsi:rsi14, rsi9:rsi9, ema8:ema8, sma8:sma8, wma21:wma21, ema3Rsi:ema3Rsi, labels:labels, signals:signals, trades:trades, strategy:strategy };
+
+  var stratLabel = strategy==='rsi14'?'RSI(14)':strategy==='sma8'?'SMA(8)':'HILEGA';
+  var n = closes.length;
+  status.textContent = simFName({key:fundKey}) + ' \u2014 ' + stratLabel + ' \u2014 ' + n + ' ' + tf + ' bars \u2014 ' + trades.length + ' trades';
+  status.style.color = '#333';
+
+  // Render charts (strategy-aware)
+  simRenderChartsEx(closes, ema8, sma8, rsi14, rsi9, wma21, ema3Rsi, labels, signals, trades, dates, tf, strategy);
+
+  // Compute & show results
+  var stats = simComputeStats(trades, capital);
+  simRenderResults(stats, trades, capital, labels, dates, tf);
+}
+
+// ── Strategy-aware chart renderer ──
+function simRenderChartsEx(closes, ema8, sma8, rsi14, rsi9, wma21, ema3Rsi, labels, signals, trades, dates, tf, strategy) {
+  if (_priceChart) { _priceChart.destroy(); _priceChart = null; }
+  if (_rsiChart) { _rsiChart.destroy(); _rsiChart = null; }
+
+  // Update chart header labels
+  var priceLabel = document.getElementById('simPriceLabel');
+  var rsiLabelEl = document.getElementById('simRsiLabel');
+  var legendOverlay = document.getElementById('simLegendOverlay');
+  if (priceLabel) {
+    if (strategy==='sma8') priceLabel.textContent = 'PRICE (NAV) + SMA(8)';
+    else if (strategy==='hilega') priceLabel.textContent = 'PRICE (NAV) + EMA(8) [HILEGA MODE]';
+    else priceLabel.textContent = 'PRICE (NAV) + EMA(8)';
+  }
+  if (legendOverlay) {
+    if (strategy==='sma8') legendOverlay.innerHTML = '<span style="display:inline-block;width:18px;height:2px;background:#f59e0b;vertical-align:middle;margin-right:3px;"></span>SMA(8)';
+    else if (strategy==='hilega') legendOverlay.innerHTML = '<span style="display:inline-block;width:18px;height:2px;background:#e11d48;vertical-align:middle;margin-right:3px;border-top:1px dashed #e11d48;"></span>EMA(8)';
+    else legendOverlay.innerHTML = '<span style="display:inline-block;width:18px;height:2px;background:#e11d48;vertical-align:middle;margin-right:3px;border-top:1px dashed #e11d48;"></span>EMA(8)';
+  }
+
+  // Buy/Sell markers
+  var buyPrices = new Array(closes.length).fill(null);
+  var sellPrices = new Array(closes.length).fill(null);
+  for (var t=0; t<trades.length; t++) {
+    buyPrices[trades[t].buyIdx] = trades[t].buyPrice;
+    sellPrices[trades[t].sellIdx] = trades[t].sellPrice;
+  }
+
+  // ── PRICE CHART ──
+  var priceDatasets = [
+    { label:'NAV', data:closes, borderColor:'#0055aa', backgroundColor:'transparent', borderWidth:1.5, pointRadius:0, pointHoverRadius:2, tension:0.1, order:2 },
+    { label:'BUY', data:buyPrices, borderColor:'transparent', backgroundColor:'#16a34a', pointRadius:6, pointHoverRadius:8, pointStyle:'triangle', showLine:false, order:1 },
+    { label:'SELL', data:sellPrices, borderColor:'transparent', backgroundColor:'#ef4444', pointRadius:6, pointHoverRadius:8, pointStyle:'triangle', rotation:180, showLine:false, order:0 }
+  ];
+  if (strategy === 'sma8') {
+    priceDatasets.splice(1, 0, { label:'SMA(8)', data:sma8, borderColor:'#f59e0b', borderWidth:1.5, pointRadius:0, pointHoverRadius:0, tension:0.1, order:3 });
+  } else {
+    priceDatasets.splice(1, 0, { label:'EMA(8)', data:ema8, borderColor:'#e11d48', borderWidth:1, borderDash:[4,2], pointRadius:0, pointHoverRadius:0, tension:0.2, order:3 });
+  }
+
+  var pCtx = document.getElementById('simPriceCanvas');
+  _priceChart = new Chart(pCtx, {
+    type:'line',
+    data:{ labels:labels, datasets:priceDatasets },
+    options:{
+      responsive:true, maintainAspectRatio:false, animation:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{ legend:{display:false}, tooltip:{enabled:false}, simCrosshair:{xIdx:-1} },
+      scales:{
+        x:{ display:true, ticks:{font:{family:"'Space Mono','Courier New',monospace",size:8},maxTicksLimit:8,maxRotation:0,color:'#888'}, grid:{display:false}, border:{display:false} },
+        y:{ position:'right', grid:{color:'rgba(200,200,200,0.4)',drawBorder:false}, ticks:{font:{family:"'Space Mono','Courier New',monospace",size:9},color:'#555',maxTicksLimit:5,callback:function(v){return v.toFixed(1);}}, border:{display:false} }
+      }
+    }
+  });
+
+  // ── LOWER CHART (varies by strategy) ──
+  var lowerDatasets = [];
+  var lowerYConfig = {};
+
+  if (strategy === 'sma8') {
+    var smaDist = new Array(closes.length).fill(null);
+    for (var i=0;i<closes.length;i++){
+      if (closes[i]!=null && sma8[i]!=null) smaDist[i] = parseFloat(((closes[i]-sma8[i])/sma8[i]*100).toFixed(3));
+    }
+    lowerDatasets = [
+      { label:'Price vs SMA(8) %', data:smaDist, borderColor:'#f59e0b', backgroundColor:'rgba(245,158,11,0.08)', borderWidth:1.5, pointRadius:0, tension:0.1, fill:true }
+    ];
+    if (rsiLabelEl) rsiLabelEl.textContent = 'PRICE vs SMA(8) DISTANCE % — Buy/Sell Signals';
+    lowerYConfig = {
+      position:'right',
+      grid:{color:'rgba(200,200,200,0.4)',drawBorder:false},
+      ticks:{font:{family:"'Space Mono','Courier New',monospace",size:9},color:'#555',maxTicksLimit:5,callback:function(v){return v.toFixed(1)+'%';}},
+      border:{display:false}
+    };
+  } else if (strategy === 'hilega') {
+    var buyR = new Array(rsi9.length).fill(null);
+    var sellR = new Array(rsi9.length).fill(null);
+    for (var t2=0;t2<trades.length;t2++){
+      buyR[trades[t2].buyIdx]=rsi9[trades[t2].buyIdx];
+      sellR[trades[t2].sellIdx]=rsi9[trades[t2].sellIdx];
+    }
+    lowerDatasets = [
+      { label:'RSI(9)', data:rsi9, borderColor:'#000', backgroundColor:'transparent', borderWidth:1.5, pointRadius:0, tension:0.1, order:2 },
+      { label:'WMA(21)', data:wma21, borderColor:'#e11d48', borderWidth:1, borderDash:[6,3], pointRadius:0, tension:0.2, order:3 },
+      { label:'EMA(3)', data:ema3Rsi, borderColor:'#16a34a', borderWidth:1, pointRadius:0, tension:0.3, order:3 },
+      { label:'BUY', data:buyR, borderColor:'transparent', backgroundColor:'#16a34a', pointRadius:6, pointHoverRadius:8, pointStyle:'triangle', showLine:false, order:1 },
+      { label:'SELL', data:sellR, borderColor:'transparent', backgroundColor:'#ef4444', pointRadius:6, pointHoverRadius:8, pointStyle:'triangle', rotation:180, showLine:false, order:0 }
+    ];
+    if (rsiLabelEl) rsiLabelEl.textContent = 'RSI(9) + WMA(21) + EMA(3) — Hilega Buy/Sell Signals';
+    lowerYConfig = {
+      position:'right', min:0, max:100,
+      grid:{color:'rgba(200,200,200,0.4)',drawBorder:false},
+      ticks:{font:{family:"'Space Mono','Courier New',monospace",size:9},color:'#555',stepSize:20,maxTicksLimit:6},
+      border:{display:false}
+    };
+  } else {
+    var buyR14 = new Array(rsi14.length).fill(null);
+    var sellR14 = new Array(rsi14.length).fill(null);
+    for (var t3=0;t3<trades.length;t3++){
+      buyR14[trades[t3].buyIdx]=rsi14[trades[t3].buyIdx];
+      sellR14[trades[t3].sellIdx]=rsi14[trades[t3].sellIdx];
+    }
+    lowerDatasets = [
+      { label:'RSI(14)', data:rsi14, borderColor:'#1a1a1a', backgroundColor:'transparent', borderWidth:1.5, pointRadius:0, tension:0.1, order:2, spanGaps:false },
+      { label:'BUY', data:buyR14, borderColor:'transparent', backgroundColor:'#16a34a', pointRadius:6, pointHoverRadius:8, pointStyle:'triangle', showLine:false, order:1 },
+      { label:'SELL', data:sellR14, borderColor:'transparent', backgroundColor:'#ef4444', pointRadius:6, pointHoverRadius:8, pointStyle:'triangle', rotation:180, showLine:false, order:0 }
+    ];
+    if (rsiLabelEl) rsiLabelEl.textContent = 'RSI(14) — Buy/Sell Signals';
+    lowerYConfig = {
+      position:'right', min:0, max:100,
+      grid:{color:'rgba(200,200,200,0.4)',drawBorder:false},
+      ticks:{font:{family:"'Space Mono','Courier New',monospace",size:9},color:'#555',stepSize:20,maxTicksLimit:6},
+      border:{display:false}
+    };
+  }
+
+  // RSI ref lines plugin (only for 0-100 scale charts)
+  var rsiRefPlugin = null;
+  if (strategy !== 'sma8') {
+    rsiRefPlugin = {
+      id: 'simRsiRef',
+      beforeDraw: function(chart) {
+        var area = chart.chartArea, yScale = chart.scales.y;
+        if (!yScale || yScale.min > 0 || yScale.max < 100) return;
+        var ctx2 = chart.ctx; ctx2.save();
+        var y50 = yScale.getPixelForValue(50), y40 = yScale.getPixelForValue(40);
+        ctx2.fillStyle = 'rgba(0,158,112,0.06)';
+        ctx2.fillRect(area.left, y50, area.width, area.top + area.height - y50);
+        ctx2.fillStyle = 'rgba(200,16,46,0.06)';
+        ctx2.fillRect(area.left, area.top, area.width, y40 - area.top);
+        ctx2.beginPath(); ctx2.setLineDash([4,4]); ctx2.lineWidth = 0.8; ctx2.strokeStyle = 'rgba(0,0,0,0.2)';
+        ctx2.moveTo(area.left, y50); ctx2.lineTo(area.right, y50); ctx2.stroke();
+        ctx2.beginPath(); ctx2.moveTo(area.left, y40); ctx2.lineTo(area.right, y40); ctx2.stroke();
+        ctx2.restore();
+      }
+    };
+  }
+
+  var rCtx = document.getElementById('simRsiCanvas');
+  _rsiChart = new Chart(rCtx, {
+    type:'line',
+    data:{ labels:labels, datasets:lowerDatasets },
+    options:{
+      responsive:true, maintainAspectRatio:false, animation:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{ legend:{display:false}, tooltip:{enabled:false}, simCrosshair:{xIdx:-1} },
+      scales:{ x:{ display:true, ticks:{font:{family:"'Space Mono','Courier New',monospace",size:8},maxTicksLimit:8,maxRotation:0,color:'#888'}, grid:{display:false}, border:{display:false} }, y: lowerYConfig }
+    },
+    plugins: rsiRefPlugin ? [rsiRefPlugin] : []
+  });
+  // Initialize zoom controls
+  simInitZoom(closes.length);
+}
+
+// ── Render both charts ──
+function simRenderCharts(closes, ema8, rsi, labels, signals, trades, dates, tf) {
+  // Destroy old
+  if (_priceChart) { _priceChart.destroy(); _priceChart = null; }
+  if (_rsiChart) { _rsiChart.destroy(); _rsiChart = null; }
+
+  // Buy/Sell point datasets for Price chart
+  var buyPrices = new Array(closes.length).fill(null);
+  var sellPrices = new Array(closes.length).fill(null);
+  for (var t=0; t<trades.length; t++) {
+    buyPrices[trades[t].buyIdx] = trades[t].buyPrice;
+    sellPrices[trades[t].sellIdx] = trades[t].sellPrice;
+  }
+
+  // Buy/Sell point datasets for RSI chart
+  var buyRsi = new Array(rsi.length).fill(null);
+  var sellRsi = new Array(rsi.length).fill(null);
+  for (var t2=0; t2<trades.length; t2++) {
+    buyRsi[trades[t2].buyIdx] = rsi[trades[t2].buyIdx];
+    sellRsi[trades[t2].sellIdx] = rsi[trades[t2].sellIdx];
+  }
+
+  // ── PRICE CHART ──
+  var pCtx = document.getElementById('simPriceCanvas');
+  _priceChart = new Chart(pCtx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        { label:'NAV', data:closes, borderColor:'#0055aa', backgroundColor:'transparent', borderWidth:1.5, pointRadius:0, pointHoverRadius:2, tension:0.1, order:2 },
+        { label:'EMA(8)', data:ema8, borderColor:'#e11d48', borderWidth:1, borderDash:[4,2], pointRadius:0, pointHoverRadius:0, tension:0.2, order:3 },
+        { label:'BUY', data:buyPrices, borderColor:'transparent', backgroundColor:'#16a34a', pointRadius:6, pointHoverRadius:8, pointStyle:'triangle', showLine:false, order:1 },
+        { label:'SELL', data:sellPrices, borderColor:'transparent', backgroundColor:'#ef4444', pointRadius:6, pointHoverRadius:8, pointStyle:'triangle', rotation:180, showLine:false, order:0 }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      animation:{duration:400,easing:'easeOutQuart'},
+      interaction:{mode:'index',intersect:false},
+      plugins:{ legend:{display:false}, tooltip:{enabled:false}, simCrosshair:{xIdx:-1} },
+      scales:{
+        x:{ grid:{color:'rgba(200,200,200,0.3)',drawBorder:false}, ticks:{font:{family:"'Space Mono',monospace",size:8},color:'#888',maxTicksLimit:10,maxRotation:0,autoSkip:true}, border:{display:false} },
+        y:{ position:'right', grid:{color:'rgba(200,200,200,0.3)',drawBorder:false}, ticks:{font:{family:"'Space Mono',monospace",size:9},color:'#555',maxTicksLimit:6,callback:function(v){return v.toFixed(1);}}, border:{display:false} }
+      },
+      layout:{padding:{top:4,right:2,bottom:0,left:0}}
+    },
+    plugins:[simCrosshair]
+  });
+
+  // ── RSI CHART ──
+  var rCtx = document.getElementById('simRsiCanvas');
+  _rsiChart = new Chart(rCtx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        { label:'RSI(14)', data:rsi, borderColor:'#1a1a1a', backgroundColor:'transparent', borderWidth:1.5, pointRadius:0, pointHoverRadius:2, tension:0.1, spanGaps:false, order:2 },
+        { label:'BUY', data:buyRsi, borderColor:'transparent', backgroundColor:'#16a34a', pointRadius:6, pointHoverRadius:8, pointStyle:'triangle', showLine:false, order:1 },
+        { label:'SELL', data:sellRsi, borderColor:'transparent', backgroundColor:'#ef4444', pointRadius:6, pointHoverRadius:8, pointStyle:'triangle', rotation:180, showLine:false, order:0 }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      animation:{duration:400,easing:'easeOutQuart'},
+      interaction:{mode:'index',intersect:false},
+      plugins:{ legend:{display:false}, tooltip:{enabled:false}, simCrosshair:{xIdx:-1} },
+      scales:{
+        x:{ grid:{color:'rgba(200,200,200,0.3)',drawBorder:false}, ticks:{font:{family:"'Space Mono',monospace",size:8},color:'#888',maxTicksLimit:10,maxRotation:0,autoSkip:true}, border:{display:false} },
+        y:{ position:'right', min:0, max:100, grid:{color:'rgba(200,200,200,0.3)',drawBorder:false}, ticks:{font:{family:"'Space Mono',monospace",size:9},color:'#555',stepSize:20,maxTicksLimit:6}, border:{display:false} }
+      },
+      layout:{padding:{top:4,right:2,bottom:0,left:0}}
+    },
+    plugins:[
+      simCrosshair,
+      { // RSI zone shading + 50 line
+        id: 'simRsiZones',
+        beforeDraw: function(chart) {
+          var area=chart.chartArea, yS=chart.scales.y, ctx2=chart.ctx;
+          ctx2.save();
+          // Green above 50
+          var y50=yS.getPixelForValue(50), y100=yS.getPixelForValue(100);
+          ctx2.fillStyle='rgba(0,158,112,0.07)';
+          ctx2.fillRect(area.left,y50,area.width,y100-y50);
+          // Red below 40
+          var y40=yS.getPixelForValue(40), y0=yS.getPixelForValue(0);
+          ctx2.fillStyle='rgba(200,16,46,0.07)';
+          ctx2.fillRect(area.left,y0,area.width,y40-y0);
+          // 50 line
+          ctx2.beginPath(); ctx2.setLineDash([6,3]); ctx2.strokeStyle='rgba(0,0,0,0.2)'; ctx2.lineWidth=1;
+          ctx2.moveTo(area.left,y50); ctx2.lineTo(area.right,y50); ctx2.stroke();
+          // 40 line
+          ctx2.beginPath(); ctx2.setLineDash([2,2]); ctx2.strokeStyle='rgba(200,16,46,0.3)';
+          ctx2.moveTo(area.left,y40); ctx2.lineTo(area.right,y40); ctx2.stroke();
+          ctx2.restore();
+        }
+      }
+    ]
+  });
+  simInitZoom(closes.length);
+}
+
+// ── Render results panel ──
+function simRenderResults(stats, trades, capital, labels, dates, tf) {
+  var resEl = document.getElementById('simResults');
+  var adviceEl = document.getElementById('simAdvice');
+  if (!stats) {
+    resEl.style.display = 'none';
+    adviceEl.style.display = 'none';
+    return;
+  }
+  resEl.style.display = '';
+  adviceEl.style.display = '';
+
+  // Stats grid
+  var grid = document.getElementById('simStatsGrid');
+  grid.innerHTML = ''
+    +'<div style="background:#fff;padding:6px 8px;border-radius:4px;border:1px solid #ddd;"><div style="font-size:9px;color:#888;">TOTAL TRADES</div><div style="font-size:16px;font-weight:700;">'+stats.totalTrades+'</div></div>'
+    +'<div style="background:#fff;padding:6px 8px;border-radius:4px;border:1px solid #ddd;"><div style="font-size:9px;color:#888;">WIN RATE</div><div style="font-size:16px;font-weight:700;color:'+(stats.winRate>=50?'#16a34a':'#ef4444')+';">'+stats.winRate.toFixed(1)+'%</div></div>'
+    +'<div style="background:#fff;padding:6px 8px;border-radius:4px;border:1px solid #ddd;"><div style="font-size:9px;color:#888;">NET P&L</div><div style="font-size:16px;font-weight:700;color:'+(stats.totalPnl>=0?'#16a34a':'#ef4444')+';">\u20B9'+stats.totalPnl.toFixed(0)+'</div></div>'
+    +'<div style="background:#fff;padding:6px 8px;border-radius:4px;border:1px solid #ddd;"><div style="font-size:9px;color:#888;">ROI</div><div style="font-size:16px;font-weight:700;color:'+(stats.roi>=0?'#16a34a':'#ef4444')+';">'+stats.roi.toFixed(2)+'%</div></div>'
+    +'<div style="background:#fff;padding:6px 8px;border-radius:4px;border:1px solid #ddd;"><div style="font-size:9px;color:#888;">MAX DRAWDOWN</div><div style="font-size:16px;font-weight:700;color:#ef4444;">\u20B9'+stats.maxDD.toFixed(0)+' ('+stats.maxDDPct.toFixed(1)+'%)</div></div>'
+    +'<div style="background:#fff;padding:6px 8px;border-radius:4px;border:1px solid #ddd;"><div style="font-size:9px;color:#888;">AVG HOLD</div><div style="font-size:16px;font-weight:700;">'+stats.avgHold.toFixed(0)+' bars</div></div>'
+    +'<div style="background:#fff;padding:6px 8px;border-radius:4px;border:1px solid #ddd;"><div style="font-size:9px;color:#888;">FINAL EQUITY</div><div style="font-size:16px;font-weight:700;">\u20B9'+stats.finalEquity.toFixed(0)+'</div></div>'
+    +'<div style="background:#fff;padding:6px 8px;border-radius:4px;border:1px solid #ddd;"><div style="font-size:9px;color:#888;">WINS / LOSSES</div><div style="font-size:16px;font-weight:700;"><span style="color:#16a34a">'+stats.wins+'</span> / <span style="color:#ef4444">'+stats.losses+'</span></div></div>';
+
+  // Trades table
+  var tbl = document.getElementById('simTradesTable');
+  var html = '<table style="width:100%;border-collapse:collapse;">'
+    +'<tr style="background:#f2f5f9;position:sticky;top:0;"><th style="padding:3px 4px;text-align:left;font-size:9px;">#</th><th style="padding:3px 4px;text-align:right;font-size:9px;">BUY</th><th style="padding:3px 4px;text-align:right;font-size:9px;">SELL</th><th style="padding:3px 4px;text-align:right;font-size:9px;">P&L</th><th style="padding:3px 4px;text-align:right;font-size:9px;">ROI%</th><th style="padding:3px 4px;text-align:right;font-size:9px;">HOLD</th><th style="padding:3px 4px;text-align:left;font-size:9px;">REASON</th></tr>';
+  for (var i=0;i<trades.length;i++){
+    var t=trades[i];
+    var clr = t.pnl>=0?'#16a34a':'#ef4444';
+    var bg = i%2===0?'#fff':'#f9fafb';
+    html += '<tr style="background:'+bg+';"><td style="padding:2px 4px;font-size:9px;">'+(i+1)+'</td>'
+      +'<td style="padding:2px 4px;font-size:9px;text-align:right;color:#16a34a;">'+t.buyPrice.toFixed(2)+'</td>'
+      +'<td style="padding:2px 4px;font-size:9px;text-align:right;color:#ef4444;">'+t.sellPrice.toFixed(2)+'</td>'
+      +'<td style="padding:2px 4px;font-size:9px;text-align:right;color:'+clr+';font-weight:700;">\u20B9'+(t.pnl*t.units).toFixed(0)+'</td>'
+      +'<td style="padding:2px 4px;font-size:9px;text-align:right;color:'+clr+';">'+t.pnlPct.toFixed(2)+'%</td>'
+      +'<td style="padding:2px 4px;font-size:9px;text-align:right;">'+t.holdBars+'</td>'
+      +'<td style="padding:2px 4px;font-size:9px;color:#888;">'+t.sellReason+'</td></tr>';
+  }
+  html += '</table>';
+  tbl.innerHTML = html;
+
+  // Tips
+  var tipsEl = document.getElementById('simTips');
+  var tipsHtml = '';
+  for (var j=0;j<stats.tips.length;j++){
+    tipsHtml += '<div style="display:flex;gap:6px;margin-bottom:4px;"><span style="color:#c97a00;font-weight:700;">\u2022</span><span>'+stats.tips[j]+'</span></div>';
+  }
+  tipsEl.innerHTML = tipsHtml;
+
+  // When to Buy/Sell
+  var wbsEl = document.getElementById('simWhenBuySell');
+  wbsEl.innerHTML = ''
+    +'<div style="background:#d4edda;border-radius:6px;padding:8px;">'
+      +'<div style="font-weight:700;color:#155724;font-size:11px;margin-bottom:4px;">WHEN TO BUY</div>'
+      +'<div style="font-size:10px;color:#1a4d2e;line-height:1.5;">'+stats.whenBuy+'</div>'
+    +'</div>'
+    +'<div style="background:#fde8e8;border-radius:6px;padding:8px;">'
+      +'<div style="font-weight:700;color:#721c24;font-size:11px;margin-bottom:4px;">WHEN TO SELL</div>'
+      +'<div style="font-size:10px;color:#4a1a1a;line-height:1.5;">'+stats.whenSell+'</div>'
+    +'</div>';
+}
+
+// ── Phase Simulation: detect phases, run sims on each ──
+function simRunPhaseSim(phaseName) {
+  var fundKey = document.getElementById('simFund').value;
+  var tf = document.getElementById('simTf').value;
+  var capital = parseFloat(document.getElementById('simCapital').value) || 100000;
+  var strategy = (document.getElementById('simStrategy') || {}).value || 'rsi14';
+  _simCurrentStrategy = strategy;
+  var status = document.getElementById('simStatus');
+
+  var stratLabel = strategy==='rsi14'?'RSI(14)':strategy==='sma8'?'SMA(8)':'HILEGA';
+  status.textContent = 'Running ' + phaseName + ' phase simulation (' + stratLabel + ')...';
+  status.style.color = '#6366f1';
+
+  var data = simGetData(fundKey, tf);
+  if (!data || !data.closes.length) {
+    status.textContent = 'No data. Run NPS Scanner first.';
+    status.style.color = '#c8102e';
+    return;
+  }
+
+  var closes = data.closes, dates = data.dates;
+  var rsi14 = simCalcRSI(closes, 14);
+  var ema8 = simCalcEMA(closes, 8);
+  var sma8 = simCalcSMA(closes, 8);
+  var rsi9 = simCalcRSI(closes, 9);
+  var wma21 = simCalcWMASeries(rsi9, 21);
+  var ema3Rsi = simCalcEMA(rsi9, 3);
+  var phases = simDetectPhases(rsi14, ema8, closes);
+
+  var regions = simFindPhaseRegions(phases, dates);
+  var phaseRegions = regions.filter(function(r){ return r.phase === phaseName; });
+  phaseRegions.sort(function(a,b){ return b.count - a.count; });
+
+  if (!phaseRegions.length) {
+    status.textContent = 'No ' + phaseName + ' phase detected in data.';
+    status.style.color = '#c8102e';
+    return;
+  }
+
+  var preset = PHASE_PRESETS[phaseName];
+  var results = [];
+  var topN = Math.min(5, phaseRegions.length);
+
+  for (var i=0; i<topN; i++) {
+    var reg = phaseRegions[i];
+    var sliceCloses = closes.slice(reg.startIdx, reg.endIdx + 1);
+    var sliceRsi14 = rsi14.slice(reg.startIdx, reg.endIdx + 1);
+    var sliceEma8 = ema8.slice(reg.startIdx, reg.endIdx + 1);
+    var sliceSma8 = sma8.slice(reg.startIdx, reg.endIdx + 1);
+    var sliceRsi9 = rsi9.slice(reg.startIdx, reg.endIdx + 1);
+    var sliceWma21 = wma21.slice(reg.startIdx, reg.endIdx + 1);
+    var sliceEma3Rsi = ema3Rsi.slice(reg.startIdx, reg.endIdx + 1);
+
+    var trades = simRunEngineDispatch(strategy, sliceCloses, sliceRsi14, sliceEma8, sliceSma8, sliceRsi9, sliceWma21, sliceEma3Rsi, capital, preset.buyLow, preset.buyHigh, preset.sellLow, preset.sellHigh);
+    var stats = simComputeStats(trades, capital);
+    results.push({
+      label: simFmtDate(reg.startDate, tf) + ' \u2192 ' + simFmtDate(reg.endDate, tf) + ' [' + stratLabel + ']',
+      bars: reg.count,
+      trades: trades.length,
+      wins: stats.wins,
+      losses: stats.losses,
+      winRate: stats.winRate,
+      roi: stats.roi,
+      pnl: stats.totalPnl
+    });
+  }
+
+  // Store for phase click handler
+  window._simPhaseResults = results;
+  window._simPhaseCapital = capital;
+  window._simPhaseCloses = closes;
+  window._simPhaseRsi = rsi14;
+  window._simPhaseEma = ema8;
+  window._simPhaseDates = dates;
+  window._simPhaseTf = tf;
+
+  // Show first region on chart
+  if (results.length > 0) simShowPhaseRegion(0);
+
+  // Show phase results panel
+  var phaseResEl = document.getElementById('simPhaseResults');
+  var phaseGrid = document.getElementById('simPhaseGrid');
+  if (phaseResEl && phaseGrid) {
+    phaseResEl.style.display = '';
+    var h = '';
+    for (var j=0;j<results.length;j++){
+      var r = results[j];
+      h += '<div style="border:1px solid #ddd;border-radius:4px;padding:6px;cursor:pointer;background:#fff;" onclick="simShowPhaseRegion('+j+')">'
+        +'<div style="font-size:9px;color:#888;">'+r.label+'</div>'
+        +'<div style="font-size:10px;font-weight:700;color:#6366f1;">'+r.trades+' trades | WR: '+r.winRate.toFixed(0)+'% | ROI: '+(r.roi>=0?'+':'')+r.roi.toFixed(1)+'%</div>'
+        +'</div>';
+    }
+    phaseGrid.innerHTML = h;
+  }
+  status.textContent = phaseName + ' phase: ' + results.length + ' regions found (' + stratLabel + ')';
+  status.style.color = '#333';
+}
+
+// Show a specific phase region when clicked
+window.simShowPhaseRegion = function(idx) {
+  var results = window._simPhaseResults;
+  if (!results || !results[idx]) return;
+  var regIdx = -1;
+  // Re-detect phases to find region indices
+  var phases = simDetectPhases(window._simPhaseRsi, window._simPhaseEma, window._simPhaseCloses);
+  var regions = simFindPhaseRegions(phases, window._simPhaseDates);
+  // Match by label
+  var phaseName = document.querySelector('.sim-phase-btn[data-phase]') ? null : 'BULL';
+  // Find which phase was requested
+  for (var b=0; b<document.querySelectorAll('.sim-phase-btn').length; b++) {
+    var btn = document.querySelectorAll('.sim-phase-btn')[b];
+    if (btn.style.fontWeight === '700' || btn.style.outline) { phaseName = btn.getAttribute('data-phase'); break; }
+  }
+  // Actually just find the region that matches the result's bar count and start
+  var phaseRegions = regions.filter(function(r){
+    for (var k=0; k<results.length; k++) {
+      if (results[k].bars === r.count && results[k].label === simFmtDate(r.startDate, window._simPhaseTf)+' \u2192 '+simFmtDate(r.endDate, window._simPhaseTf)) return true;
+    }
+    return false;
+  });
+
+  // Re-derive from the stored results
+  var r = results[idx];
+  // Find the matching region in the original data
+  var allPhases = simDetectPhases(window._simPhaseRsi, window._simPhaseEma, window._simPhaseCloses);
+  var allRegions = simFindPhaseRegions(allPhases, window._simPhaseDates);
+  var target = null;
+  for (var i=0;i<allRegions.length;i++){
+    if (simFmtDate(allRegions[i].startDate,window._simPhaseTf)+' \u2192 '+simFmtDate(allRegions[i].endDate,window._simPhaseTf) === r.label){
+      target = allRegions[i]; break;
+    }
+  }
+  if (!target) return;
+
+  var sc = window._simPhaseCloses.slice(target.startIdx, target.endIdx+1);
+  var sr = window._simPhaseRsi.slice(target.startIdx, target.endIdx+1);
+  var se = window._simPhaseEma.slice(target.startIdx, target.endIdx+1);
+  var sd = window._simPhaseDates.slice(target.startIdx, target.endIdx+1);
+  var sl = sd.map(function(d){return simFmtDate(d, window._simPhaseTf);});
+  var ss = simBuildSignals(sc, sr, r.trades);
+
+  _simData = {closes:sc,dates:sd,rsi:sr,ema8:se,labels:sl,signals:ss,trades:r.trades};
+  simRenderCharts(sc,se,sr,sl,ss,r.trades,sd,window._simPhaseTf);
+  simRenderResults(r.stats,r.trades,window._simPhaseCapital,sl,sd,window._simPhaseTf);
+};
+
+} catch(e) {
+  console.error('[SIM] Simulation IIFE error:', e);
+  if (!window.simInitTab) {
+    window.simInitTab = function() {
+      var root = document.getElementById('simRoot');
+      if (root) root.innerHTML = '<div style="padding:20px;color:red;font-family:monospace;">Simulation module failed to load. Check console.</div>';
+    };
+  }
+}
+
+})();
+
 </script>
 
 </body>

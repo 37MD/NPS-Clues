@@ -1,4 +1,4 @@
-const CACHE = 'ld-nps-v4';
+const CACHE = 'ld-nps-v2';
 const SHELL = [
   './index.html',
   './manifest.json',
